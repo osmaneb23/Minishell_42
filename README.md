@@ -1,6 +1,6 @@
-# Minishell - Plan de travail et Notes
+# Minishell
 
-## 1. Utilisation de Readline
+## 1. [Utilisation de Readline](https://tiswww.case.edu/php/chet/readline/rltop.html)
 ### Objectifs :
 - [ ] **Créer un programme simple avec `readline()`** :
   - Lire une ligne d'entrée utilisateur.
@@ -18,7 +18,7 @@
 
 ---
 
-## 2. Analyse de la ligne de commande
+## 2. [Analyse de la ligne de commande](https://www.gnu.org/software/bash/manual/bash.html)
 ### Objectifs :
 - [ ] **Tokenisation** :
   - Séparer une ligne de commande en "mots".
@@ -56,7 +56,7 @@
 
 ---
 
-## 4. Développement des fonctionnalités du Shell
+## 4. [Développement des fonctionnalités du Shell](https://www.gnu.org/software/bash/manual/bash.html)
 ### Objectifs :
 - [ ] **Exécution de commandes simples** :
   - Appels systèmes pour exécuter une commande (`execve`).
@@ -118,9 +118,9 @@
 - **Utiliser des tests systématiques** à chaque étape du développement (tokenisation, pipes, etc.).
 
 ### Ressources :
-- **GNU Bash Manual** : https://www.gnu.org/software/bash/manual/bash.html
-- **42 Minishell Docs** : https://harm-smits.github.io/42docs/projects/minishell
-- **Tests Minishell** : https://docs.google.com/spreadsheets/d/1BPW7k81LJPhGv2fbi35NIIoOC_mGZXQQJDnV0SjulFs/edit?gid=0#gid=0
-- **Checklist Minishell** : https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit?gid=0#gid=0
-- **Conseils pour recommencer Minishell** : https://medium.com/@mostafa.omrane/mes-conseils-si-je-devais-recommencer-minishell-a9783c51ba1b
-- **Apprendre Git** : https://learngitbranching.js.org/
+- **[GNU Bash Manual](https://www.gnu.org/software/bash/manual/bash.html)**
+- **[42 Minishell Docs](https://harm-smits.github.io/42docs/projects/minishell)**
+- **[Tests Minishell](https://docs.google.com/spreadsheets/d/1BPW7k81LJPhGv2fbi35NIIoOC_mGZXQQJDnV0SjulFs/edit?gid=0#gid=0)**
+- **[Checklist Minishell](https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit?gid=0#gid=0)**
+- **[Conseils pour Minishell](https://medium.com/@mostafa.omrane/mes-conseils-si-je-devais-recommencer-minishell-a9783c51ba1b)**
+- **[Apprendre Git](https://learngitbranching.js.org/)**
