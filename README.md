@@ -40,7 +40,7 @@
 
 ## Ressources utiles
 
-0. **Guide complet Minishell** : ##[git@github.com:osmaneb23/Minishell_42.git)
+0. **Guide complet Minishell** : [git@github.com:osmaneb23/Minishell_42.git)
 
 1. **Guide complet Minishell** : [42 Docs - Minishell](https://harm-smits.github.io/42docs/projects/minishell)
 
