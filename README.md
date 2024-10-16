@@ -40,6 +40,8 @@
 
 ## Ressources utiles
 
+0. **Guide complet Minishell** : ## [git@github.com:osmaneb23/Minishell_42.git)
+
 1. **Guide complet Minishell** : [42 Docs - Minishell](https://harm-smits.github.io/42docs/projects/minishell)
 
 2. **Tests Minishell** : [Google Sheets - Tests Minishell](https://docs.google.com/spreadsheets/d/1BPW7k81LJPhGv2fbi35NIIoOC_mGZXQQJDnV0SjulFs/edit?gid=0#gid=0)
