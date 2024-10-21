@@ -26,6 +26,8 @@ BSRC = \
 OBJS = ${SRC:.c=.o}
 BOBJS = $(BSRC:.c=.o)
 
+HEADER = libft.h
+
 NAME = libft.a
 
 AR = ar rc
@@ -38,10 +40,10 @@ CFLAGS = -Wall -Wextra -Werror
 
 all: ${NAME}
 
-$(NAME): $(OBJS) $(BOBJS)
+$(NAME): $(OBJS) $(BOBJS) $(HEADER)
 	$(AR) $@ $?
 
-bonus: $(NAME) $(BOBJS)
+bonus: $(NAME) $(BOBJS) $(HEADER)
 	$(AR) $@ $?
 
 %.o: %.c
