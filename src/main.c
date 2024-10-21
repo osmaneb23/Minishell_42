@@ -6,24 +6,43 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/21 19:59:22 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/21 21:23:29 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int main(int argc, char **argv)
+bool	openquote(char *line)
+{
+	unsigned int	i;
+	unsigned int	squote;
+	unsigned int	dquote;
+
+	i = 0;
+	squote = 0;
+	dquote = 0;
+	while (line[i])
+	{
+		if (line[i] == 34)
+			dquote++;
+		if (line[i] == 39)
+			squote++;
+		i++;
+	}
+	if (squote % 2 != 0 || dquote % 2 != 0)
+		return (1);
+	return (0);
+}
+
+int	main(int ac, char **av)
 {
 	struct sigaction sa;
-	char* line;
+	char *line;
 	while (1)
 	{
 		line = readline("minishell$ ");
-		printf("%s\n", line);
+		if (openquote(line))
+			printf("Error: unclosed quote\n");
 	}
-	// line = readline("minishell$ ");
-	printf("%s\n", line);
-	(void)argc;
-	(void)argv;
 	return (0);
 }
