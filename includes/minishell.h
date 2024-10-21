@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/21 18:35:02 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:54:32 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 
 # define SUCCESS 0
 # define ERROR 1
+# define FAIL -1
+# define TRUE 1
+# define FALSE 0
 
 struct				s_token
 {
