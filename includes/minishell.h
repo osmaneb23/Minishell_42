@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/21 19:50:59 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/21 19:59:52 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 # include <limits.h>                 // INT_MAX, INT_MIN etc
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
+# include <signal.h>                 // signal
 # include <stdbool.h>                // bool
 # include <stdio.h>                  // printf
 # include <stdlib.h>                 // malloc, free, exit
 # include <sys/stat.h>               // stat
 # include <sys/types.h>              // pid_t
 # include <sys/wait.h>               // waitpid
+# include <unistd.h>                 // execve, fork, pipe
 
 # define SUCCESS 0
 # define ERROR 1
