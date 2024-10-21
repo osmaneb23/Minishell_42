@@ -5,111 +5,121 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 18:04:25 by obouayed          #+#    #+#             */
-/*   Updated: 2024/01/06 23:35:09 by obouayed         ###   ########.fr       */
+/*   Created: 2023/11/30 14:07:24 by febouana          #+#    #+#             */
+/*   Updated: 2024/10/21 19:39:55 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	search_nl(t_list *stash)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	int	i;
+	unsigned int	i;
+	char			*str;
 
-	if (!stash)
-		return (0);
-	stash = last_node(stash);
-	while (stash)
-	{
-		i = 0;
-		while (stash->content[i] != 0)
-		{
-			if (stash->content[i] == '\n')
-				return (1);
-			i++;
-		}
-		stash = stash->next;
-	}
-	return (0);
-}
-
-t_list	*last_node(t_list *stash)
-{
-	if (!stash)
+	if (!s)
 		return (NULL);
-	while (stash->next)
-		stash = stash->next;
-	return (stash);
+	if (ft_strlen(s) <= start)
+	{
+		str = (malloc(sizeof(char)));
+		str[0] = '\0';
+		return (str);
+	}
+	i = 0;
+	while ((s[start + i]) && (i < len))
+		i++;
+	str = (char *)malloc(i + 1);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while ((s[start + i]) && (i < len))
+	{
+		str[i] = s[start + i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
 
-int	len_for_line(t_list *stash)
+char	*ft_strchr(const char *str, int c)
 {
-	int	len;
 	int	i;
 
-	len = 0;
-	if (!stash)
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == (char)c)
+			return ((char *)&str[i]);
+		i++;
+	}
+	if (str[i] == (char)c)
+		return ((char *)&str[i]);
+	return (NULL);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	i;
+	size_t	j;
+	char	*str;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	while (i < ft_strlen(s1))
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (j < ft_strlen(s2))
+	{
+		str[i] = s2[j];
+		i++;
+		j++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	unsigned char	*audd;
+	size_t			i;
+
+	if (size != 0 && nmemb > (size_t)-1 / size)
 		return (0);
-	while (stash)
+	i = 0;
+	audd = malloc(nmemb * size);
+	if (!audd)
+		return (NULL);
+	while (i < nmemb * size)
 	{
-		i = 0;
-		while (stash->content[i] && stash->content[i] != '\n')
-		{
-			i++;
-			len++;
-		}
-		if (stash->content[i] == '\n')
-			return (len + 1);
-		stash = stash->next;
+		audd[i] = 0;
+		i++;
 	}
-	return (len);
+	return (audd);
 }
 
-void	copy_str(t_list *stash, char *str)
+char	*ft_strdup2(const char *s)
 {
-	int	i;
-	int	k;
+	size_t	size;
+	char	*tab;
+	size_t	i;
 
-	if (!stash)
-		return ;
-	k = 0;
-	while (stash)
+	size = ft_strlen(s);
+	tab = (char *)malloc(size * sizeof(char) + 1);
+	if (!tab)
+		return (NULL);
+	i = 0;
+	while (s[i])
 	{
-		i = 0;
-		while (stash->content[i])
-		{
-			if (stash->content[i] == '\n')
-			{
-				str[k++] = '\n';
-				str[k] = '\0';
-				return ;
-			}
-			str[k++] = stash->content[i++];
-		}
-		stash = stash->next;
+		tab[i] = s[i];
+		i++;
 	}
-	str[k] = '\0';
-}
-
-void	lstclear(t_list **stash, t_list *node, char *buffer)
-{
-	t_list	*tmp;
-
-	if (!stash)
-		return ;
-	while (*stash)
-	{
-		tmp = (*stash)->next;
-		free((*stash)->content);
-		free(*stash);
-		*stash = tmp;
-	}
-	*stash = NULL;
-	if (node->content[0])
-		*stash = node;
-	else
-	{
-		free(buffer);
-		free(node);
-	}
+	tab[i] = '\0';
+	return (tab);
 }
