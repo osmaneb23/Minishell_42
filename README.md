@@ -125,3 +125,4 @@
 - **[Checklist Minishell](https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit?gid=0#gid=0)**
 - **[Conseils pour Minishell](https://medium.com/@mostafa.omrane/mes-conseils-si-je-devais-recommencer-minishell-a9783c51ba1b)**
 - **[Apprendre Git](https://learngitbranching.js.org/)**
+- **[Petit guide d'un Github](https://github.com/Hqndler/42-minishell)**
