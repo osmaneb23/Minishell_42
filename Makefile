@@ -6,7 +6,7 @@
 #    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/10/21 18:51:25 by obouayed         ###   ########.fr        #
+#    Updated: 2024/10/21 19:00:19 by obouayed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CFLAGS = -Wall -Wextra -Werror -g3
 LIBFT = Libft/libft.a
 
 # Source files and object files
-SRC = 
+SRC = main.c
 SRC_DIR = src
 OBJ_DIR = obj
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
@@ -36,6 +36,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(HEADER)
 		$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+		@echo "Compilation done!"
 		
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c | $(OBJ_DIR)
 		$(CC) -c $< -o $@
@@ -50,10 +51,12 @@ $(LIBFT):
 clean:
 	$(RM) $(OBJ_DIR)
 	make -C Libft clean
+	@echo "Objects removed!"
 
 fclean: clean
 	$(RM) $(NAME)
 	make -C Libft fclean
+	@echo "Executable removed!"
 
 # Re-compile everything
 re: fclean all
@@ -61,7 +64,7 @@ re: fclean all
 
 # Debugging
 valgrind: $(NAME)
-	valgrind $(VAL_FLAGS) ./$(NAME)
+	@valgrind $(VAL_FLAGS) ./$(NAME)
 
 # To prevent commands from being treated as files
 .PHONY: all clean fclean re valgrind
