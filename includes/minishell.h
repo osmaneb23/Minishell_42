@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/22 02:53:24 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:07:39 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@
 # define CMD 6     // command
 # define ARG 7     // argument
 
-struct				s_token
+typedef struct				s_token
 {
 	char			*value;
 	int				type;
+	unsigned int 	index;
 	struct s_token	*next;
 	struct s_token	*prev;
 
