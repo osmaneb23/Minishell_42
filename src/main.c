@@ -6,11 +6,30 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/21 21:23:29 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/22 03:57:51 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void tokenization(char *line)
+{
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	k;
+	char			*token;
+	t_token			*head;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	head = NULL;
+	
+	if (!line)
+		return ;
+	head = malloc(sizeof(t_token));
+	
+}
 
 bool	openquote(char *line)
 {
@@ -43,6 +62,7 @@ int	main(int ac, char **av)
 		line = readline("minishell$ ");
 		if (openquote(line))
 			printf("Error: unclosed quote\n");
+		tokenization(line);
 	}
 	return (0);
 }

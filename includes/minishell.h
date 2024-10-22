@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/21 19:59:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/22 02:53:24 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@
 # define FAIL -1
 # define TRUE 1
 # define FALSE 0
+
+# define INPUT 1   // <
+# define HEREDOC 2 // <<
+# define TRUNC 3   // >
+# define APPEND 4  // >>
+# define PIPE 5    // |
+# define CMD 6     // command
+# define ARG 7     // argument
 
 struct				s_token
 {
