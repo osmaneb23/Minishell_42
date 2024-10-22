@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
+#    By: apoet <apoet@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/10/21 19:47:17 by obouayed         ###   ########.fr        #
+#    Updated: 2024/10/22 21:51:01 by apoet            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,13 +31,20 @@ HEADER = includes/minishell.h
 RM = rm -rf
 VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 
+BANNER = " ███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗\n\
+ ████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     \n\
+ ██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     \n\
+ ██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     \n\
+ ██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗\n\
+ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\n\
+                                    by obouayed and febouana        \n"	
+
 # Compilation
-all: $(NAME)
+all: $(NAME) 
 
 $(NAME): $(OBJS) $(LIBFT) $(HEADER)
 		$(CC) $(CFLAGS) $(OBJS) -lreadline $(LIBFT) -o $(NAME)
-		@echo "Compilation done!"
-		
+	
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c | $(OBJ_DIR)
 		$(CC) -c $< -o $@
 
@@ -61,6 +68,7 @@ fclean: clean
 # Re-compile everything
 re: fclean all
 	make -C Libft re
+	@echo $(BANNER)
 
 # Debugging
 valgrind: $(NAME)

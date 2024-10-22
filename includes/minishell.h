@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/21 19:59:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/22 21:32:13 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+
 # include "../Libft/get_next_line.h" // get_next_line
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
-# include <limits.h>                 // INT_MAX, INT_MIN etc
+# include <linux/limits.h>
+# include <stdio.h>    
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
 # include <signal.h>                 // signal
-# include <stdbool.h>                // bool
-# include <stdio.h>                  // printf
+# include <stdbool.h>                // bool              // printf
 # include <stdlib.h>                 // malloc, free, exit
 # include <sys/stat.h>               // stat
 # include <sys/types.h>              // pid_t
@@ -30,9 +31,15 @@
 
 # define SUCCESS 0
 # define ERROR 1
-# define FAIL -1
+# define FAILURE -1
 # define TRUE 1
 # define FALSE 0
+
+typedef struct t_data
+{
+	char*           username;
+
+}					t_data;
 
 struct				s_token
 {
