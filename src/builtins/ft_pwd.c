@@ -4,9 +4,9 @@
 int ft_pwd()
 {
     
-    char cwd[PATH_MAX];
+    char cwd[PATH_MAX]; // keske cwd...
 
-    if (getcwd(cwd, PATH_MAX))
+    if (getcwd(cwd, PATH_MAX)) //! cherche direct dans l'env classique, ne pose pas pbl ?
     {
         printf("%s\n", cwd);
         return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/22 21:32:13 by apoet            ###   ########.fr       */
+/*   Updated: 2024/10/24 22:10:09 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@
 
 typedef struct t_data
 {
-	char*           username;
-
+	char        *username;
+    char        *cwd;
+    // t_list      *env;
 }					t_data;
 
 struct				s_token
@@ -50,4 +51,10 @@ struct				s_token
 
 }					t_token;
 
+void *get_data();
+int ft_pwd();
+int ft_cd(char *direction);
+
 #endif
+
+

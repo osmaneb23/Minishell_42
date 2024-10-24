@@ -1,29 +1,31 @@
 #include "../includes/minishell.h"
 
-void *get_data()
-{
-    t_data data;
-    return (&data);
-}
-
+//! besoin d'actualiser un data.env avec old_cwd et new_cwd ??
 int ft_cd(char *direction)
 {
-    t_data *data = get_data();
     char *res;
+    t_data *data = get_data(); 
 
-    if (direction == "")
+    if (chdir(direction) == -1)
+    {    
+        printf("Error: ft_cd: %s: No such file or directory\n", direction);
+        return (ERROR);
+    }
+    if (strcmp(direction, "") == 0)
     {
         res = ft_strjoin("/home/", data->username);
+        if (!res)
+            return (FAILURE);
         chdir(res);
+        res = data->cwd;
+        free(res);
         ft_pwd();
         return (SUCCESS);
     }
-    if (chdir(direction) != 0)
-    {    
-        perror("Error: ft_cd:\n");
-        return (ERROR);
-    }
     else
+    {
         ft_pwd();
+        res = data->cwd;
+    }
     return (SUCCESS);
 }
