@@ -6,11 +6,49 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/25 02:15:57 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/25 03:04:13 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+t_token	*last_token(t_token *token)
+{
+	if (!token)
+		return (NULL);
+	while (token->next)
+		token = token->next;
+	return (token);
+}
+
+void	add_token_to_list(t_token *token)
+{
+	t_token	*last;
+	t_token *tmp;
+
+	tmp = malloc(sizeof(t_token));
+	last = last_token(token);
+	if (!token)
+		return ;
+	if (!tmp)
+	{
+		cleanup(NULL, true, "Error: malloc failed\n");
+		return ;
+	}
+	if (last)
+	{
+		last->next = token;
+		token->prev = last;
+	}
+	else
+	{
+		tmp->value = token->value;
+		tmp->type = token->type;
+		tmp->next = NULL;
+		tmp->prev = NULL;
+		token = tmp;
+	}	
+}
 
 int	determine_type(char *value)
 {
@@ -46,6 +84,7 @@ t_token	*create_token(char *value, int type)
 	token->type = type;
 	token->next = NULL;
 	token->prev = NULL;
+	
 	return (token);
 }
 
@@ -75,7 +114,7 @@ char	*tokenizer(char *line, unsigned int *i, bool *squote_open,
 		bool *dquote_open)
 {
 	unsigned int	j;
-	char *value;
+	char			*value;
 
 	if (!*squote_open && !*dquote_open)
 	{
@@ -123,7 +162,7 @@ void	tokenization(char *line)
 		if (line[i] == 39 && !dquote_open)
 			squote_open = !squote_open;
 		value = tokenizer(line, &i, &squote_open, &dquote_open);
-		create_token(value, determine_type(value));
+		add_token_to_list(create_token(value, determine_type(value)));
 	}
 }
 
@@ -149,9 +188,18 @@ bool	openquote(char *line)
 	return (false);
 }
 
-int	main(int ac, char **av)
+void initialize_data(t_data **data, char **env)
+{
+	(*data)->token = NULL;
+	(*data)->username = ft_strdup(env[0]);
+}
+
+int	main(int ac, char **av, char **env)
 {
 	char *line;
+	t_data data;
+
+	initialize_data(&data, env);
 	while (1)
 	{
 		line = readline("minishell$ ");
