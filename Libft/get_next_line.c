@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 15:41:58 by febouana          #+#    #+#             */
-/*   Updated: 2024/10/21 19:39:45 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/24 19:05:11 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*set_line(char *line_buffer)
 		i++;
 	if (line_buffer[i] == 0 || line_buffer[1] == 0)
 		return (NULL);
-	res = ft_substr(line_buffer, i + 1, ft_strlen(line_buffer) - i);
+	res = ft_substr2(line_buffer, i + 1, ft_strlen(line_buffer) - i);
 	if (*res == 0)
 	{
 		free(res);

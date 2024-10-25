@@ -6,13 +6,13 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:07:24 by febouana          #+#    #+#             */
-/*   Updated: 2024/10/21 19:39:55 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/24 19:04:57 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr2(char const *s, unsigned int start, size_t len)
 {
 	unsigned int	i;
 	char			*str;
