@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/25 02:07:10 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/25 02:15:57 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ t_token	*create_token(char *value, int type)
 	token->type = type;
 	token->next = NULL;
 	token->prev = NULL;
-	printf("token->value: %s\n", token->value);
-	printf("token->type: %d\n", token->type);
 	return (token);
 }
 
@@ -77,6 +75,7 @@ char	*tokenizer(char *line, unsigned int *i, bool *squote_open,
 		bool *dquote_open)
 {
 	unsigned int	j;
+	char *value;
 
 	if (!*squote_open && !*dquote_open)
 	{
@@ -94,9 +93,10 @@ char	*tokenizer(char *line, unsigned int *i, bool *squote_open,
 				&& line[*i] != '|' && line[*i])
 				(*i)++;
 		}
+		value = ft_substr(line, j, *i - j);
 		while (line[*i] == ' ')
 			(*i)++;
-		return (ft_substr(line, j, *i - j));
+		return (value);
 	}
 	return (handle_quote(line, i, squote_open, dquote_open));
 }
