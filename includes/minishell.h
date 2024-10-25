@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/24 21:48:11 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/25 16:17:28 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 # define SUCCESS 0
 # define ERROR 1
-# define FAIL -1
+# define FAILURE -1
 # define TRUE 1
 # define FALSE 0
 
