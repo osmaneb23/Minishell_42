@@ -6,16 +6,16 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 02:27:41 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/24 21:52:41 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/26 18:17:13 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void free_data(t_data **data)
+void	free_data(t_data **data)
 {
-	t_token *tmp;
-	t_token *next;
+	t_token	*tmp;
+	t_token	*next;
 
 	if (data && *data)
 	{
@@ -31,20 +31,19 @@ void free_data(t_data **data)
 			}
 		}
 		free((*data)->username);
-		free(*data);
 	}
 }
 
-bool cleanup(t_data **data, bool error, char* message)
+bool	cleanup(bool error, char *message, int ext)
 {
-	if (data && *data)
-		free_data(data);
-	if (error)
-	{
+	t_data *data;
+
+	data = get_data();
+	if (data)
+		free_data(&data);
+	if (message)
 		ft_putstr_fd(message, 2);
-		free_data(data);
-		return (ERROR);
-	}
-	free_data(data);
-	return (SUCCESS); // exit?
+	if (ext != NO_EXIT)
+		exit(ext);
+	return (error);
 }

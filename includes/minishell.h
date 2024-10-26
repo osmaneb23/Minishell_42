@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/25 16:17:28 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/26 18:17:07 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define FAILURE -1
 # define TRUE 1
 # define FALSE 0
+# define NO_EXIT -42
 
 # define INPUT 1   // <
 # define HEREDOC 2 // <<
@@ -57,6 +58,7 @@ typedef struct s_data
 	char			*username;
 }					t_data;
 
-bool cleanup(t_data **data, bool error, char* message);
+bool				cleanup(bool error, char *message, int ext);
+void				*get_data(void);
 
 #endif

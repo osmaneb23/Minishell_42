@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/26 04:59:23 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/26 19:14:32 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,36 @@ void	*get_data(void)
 	static t_data	data;
 
 	return (&data);
+}
+
+void	check_misplacements(void)
+{
+	t_token	*token;
+	t_data	*data;
+	int		type;
+
+	data = get_data();
+	token = data->token;
+	while (token)
+	{
+		type = 1;
+		if ((token->type == PIPE && token->prev->type == PIPE)
+			|| (token->type == PIPE && token->prev->type <= APPEND)
+			|| (token->type == PIPE && !token->prev))
+			cleanup(true, "syntax error near unexpected token `|'\n", NO_EXIT);
+		if ((token->type <= APPEND && token->prev->type == PIPE)
+			|| (token->type <= APPEND && !token->prev))
+			cleanup(true, "syntax error near unexpected token `newline'\n",
+				NO_EXIT);
+		while (1)
+		{
+			if (token->type <= APPEND && token->prev->type <= APPEND)
+				printf("syntax error near unexpected token `%s'\n",
+					token->value);
+			type++;
+		}
+		token = token->next;
+	}
 }
 
 t_token	*last_token(t_token *token)
@@ -33,11 +63,11 @@ bool	add_token_to_list(t_token *token, t_token *data_token)
 	t_token	*last;
 
 	if (!token || !data_token)
-		return (cleanup(NULL, true,
-				"Error: impossible to add token to list\n"));
+		return (cleanup(true, "Error: impossible to add token to list\n",
+				ERROR));
 	last = last_token(data_token);
 	if (!last)
-		return (cleanup(NULL, true, "Error: impossible to get last token\n"));
+		return (cleanup(true, "Error: impossible to get last token\n", ERROR));
 	last->next = token;
 	token->prev = last;
 	return (SUCCESS);
@@ -71,13 +101,17 @@ void	assign_type_to_tokens(void)
 	while (token)
 	{
 		token->type = determine_basic_type(token->value);
-		if (!token->prev && token->type > PIPE)
+		if (!token->prev && token->type == ARG)
 			token->type = CMD;
 		if (token->prev)
 		{
-			if (token->prev->type == PIPE && token->type > PIPE)
+			if (token->prev->type == PIPE && token->type == ARG)
 				token->type = CMD;
-			if (token->prev->type <= APPEND && token->type > PIPE)
+			if (token->prev->type <= APPEND && token->type == CMD)
+				token->type = ARG;
+			if (token->prev->type == CMD && token->type == CMD)
+				token->type = ARG;
+			if (token->prev->type == ARG && token->type == CMD)
 				token->type = ARG;
 		}
 		token = token->next;
@@ -91,11 +125,10 @@ bool	create_token(char *value)
 
 	data = get_data();
 	if (!value)
-		return (cleanup(NULL, true, "Error: impossible to create token\n"),
-			NULL);
+		return (cleanup(true, "Error: impossible to create token\n", ERROR));
 	token = malloc(sizeof(t_token));
 	if (!token)
-		return (cleanup(NULL, true, "Error: malloc failed\n"), NULL);
+		return (cleanup(true, "Error: malloc failed\n", ERROR));
 	token->value = value;
 	token->type = 0;
 	token->next = NULL;
@@ -181,10 +214,10 @@ bool	tokenization(char *line)
 		if (line[i] == 39 && !dquote_open)
 			squote_open = !squote_open;
 		value = tokenizer(line, &i, &squote_open, &dquote_open);
-		if (create_token(value))
-			return (cleanup(NULL, true, "Error: tokenization failed\n"));
+		create_token(value);
 	}
 	assign_type_to_tokens();
+	// check_misplacements();
 	return (SUCCESS);
 }
 
@@ -219,8 +252,8 @@ void	initialize_data(t_data **data, char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	char *line;
-	t_data *data;
+	char	*line;
+	t_data	*data;
 
 	initialize_data(&data, env);
 	while (1)
@@ -230,8 +263,7 @@ int	main(int ac, char **av, char **env)
 			printf("Error: unclosed quote\n");
 		else
 		{
-			if (tokenization(line))
-				return (ERROR);
+			tokenization(line);
 			while (data->token)
 			{
 				printf("value: %s\n", data->token->value);
@@ -240,5 +272,5 @@ int	main(int ac, char **av, char **env)
 			}
 		}
 	}
-	return (SUCCESS);
+	return (cleanup(false, NULL, NO_EXIT));
 }
