@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/26 04:06:43 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/26 04:59:23 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ bool	add_token_to_list(t_token *token, t_token *data_token)
 	t_token	*last;
 
 	if (!token || !data_token)
-		return (cleanup(NULL, true, "Error: impossible to add token to list\n"));
+		return (cleanup(NULL, true,
+				"Error: impossible to add token to list\n"));
 	last = last_token(data_token);
 	if (!last)
 		return (cleanup(NULL, true, "Error: impossible to get last token\n"));
@@ -42,10 +43,8 @@ bool	add_token_to_list(t_token *token, t_token *data_token)
 	return (SUCCESS);
 }
 
-int	determine_type(char *value)
+int	determine_basic_type(char *value)
 {
-	if (!value)
-		return (cleanup(NULL, true, "Error: impossible to determine type\n"), FAILURE);
 	if ((value[0] == '"' && value[ft_strlen(value) - 1] == '"')
 		|| (value[0] == '\'' && value[ft_strlen(value) - 1] == '\''))
 		return (ARG);
@@ -62,20 +61,43 @@ int	determine_type(char *value)
 	return (CMD);
 }
 
-bool	create_token(char *value, int type)
+void	assign_type_to_tokens(void)
 {
 	t_token	*token;
 	t_data	*data;
 
 	data = get_data();
-	if (!value || !type)
+	token = data->token;
+	while (token)
+	{
+		token->type = determine_basic_type(token->value);
+		if (!token->prev && token->type > PIPE)
+			token->type = CMD;
+		if (token->prev)
+		{
+			if (token->prev->type == PIPE && token->type > PIPE)
+				token->type = CMD;
+			if (token->prev->type <= APPEND && token->type > PIPE)
+				token->type = ARG;
+		}
+		token = token->next;
+	}
+}
+
+bool	create_token(char *value)
+{
+	t_token	*token;
+	t_data	*data;
+
+	data = get_data();
+	if (!value)
 		return (cleanup(NULL, true, "Error: impossible to create token\n"),
 			NULL);
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (cleanup(NULL, true, "Error: malloc failed\n"), NULL);
 	token->value = value;
-	token->type = type;
+	token->type = 0;
 	token->next = NULL;
 	token->prev = NULL;
 	if (!data->token)
@@ -149,7 +171,7 @@ bool	tokenization(char *line)
 	squote_open = false;
 	dquote_open = false;
 	if (!line)
-		return ;
+		return (SUCCESS);
 	while (line[i])
 	{
 		while (line[i] == ' ')
@@ -159,9 +181,10 @@ bool	tokenization(char *line)
 		if (line[i] == 39 && !dquote_open)
 			squote_open = !squote_open;
 		value = tokenizer(line, &i, &squote_open, &dquote_open);
-		if (create_token(value, determine_type(value)))
+		if (create_token(value))
 			return (cleanup(NULL, true, "Error: tokenization failed\n"));
 	}
+	assign_type_to_tokens();
 	return (SUCCESS);
 }
 
@@ -209,6 +232,12 @@ int	main(int ac, char **av, char **env)
 		{
 			if (tokenization(line))
 				return (ERROR);
+			while (data->token)
+			{
+				printf("value: %s\n", data->token->value);
+				printf("type: %d\n", data->token->type);
+				data->token = data->token->next;
+			}
 		}
 	}
 	return (SUCCESS);
