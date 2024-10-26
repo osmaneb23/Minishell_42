@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/25 16:21:12 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/26 04:06:43 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,10 @@ bool	add_token_to_list(t_token *token, t_token *data_token)
 	if (!token || !data_token)
 		return (cleanup(NULL, true, "Error: impossible to add token to list\n"));
 	last = last_token(data_token);
+	if (!last)
+		return (cleanup(NULL, true, "Error: impossible to get last token\n"));
 	last->next = token;
 	token->prev = last;
-	data_token = last;
 	return (SUCCESS);
 }
 
@@ -77,7 +78,7 @@ bool	create_token(char *value, int type)
 	token->type = type;
 	token->next = NULL;
 	token->prev = NULL;
-	if (token == last_token(token))
+	if (!data->token)
 		data->token = token;
 	else
 		add_token_to_list(token, data->token);
@@ -136,7 +137,7 @@ char	*tokenizer(char *line, unsigned int *i, bool *squote_open,
 	return (handle_quote(line, i, squote_open, dquote_open));
 }
 
-void	tokenization(char *line)
+bool	tokenization(char *line)
 {
 	unsigned int	i;
 	char			*value;
@@ -158,9 +159,10 @@ void	tokenization(char *line)
 		if (line[i] == 39 && !dquote_open)
 			squote_open = !squote_open;
 		value = tokenizer(line, &i, &squote_open, &dquote_open);
-		if (create_token(value, determine_type(value)) == ERROR)
-			return ;
+		if (create_token(value, determine_type(value)))
+			return (cleanup(NULL, true, "Error: tokenization failed\n"));
 	}
+	return (SUCCESS);
 }
 
 bool	openquote(char *line)
@@ -205,17 +207,9 @@ int	main(int ac, char **av, char **env)
 			printf("Error: unclosed quote\n");
 		else
 		{
-			tokenization(line);
-			// Print all tokens of data to see if they are correctly initialized
-			while (data->token)
-			{
-				printf("Token value: %s, Token type: %d\n", data->token->value, data->token->type);
-				if (data->token->next)
-					data->token = data->token->next;
-				else
-					break;
-			}				
+			if (tokenization(line))
+				return (ERROR);
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }
