@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 02:27:41 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/26 18:17:13 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/26 20:14:12 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ bool	cleanup(bool error, char *message, int ext)
 	t_data *data;
 
 	data = get_data();
-	if (data)
-		free_data(&data);
+	// if (data)
+	// 	free_data(&data);
 	if (message)
 		ft_putstr_fd(message, 2);
 	if (ext != NO_EXIT)

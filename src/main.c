@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/26 19:14:32 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/26 21:05:45 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,44 @@ void	*get_data(void)
 	return (&data);
 }
 
-void	check_misplacements(void)
+bool	check_misplacements(void)
 {
 	t_token	*token;
 	t_data	*data;
-	int		type;
 
 	data = get_data();
 	token = data->token;
 	while (token)
 	{
-		type = 1;
-		if ((token->type == PIPE && token->prev->type == PIPE)
-			|| (token->type == PIPE && token->prev->type <= APPEND)
-			|| (token->type == PIPE && !token->prev))
-			cleanup(true, "syntax error near unexpected token `|'\n", NO_EXIT);
-		if ((token->type <= APPEND && token->prev->type == PIPE)
-			|| (token->type <= APPEND && !token->prev))
-			cleanup(true, "syntax error near unexpected token `newline'\n",
-				NO_EXIT);
-		while (1)
+		if (!token->prev)
 		{
+			if (token->type == PIPE)
+				return (cleanup(true,
+						"syntax error near unexpected token `|'\n", NO_EXIT));
+			if (token->prev)
+			{
+				if (token->type <= APPEND && token->next->type >= CMD)
+					return (cleanup(true,
+							"syntax error near unexpected token `newline'\n",
+							NO_EXIT));
+			}
+		}
+		else
+		{
+			if ((token->type == PIPE && token->prev->type == PIPE)
+				|| (token->type == PIPE && token->prev->type <= APPEND))
+				return (cleanup(true,
+						"syntax error near unexpected token `|'\n", NO_EXIT));
+			if (token->type <= APPEND && token->prev->type == PIPE)
+				return (cleanup(true,
+						"syntax error near unexpected token `newline'\n",
+						NO_EXIT));
 			if (token->type <= APPEND && token->prev->type <= APPEND)
+			{
 				printf("syntax error near unexpected token `%s'\n",
 					token->value);
-			type++;
+				break ;
+			}
 		}
 		token = token->next;
 	}
@@ -217,7 +230,7 @@ bool	tokenization(char *line)
 		create_token(value);
 	}
 	assign_type_to_tokens();
-	// check_misplacements();
+	check_misplacements();
 	return (SUCCESS);
 }
 
