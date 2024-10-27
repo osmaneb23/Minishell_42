@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 03:45:56 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 04:15:50 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../Libft/get_next_line.h" // get_next_line
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
+# include <linux/limits.h>
 # include <limits.h>                 // INT_MAX, INT_MIN etc
 # include <stdio.h>                  // printf
 # include <readline/history.h>       // add_history
@@ -60,6 +61,14 @@ typedef struct s_token
 
 }					t_token;
 
+typedef struct				s_env
+{
+	char			*line;
+	struct s_env	*next;
+	struct s_env	*prev;
+
+}					t_env;
+
 /*
 Structure to store the data of minishell:
 - token: first token of the list
@@ -72,8 +81,9 @@ typedef struct s_data
 	t_token			*token;
 	char			*line;
 	char			*username;
-	char			**env;
 	int				exit_status;
+
+    t_env      	 	*envp;
 }					t_data;
 
 // Initialization functions
