@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 02:24:22 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 03:35:46 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_data
 	t_token			*token;
 	char			*line;
 	char			*username;
+	char			**env;
 	int				exit_status;
 }					t_data;
 
