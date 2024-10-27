@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 02:42:33 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 03:21:03 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
-
-	data = malloc(sizeof(t_data));
-
 	(void)ac;
 	(void)av;
 	initialize_data(&data, env);
