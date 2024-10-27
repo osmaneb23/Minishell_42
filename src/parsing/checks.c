@@ -6,11 +6,34 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:43:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 00:58:30 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 02:08:14 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	check_valid_commands(t_data *data)
+{
+	t_token	*token;
+	int		is_builtin;
+
+	
+	token = data->token;
+	while (token)
+	{
+		if (token->type == CMD)
+		{
+			is_builtin = (ft_strcmp(token->value, "echo") == 0 || ft_strcmp(token->value, "cd") == 0
+		|| ft_strcmp(token->value, "pwd") == 0 || ft_strcmp(token->value, "export") == 0
+		|| ft_strcmp(token->value, "unset") == 0 || ft_strcmp(token->value, "env") == 0
+		|| ft_strcmp(token->value, "exit") == 0);
+			if (!is_builtin)
+				return (printf("%s: command not found\n", token->value), ERROR);
+		}
+		token = token->next;
+	}
+	return (SUCCESS);
+}
 
 int	check_misplacements(t_data *data)
 {
