@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 03:35:46 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 03:45:56 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
 # include <limits.h>                 // INT_MAX, INT_MIN etc
+# include <stdio.h>                  // printf
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
 # include <signal.h>                 // signal
 # include <stdbool.h>                // bool
-# include <stdio.h>                  // printf
 # include <stdlib.h>                 // malloc, free, exit
 # include <sys/stat.h>               // stat
 # include <sys/types.h>              // pid_t
