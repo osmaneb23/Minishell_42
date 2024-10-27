@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 01:23:56 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 02:24:22 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int					check_misplacements(t_data *data);
 int					check_misplacements_pipe(t_token *token);
 int					check_misplacements_redirection(t_token *token);
 bool				openquote(char *line);
+int					check_valid_commands(t_data *data);
 
 // Tokenization functions
 
@@ -109,5 +110,6 @@ t_token				*last_token(t_token *token);
 int					cleanup(int exit_status, char *message, int exit_call,
 						int fd);
 void				free_data(t_data **data);
+void				free_tokens(t_data **data);
 
 #endif
