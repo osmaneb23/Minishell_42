@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:55:40 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 01:04:31 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 02:59:33 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void	*get_data(void)
 }
 
 void	initialize_data(t_data **data, char **env)
-{
+{	
+	(void)env;
 	*data = get_data();
 	(*data)->token = NULL;
 	(*data)->line = NULL;
-	(*data)->username = ft_strdup(env[0]);
+	(*data)->username = getenv("USER");
 	(*data)->exit_status = 0;
 }
