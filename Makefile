@@ -6,7 +6,7 @@
 #    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/10/27 02:01:36 by obouayed         ###   ########.fr        #
+#    Updated: 2024/10/27 03:08:13 by obouayed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ all: $(NAME)
 $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(CYAN)Linking objects...$(DEFAULT)"
 	$(CC) $(CFLAGS) $(OBJS) -lreadline $(LIBFT) -o $(NAME)
-	@printf "\n${BLUE}$$BANNER${DEFAULT}\n"
+	@printf "\n${BLUE}$$BANNER${DEFAULT}\n\n"
 
 # Create object directories and compile source files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
