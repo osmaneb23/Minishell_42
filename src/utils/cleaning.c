@@ -6,32 +6,39 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 02:27:41 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 00:55:17 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/27 02:43:41 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	free_data(t_data **data)
+void free_tokens(t_data **data)
 {
-	t_token	*tmp;
-	t_token	*next;
+    t_token *current;
+    t_token *next;
 
-	if (data && *data)
-	{
-		if ((*data)->token)
-		{
-			tmp = (*data)->token;
-			while (tmp)
-			{
-				next = tmp->next;
-				free(tmp->value);
-				free(tmp);
-				tmp = next;
-			}
-		}
-		free((*data)->username);
-	}
+    if (!data || !(*data) || !(*data)->token)
+        return;
+    current = (*data)->token;
+    while (current != NULL)
+    {
+        next = current->next; 
+        if (current->value)  
+            free(current->value);
+        free(current);
+        current = next;
+    }
+    (*data)->token = NULL;
+}
+
+void free_data(t_data **data)
+{
+    if (!data || !(*data))
+        return;
+
+    free_tokens(data);
+	if ((*data)->line)
+		free((*data)->line);
 }
 
 int	cleanup(int exit_status, char *message, int exit_call, int fd)
@@ -39,8 +46,7 @@ int	cleanup(int exit_status, char *message, int exit_call, int fd)
 	t_data	*data;
 
 	data = get_data();
-	// if (data)
-	// 	free_data(&data);
+	free_data(&data);
 	data->exit_status = exit_status;
 	if (message)
 		ft_putstr_fd(message, fd);
