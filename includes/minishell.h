@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/29 18:36:15 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/29 21:09:48 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ int					check_misplacements_pipe(t_token *token);
 int					check_misplacements_redirection(t_token *token);
 bool				openquote(char *line);
 char				*get_next_path(char **path_ptr);
-int	check_command_in_path(char *command);
+int					check_command_in_path(char *command);
+int					check_command_path_access(char *cmd);
+char				*create_full_path(char *dir, char *command);
+bool				is_builtin(char *cmd);
+int					init_path_check(char **path_env, char **path);
 
 // Tokenization functions
 
@@ -107,6 +111,7 @@ bool				add_token_to_list(t_token *new, t_token *token);
 void				*get_data(void);
 void				printf_tokens(t_data *data);
 t_token				*last_token(t_token *token);
+void remove_quotes(t_data *data);
 
 // Cleaning functions
 

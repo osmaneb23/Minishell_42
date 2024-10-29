@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 02:27:41 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/29 17:26:20 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:38:27 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,6 @@ void	free_data(t_data **data)
 	if (!data || !(*data))
 		return ;
 	free_tokens(data);
-	if ((*data)->line)
-	{
-		free((*data)->line);
-		(*data)->line = NULL;
-	}
 }
 
 int	cleanup(int exit_status, char *message, int exit_call, int fd)
