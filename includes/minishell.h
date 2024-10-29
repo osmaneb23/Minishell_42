@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 03:45:56 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:36:15 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
 # include <limits.h>                 // INT_MAX, INT_MIN etc
-# include <stdio.h>                  // printf
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
 # include <signal.h>                 // signal
 # include <stdbool.h>                // bool
+# include <stdio.h>                  // printf
 # include <stdlib.h>                 // malloc, free, exit
 # include <sys/stat.h>               // stat
 # include <sys/types.h>              // pid_t
@@ -84,11 +84,13 @@ int					determine_basic_type(char *value);
 
 // Parsing functions
 
+int					check_valid_commands(t_data *data);
 int					check_misplacements(t_data *data);
 int					check_misplacements_pipe(t_token *token);
 int					check_misplacements_redirection(t_token *token);
 bool				openquote(char *line);
-int					check_valid_commands(t_data *data);
+char				*get_next_path(char **path_ptr);
+int	check_command_in_path(char *command);
 
 // Tokenization functions
 
