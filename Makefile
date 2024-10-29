@@ -6,7 +6,7 @@
 #    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/10/27 03:08:13 by obouayed         ###   ########.fr        #
+#    Updated: 2024/10/29 18:36:55 by obouayed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRCS = main.c \
        parsing/tokenization.c \
        utils/cleaning.c \
        utils/data.c \
+	   utils/utils_checks.c \
        utils/utils_token.c
 
 # Generate object file paths
