@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:44:17 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 02:30:47 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 02:42:57 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_command_in_path(char *command)
 	while (dir)
 	{
 		if (check_single_path(dir, command))
-			return (free(path), ERROR);
+			return (free(path), free(dir), ERROR);
 		dir = get_next_path(&path_ptr);
 	}
 	free(path);

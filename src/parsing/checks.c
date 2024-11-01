@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:43:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 02:26:24 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 03:10:55 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,30 @@ int	check_valid_commands(t_data *data)
 		{
 			if (!is_builtin(token->value))
 			{
-				if (check_filecmd_access(token->value))
-					return (printf("%s: No such file or directory\n",
-							token->value), cleanup(127, NULL, NO_EXIT, 0));
-				if (check_command_in_path(token->value))
-					return (printf("%s: command not found\n", token->value),
-						cleanup(127, NULL, NO_EXIT, 0));
+				if (check_cmd_exists(token))
+					return (cleanup(127, NULL, NO_EXIT, 0));
 			}
 		}
 		token = token->next;
+	}
+	return (SUCCESS);
+}
+
+int	check_cmd_exists(t_token *token)
+{
+	char	*cmd;
+
+	cmd = token->value;
+	if (contains_char(cmd, '/'))
+	{
+		if (access(cmd, F_OK | X_OK) != 0)
+			return (printf("%s: No such file or directory\n", token->value),
+				ERROR);
+	}
+	else
+	{
+		if (check_command_in_path(cmd))
+			return (printf("%s: command not found\n", token->value), ERROR);
 	}
 	return (SUCCESS);
 }
