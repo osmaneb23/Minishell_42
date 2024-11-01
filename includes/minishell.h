@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 03:11:49 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 03:54:21 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,48 +76,67 @@ typedef struct s_data
 	int				exit_status;
 }					t_data;
 
-// Initialization functions
+/* ************************************************************************** */
+/*                                                                            */
+/*                                  PARSING                                   */
+/*                                                                            */
+/* ************************************************************************** */
 
-void				initialize_data(t_data **data, char **env);
+// Checks
+
+bool				check_openquote(char *line);
+int					check_misplacements(t_data *data);
+int					check_valid_commands(t_data *data);
+
+// Path
+
+// Token_type
+
 void				assign_type_to_tokens(void);
 int					determine_basic_type(char *value);
 
-// Parsing functions
-
-int					check_valid_commands(t_data *data);
-int					check_misplacements(t_data *data);
-int					check_misplacements_pipe(t_token *token);
-int					check_misplacements_redirection(t_token *token);
-int					check_command_in_path(char *command);
-bool				check_openquote(char *line);
-char				*get_next_path(char **path_ptr);
-bool				is_builtin(char *cmd);
-bool				check_single_path(char *dir, char *command);
-int					check_cmd_exists(t_token *token);
-
-// Tokenization functions
+// Tokenization
 
 bool				tokenization(char *line);
 char				*tokenizer(char *line, unsigned int *i, bool *squote_open,
 						bool *dquote_open);
-char				*handle_quote(char *line, unsigned int *i,
-						bool *squote_open, bool *dquote_open);
+char				*handle_quote(char *line, unsigned int *i, bool *squote_open,
+						bool *dquote_open);
 bool				create_token(char *value);
-bool				add_token_to_list(t_token *new, t_token *token);
+bool				add_token_to_list(t_token *token, t_token *data);
 
-// Utils functions
+/* ************************************************************************** */
+/*                                                                            */
+/*                                    UTILS                                   */
+/*                                                                            */
+/* ************************************************************************** */
 
-void				*get_data(void);
-void				printf_tokens(t_data *data);
-t_token				*last_token(t_token *token);
-void				remove_quotes(t_data *data);
-bool				contains_char(char *str, char c);
-
-// Cleaning functions
+// Cleaning
 
 int					cleanup(int exit_status, char *message, int exit_call,
 						int fd);
 void				free_data(t_data **data);
 void				free_tokens(t_data **data);
+
+// Data
+
+void				*get_data(void);
+void				initialize_data(t_data **data, char **env);
+
+// Toolbox
+
+bool				contains_char(char *str, char c);
+
+// Utils_checks
+
+int					check_misplacements_pipe(t_token *token);
+int					check_misplacements_redirection(t_token *token);
+bool				is_builtin(char *cmd);
+
+// Utils_token
+
+t_token				*last_token(t_token *token);
+void				remove_quotes(t_data *data);
+void				printf_tokens(t_data *data);
 
 #endif
