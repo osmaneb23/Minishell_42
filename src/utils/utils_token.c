@@ -6,12 +6,23 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:54:43 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 01:47:05 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 04:04:12 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// Get the last token in the list
+t_token	*last_token(t_token *token)
+{
+	if (!token)
+		return (NULL);
+	while (token->next)
+		token = token->next;
+	return (token);
+}
+
+// Remove quotes from the tokens
 void	remove_quotes(t_data *data)
 {
 	t_token	*token;
@@ -34,6 +45,7 @@ void	remove_quotes(t_data *data)
 	}
 }
 
+// Print the tokens in the list with their values and types
 void	printf_tokens(t_data *data)
 {
 	t_token	*token;
@@ -58,13 +70,4 @@ void	printf_tokens(t_data *data)
 			printf("ARG)]\n");
 		token = token->next;
 	}
-}
-
-t_token	*last_token(t_token *token)
-{
-	if (!token)
-		return (NULL);
-	while (token->next)
-		token = token->next;
-	return (token);
 }
