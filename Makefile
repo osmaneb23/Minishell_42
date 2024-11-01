@@ -6,7 +6,7 @@
 #    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/10/29 19:58:13 by obouayed         ###   ########.fr        #
+#    Updated: 2024/11/01 03:07:54 by obouayed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ SRCS = main.c \
        parsing/tokenization.c \
        utils/cleaning.c \
        utils/data.c \
+	   utils/toolbox.c \
 	   utils/utils_checks.c \
        utils/utils_token.c
 
@@ -76,7 +77,7 @@ OBJ_SUBDIRS = $(addprefix $(OBJ_DIR)/,$(SRC_SUBDIRS))
 
 # Commands
 RM = rm -rf
-VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
+VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=supp.supp
 
 # Compilation rules
 all: $(NAME)
