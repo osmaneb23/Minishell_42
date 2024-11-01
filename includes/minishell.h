@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 22:14:49 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 23:49:23 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../Libft/get_next_line.h" // get_next_line
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
-# include <limits.h>                 // INT_MAX, INT_MIN etc
+# include <linux/limits.h>           // INT_MAX, INT_MIN, PATH_MAX etc
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
 # include <signal.h>                 // signal
@@ -44,6 +44,37 @@
 # define ARG 7     // argument
 
 /*
+Structure to store the commands:
+- infile: file descriptor of the input file
+- outfile: file descriptor of the output file
+- cmd_param: array of strings containing the command and its arguments
+- next: pointer to the next command
+- prev: pointer to the previous command
+*/
+typedef struct s_cmd
+{
+	int				infile;
+	int				outfile;
+	char			**cmd_param;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}					t_cmd;
+
+/*
+Structure to store the environment variables:
+- line: the line of the environment variable
+- next: pointer to the next environment variable
+- prev: pointer to the previous environment variable
+*/
+typedef struct s_env
+{
+	char			*line;
+	struct s_env	*next;
+	struct s_env	*prev;
+
+}					t_env;
+
+/*
 Structure to store the tokens:
 - value: value of the current token
 - type: type of the  current token (between 1 and 7)
@@ -63,16 +94,17 @@ typedef struct s_token
 /*
 Structure to store the data of minishell:
 - token: first token of the list
+- envp: first environment variable of the list
+- cmd: first command of the list
 - line: current line entered by the user
-- username: username of the user
 - exit_status: exit status of the last line
 */
 typedef struct s_data
 {
 	t_token			*token;
+	t_env			*envp;
+	t_cmd			*cmd;
 	char			*line;
-	char			*username;
-	char			**env;
 	int				exit_status;
 }					t_data;
 
