@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:44:17 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 19:33:19 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 22:02:16 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	check_command_in_path(char *command)
 {
 	char	*path;
-    char   *path_copy;
-    char *original_ptr;
+	char	*path_copy;
+	char	*original_ptr;
 	char	*dir;
 
 	if (!command)
@@ -27,7 +27,7 @@ int	check_command_in_path(char *command)
 	path_copy = ft_strdup(path);
 	if (!path_copy)
 		return (ERROR);
-    original_ptr = path_copy;
+	original_ptr = path_copy;
 	dir = get_next_path(&path_copy);
 	while (dir)
 	{
