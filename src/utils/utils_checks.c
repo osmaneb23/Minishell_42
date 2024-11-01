@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:15:55 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/29 20:33:30 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 01:49:56 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,23 @@ bool	is_builtin(char *cmd)
 		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0
 		|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "env") == 0
 		|| ft_strcmp(cmd, "exit") == 0);
+}
+
+bool	check_filecmd_access(char *cmd)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '/' || cmd[i] == '.')
+		{
+			if (access(cmd, F_OK | X_OK) != 0)
+				return (FALSE);
+		}
+		i++;
+	}
+	return (TRUE);
 }
 
 char	*get_next_path(char **path_ptr)

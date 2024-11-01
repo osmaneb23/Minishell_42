@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:54:43 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/29 20:59:23 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 01:47:05 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	remove_quotes(t_data *data)
 	while (token)
 	{
 		if ((token->value[0] == '"' && token->value[ft_strlen(token->value)
-				- 1] == '"') || (token->value[0] == '\''
-				&& token->value[ft_strlen(token->value) - 1] == '\'' ))
+					- 1] == '"') || (token->value[0] == '\''
+				&& token->value[ft_strlen(token->value) - 1] == '\''))
 		{
 			tmp = ft_substr(token->value, 1, ft_strlen(token->value) - 2);
 			if (!tmp)
@@ -37,7 +37,7 @@ void	remove_quotes(t_data *data)
 void	printf_tokens(t_data *data)
 {
 	t_token	*token;
-	
+
 	token = data->token;
 	while (token)
 	{

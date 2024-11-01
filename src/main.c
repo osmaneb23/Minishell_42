@@ -6,13 +6,13 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/29 21:03:25 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 01:45:30 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-pid_t g_pid;
+pid_t	g_pid;
 
 int	main(int ac, char **av, char **env)
 {
