@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 18:50:51 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 21:54:43 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ bool				contains_char(char *str, char c);
 int					check_misplacements_pipe(t_token *token);
 int					check_misplacements_redirection(t_token *token);
 bool				is_builtin(char *cmd);
+int					check_access(t_token *token);
 
 // Utils_token
 

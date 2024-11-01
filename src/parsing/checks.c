@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:43:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 03:58:27 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 21:58:11 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,19 @@ int	check_misplacements(t_data *data)
 int	check_valid_commands(t_data *data)
 {
 	t_token	*token;
+	int exit_status;
 
 	token = data->token;
+	exit_status = 0;
 	while (token)
 	{
 		if (token->type == CMD && !is_builtin(token->value))
 		{
 			if (contains_char(token->value, '/'))
 			{
-				if (access(token->value, F_OK | X_OK) != 0)
-					return (printf("%s: No such file or directory\n",
-							token->value), cleanup(127, NULL, NO_EXIT, 0));
+				exit_status = check_access(token);
+				if (exit_status)
+					return (exit_status);
 			}
 			else
 			{
