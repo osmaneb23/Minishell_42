@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 01:48:07 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 02:25:01 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,11 @@ int					check_valid_commands(t_data *data);
 int					check_misplacements(t_data *data);
 int					check_misplacements_pipe(t_token *token);
 int					check_misplacements_redirection(t_token *token);
-bool				openquote(char *line);
-char				*get_next_path(char **path_ptr);
 int					check_command_in_path(char *command);
-bool				is_builtin(char *cmd);
+bool				check_openquote(char *line);
 char				*get_next_path(char **path_ptr);
-bool				check_single_path(char *dir, char *command, char *path);
+bool				is_builtin(char *cmd);
+bool				check_single_path(char *dir, char *command);
 bool				check_filecmd_access(char *cmd);
 
 // Tokenization functions

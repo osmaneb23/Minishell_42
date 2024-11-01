@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:43:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 01:44:46 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 02:26:24 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int	check_valid_commands(t_data *data)
 		{
 			if (!is_builtin(token->value))
 			{
-				if (!check_filecmd_access(token->value))
+				if (check_filecmd_access(token->value))
 					return (printf("%s: No such file or directory\n",
-							token->value), cleanup(127, NULL, NO_EXIT, 1));
-				if (!check_command_in_path(token->value))
+							token->value), cleanup(127, NULL, NO_EXIT, 0));
+				if (check_command_in_path(token->value))
 					return (printf("%s: command not found\n", token->value),
-						cleanup(127, NULL, NO_EXIT, 1));
+						cleanup(127, NULL, NO_EXIT, 0));
 			}
 		}
 		token = token->next;
@@ -44,15 +44,15 @@ int	check_misplacements(t_data *data)
 	while (token)
 	{
 		if (check_misplacements_pipe(token))
-			return (2);
+			return (cleanup(2, NULL, NO_EXIT, 0));
 		if (check_misplacements_redirection(token))
-			return (2);
+			return (cleanup(2, NULL, NO_EXIT, 0));
 		token = token->next;
 	}
 	return (SUCCESS);
 }
 
-bool	openquote(char *line)
+bool	check_openquote(char *line)
 {
 	unsigned int	i;
 	bool			squote_open;
@@ -70,6 +70,6 @@ bool	openquote(char *line)
 		i++;
 	}
 	if (squote_open || dquote_open)
-		return (true);
-	return (false);
+		return (cleanup(2, "Error: open quote\n", NO_EXIT, 2));
+	return (SUCCESS);
 }

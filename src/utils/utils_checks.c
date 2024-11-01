@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:15:55 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 01:49:56 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 02:30:33 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,36 +30,11 @@ bool	check_filecmd_access(char *cmd)
 		if (cmd[i] == '/' || cmd[i] == '.')
 		{
 			if (access(cmd, F_OK | X_OK) != 0)
-				return (FALSE);
+				return (ERROR);
 		}
 		i++;
 	}
-	return (TRUE);
-}
-
-char	*get_next_path(char **path_ptr)
-{
-	char	*start;
-	char	*end;
-	char	*dir;
-	int		len;
-
-	if (!*path_ptr || !**path_ptr)
-		return (NULL);
-	start = *path_ptr;
-	end = start;
-	while (*end && *end != ':')
-		end++;
-	len = end - start;
-	dir = malloc(len + 1);
-	if (!dir)
-		return (cleanup(ERROR, "Error: malloc failed\n", ERROR, 2), NULL);
-	ft_strlcpy(dir, start, len + 1);
-	if (*end == ':')
-		*path_ptr = end + 1;
-	else
-		*path_ptr = end;
-	return (dir);
+	return (SUCCESS);
 }
 
 int	check_misplacements_pipe(t_token *token)
