@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 02:25:01 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 03:11:49 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ bool				check_openquote(char *line);
 char				*get_next_path(char **path_ptr);
 bool				is_builtin(char *cmd);
 bool				check_single_path(char *dir, char *command);
-bool				check_filecmd_access(char *cmd);
+int					check_cmd_exists(t_token *token);
 
 // Tokenization functions
 
@@ -111,6 +111,7 @@ void				*get_data(void);
 void				printf_tokens(t_data *data);
 t_token				*last_token(t_token *token);
 void				remove_quotes(t_data *data);
+bool				contains_char(char *str, char c);
 
 // Cleaning functions
 
