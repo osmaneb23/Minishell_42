@@ -6,13 +6,65 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 02:33:13 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 22:33:37 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 pid_t	g_pid;
+
+
+void sigint_handler(int sig)
+{
+    (void)sig;
+    // If there's a child process running
+    if (g_pid != 0)
+    {
+        kill(g_pid, SIGINT);
+        write(STDERR_FILENO, "\n", 1);
+        g_pid = 0;
+    }
+    else
+    {
+        // Clear the current line and print a new prompt
+        write(STDERR_FILENO, "\n", 1);
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+    }
+}
+
+void sigquit_handler(int sig)
+{
+    (void)sig;
+    // If there's a child process running
+    if (g_pid != 0)
+    {
+        kill(g_pid, SIGQUIT);
+        printf("Quit (core dumped)\n");
+        g_pid = 0;
+    }
+    // Do nothing if no child process
+}
+
+void setup_signals(void)
+{
+    struct sigaction sa_int;
+    struct sigaction sa_quit;
+
+    // Setup SIGINT handler (ctrl-C)
+    sa_int.sa_handler = sigint_handler;
+    sigemptyset(&sa_int.sa_mask);
+    sa_int.sa_flags = SA_RESTART;
+    sigaction(SIGINT, &sa_int, NULL);
+
+    // Setup SIGQUIT handler (ctrl-\)
+    sa_quit.sa_handler = sigquit_handler;
+    sigemptyset(&sa_quit.sa_mask);
+    sa_quit.sa_flags = SA_RESTART;
+    sigaction(SIGQUIT, &sa_quit, NULL);
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -21,6 +73,8 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	initialize_data(&data, env);
+	g_pid = 0;
+	setup_signals();
 	while (1)
 	{
 		data->line = readline("minishell$ ");
