@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 01:44:17 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 02:42:57 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/01 03:41:28 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,70 +14,56 @@
 
 int	check_command_in_path(char *command)
 {
-	char	*path_env;
 	char	*path;
 	char	*dir;
-	char	*path_ptr;
 
-	path_env = getenv("PATH");
-	if (!path_env)
-		return (ERROR);
-	path = ft_strdup(path_env);
+	path = getenv("PATH");
 	if (!path)
-		return (cleanup(ERROR, "Error: malloc failed\n", ERROR, 2));
-	path_ptr = path;
-	dir = get_next_path(&path_ptr);
+		return (ERROR);
+	dir = get_next_path(???);
 	while (dir)
 	{
-		if (check_single_path(dir, command))
-			return (free(path), free(dir), ERROR);
-		dir = get_next_path(&path_ptr);
+		if (check_single_path(???))
+			return (ERROR);
+		dir = get_next_path(???);
 	}
 	free(path);
 	return (SUCCESS);
 }
 
-bool	check_single_path(char *dir, char *command)
+char *get_next_path(char **path)
 {
-	char	*full_path;
-	char	*tmp;
-
-	full_path = ft_strjoin(dir, "/");
-	if (!full_path)
-		return (free(dir), cleanup(ERROR, "Error: malloc failed\n", ERROR, 2));
-	tmp = ft_strjoin(full_path, command);
-	free(full_path);
-	free(dir);
-	if (!tmp)
-		return (cleanup(ERROR, "Error: malloc failed\n", ERROR, 2));
-	full_path = tmp;
-	if (access(full_path, F_OK | X_OK) == 0)
-		return (free(full_path), SUCCESS);
-	free(full_path);
-	return (ERROR);
+    char *dir;
+    int len;
+    
+    len = 0;
+    dir = *path;
+    // Count characters until ':' or '\0'
+    while ((*path)[len] && (*path)[len] != ':')
+        len++;
+        
+    // Move path pointer forward for next call
+    if ((*path)[len] == ':')
+        *path += len + 1;
+    else
+        *path += len;  // We reached the end
+        
+    // You might want to malloc and copy the directory here
+    // Or handle it differently depending on your needs
+    
+    return (dir);
 }
 
-char	*get_next_path(char **path_ptr)
+int check_single_path(char *dir, char *command)
 {
-	char	*start;
-	char	*end;
-	char	*dir;
-	int		len;
-
-	if (!*path_ptr || !**path_ptr)
-		return (NULL);
-	start = *path_ptr;
-	end = start;
-	while (*end && *end != ':')
-		end++;
-	len = end - start;
-	dir = malloc(len + 1);
-	if (!dir)
-		return (cleanup(ERROR, "Error: malloc failed\n", ERROR, 2), NULL);
-	ft_strlcpy(dir, start, len + 1);
-	if (*end == ':')
-		*path_ptr = end + 1;
-	else
-		*path_ptr = end;
-	return (dir);
+    char full_path[1024];  // Or whatever size management you use
+    
+    // Combine dir + '/' + command
+    // You can use your string functions here
+    ft_strlcpy(full_path, dir, sizeof(full_path));
+    ft_strlcat(full_path, "/", sizeof(full_path));
+    ft_strlcat(full_path, command, sizeof(full_path));
+    
+    return (access(full_path, F_OK | X_OK) != 0);
 }
+
