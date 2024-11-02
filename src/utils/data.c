@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:55:40 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 23:48:47 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 20:53:18 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	initialize_data(t_data **data, char **env)
 	(*data)->cmd = NULL;
 	(*data)->line = NULL;
 	(*data)->exit_status = 0;
+	(*data)->current_pid = 0;
 }
 
 // Store the data in a static variable (can be accessed from anywhere)
