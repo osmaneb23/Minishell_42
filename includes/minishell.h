@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 19:14:10 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 21:52:39 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@
 # define PIPE 5    // |
 # define CMD 6     // command
 # define ARG 7     // argument
+
+// Global variable to store the pid of the child process
+extern int			g_signum;
 
 /*
 Structure to store the commands:
@@ -106,6 +109,7 @@ typedef struct s_data
 	t_cmd			*cmd;
 	char			*line;
 	int				exit_status;
+	pid_t			current_pid;
 }					t_data;
 
 /* ************************************************************************** */
@@ -165,6 +169,12 @@ void				free_commands(t_data **data);
 
 void				*get_data(void);
 void				initialize_data(t_data **data, char **env);
+
+// Signals
+
+void				setup_signals(void);
+void				sigint_handler(int sig);
+void				sigquit_handler(int sig);
 
 // Toolbox
 
