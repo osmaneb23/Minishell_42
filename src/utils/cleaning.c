@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 02:27:41 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 04:02:55 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:01:32 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ Clean the data of minishell:
 - set the exit status in the data
 - print a message if needed
 - exit if needed
-- return the exit status 
+- return the exit status
 */
 int	cleanup(int exit_status, char *message, int exit_call, int fd)
 {
@@ -40,6 +40,7 @@ void	free_data(t_data **data)
 	if (!data || !(*data))
 		return ;
 	free_tokens(data);
+	free_commands(data);
 }
 
 // Free the tokens in the list
@@ -61,4 +62,33 @@ void	free_tokens(t_data **data)
 	}
 	if ((*data)->token)
 		(*data)->token = NULL;
+}
+
+void	free_commands(t_data **data)
+{
+	t_cmd	*current;
+	t_cmd	*next;
+	unsigned int		i;
+
+	if (!data || !*data || !(*data)->cmd)
+		return ;
+	current = (*data)->cmd;
+	while (current)
+	{
+		next = current->next;
+		if (current->cmd_param)
+		{
+			i = 0;
+			while (current->cmd_param[i])
+			{
+				free(current->cmd_param[i]);
+				i++;
+			}
+			free(current->cmd_param);
+		}
+		free(current);
+		current = next;
+	}
+	if ((*data)->cmd)
+		(*data)->cmd = NULL;
 }
