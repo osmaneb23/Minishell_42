@@ -6,7 +6,7 @@
 #    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/11/02 18:44:42 by obouayed         ###   ########.fr        #
+#    Updated: 2024/11/02 21:51:00 by obouayed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ SRCS = main.c \
        parsing/tokenization.c \
        utils/cleaning.c \
        utils/data.c \
+	   utils/signals.c \
 	   utils/toolbox.c \
 	   utils/utils_checks.c \
 	   utils/utils_cmd.c \
