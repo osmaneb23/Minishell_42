@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 14:34:22 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/24 22:04:08 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 22:50:43 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void				ft_putstr_fd(char *s, int fd);
 char				**ft_split(char const *s, char c);
 char				*ft_strchr(const char *s, int c);
 int					ft_strcmp(char *s1, char *s2);
+char				*ft_strcpy(char *dst, const char *src);
 char				*ft_strdup(char *src);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 char				*ft_strjoin(char const *s1, char const *s2);
