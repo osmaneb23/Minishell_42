@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 23:49:23 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:14:10 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ Structure to store the commands:
 */
 typedef struct s_cmd
 {
+	char			**cmd_param;
 	int				infile;
 	int				outfile;
-	char			**cmd_param;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -120,6 +120,12 @@ bool				check_openquote(char *line);
 int					check_misplacements(t_data *data);
 int					check_valid_commands(t_data *data);
 
+// Commands
+
+void				init_cmd(t_data *data);
+char				**init_cmd_param(t_token *token);
+bool				add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
+
 // Path
 
 int					check_command_in_path(char *command);
@@ -153,6 +159,7 @@ int					cleanup(int exit_status, char *message, int exit_call,
 						int fd);
 void				free_data(t_data **data);
 void				free_tokens(t_data **data);
+void				free_commands(t_data **data);
 
 // Data
 
@@ -169,6 +176,10 @@ int					check_misplacements_pipe(t_token *token);
 int					check_misplacements_redirection(t_token *token);
 bool				is_builtin(char *cmd);
 int					check_access(t_token *token);
+
+// Utils_cmd
+
+t_cmd				*last_command(t_cmd *command);
 
 // Utils_token
 
