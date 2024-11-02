@@ -6,11 +6,28 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:43:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 22:02:09 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 22:19:31 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+bool	check_everything(t_data *data)
+{
+	if (!check_openquote(data->line))
+	{
+		tokenization(data->line);
+		remove_quotes(data);
+		init_cmd(data);
+		printf_tokens(data);
+		if (!check_misplacements(data))
+		{
+			if (!check_valid_commands(data))
+				cleanup(SUCCESS, NULL, NO_EXIT, 0);
+		}
+	}
+	return (SUCCESS);
+}
 
 bool	check_openquote(char *line)
 {
