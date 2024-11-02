@@ -6,15 +6,15 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 23:28:55 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 19:14:42 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int ft_exit(char **args)
+int	ft_exit(char **args)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (args[i])
