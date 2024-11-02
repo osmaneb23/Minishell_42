@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 21:52:39 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 22:19:47 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_data
 
 // Checks
 
+bool				check_everything(t_data *data);
 bool				check_openquote(char *line);
 int					check_misplacements(t_data *data);
 int					check_valid_commands(t_data *data);

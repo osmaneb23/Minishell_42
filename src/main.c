@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 21:52:07 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 22:18:58 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,11 @@ int	main(int ac, char **av, char **env)
 	{
 		data->line = readline("minishell$ ");
 		if (data->line == NULL)
-        {
-            rl_clear_history();
-            return (cleanup(SUCCESS, "exit\n", NO_EXIT, 2));
-        }
-		if (!check_openquote(data->line))
 		{
-			tokenization(data->line);
-			remove_quotes(data);
-			init_cmd(data);
-			printf_tokens(data);
-			if (!check_misplacements(data))
-			{
-				if (!check_valid_commands(data))
-					cleanup(SUCCESS, NULL, NO_EXIT, 0);
-			}
+			rl_clear_history();
+			return (cleanup(SUCCESS, "exit\n", NO_EXIT, 2));
 		}
+		check_everything(data);
 		add_history(data->line);
 	}
 	rl_clear_history();

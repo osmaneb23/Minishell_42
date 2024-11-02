@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:11:36 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 21:52:59 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 22:20:05 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	sigint_handler(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	data->exit_status = 130;
 }
 
 void	sigquit_handler(int sig)
@@ -65,5 +66,6 @@ void	sigquit_handler(int sig)
 			cleanup(ERROR, "Error: kill failed\n", ERROR, 2);
 		ft_putstr_fd("Quit (core dumped)\n", 2);
 		data->current_pid = 0;
+		data->exit_status = 131;
 	}
 }
