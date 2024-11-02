@@ -6,7 +6,7 @@
 #    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/11/01 03:07:54 by obouayed         ###   ########.fr        #
+#    Updated: 2024/11/02 18:44:42 by obouayed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ INCLUDES = includes
 # Source files with their paths
 SRCS = main.c \
        parsing/checks.c \
+	   parsing/commands.c \
 	   parsing/path.c \
        parsing/token_type.c \
        parsing/tokenization.c \
@@ -66,6 +67,7 @@ SRCS = main.c \
        utils/data.c \
 	   utils/toolbox.c \
 	   utils/utils_checks.c \
+	   utils/utils_cmd.c \
        utils/utils_token.c
 
 # Generate object file paths
