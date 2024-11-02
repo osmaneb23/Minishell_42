@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 23:09:03 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 23:47:00 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ typedef struct s_data
 
 // Main
 
-bool				main_routine(t_data *data);
+bool				main_routine(t_data *data, char **envp);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -169,7 +169,15 @@ void				free_commands(t_data **data);
 // Data
 
 void				*get_data(void);
-void				initialize_data(t_data **data, char **env);
+void				initialize_data(t_data **data);
+
+// Environment
+
+void				init_environment(t_data *data, char **env);
+bool				create_environment(t_data *data);
+bool				append_node_envp(t_env **envp, char *line);
+t_env				*find_last_node(t_env *node);
+char				*search_env_var(char *var);
 
 // Signals
 
