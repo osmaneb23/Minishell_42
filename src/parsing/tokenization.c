@@ -6,12 +6,13 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:42:34 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 00:57:39 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:39:52 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// Tokenize the line (split the line into tokens)
 bool	tokenization(char *line)
 {
 	unsigned int	i;

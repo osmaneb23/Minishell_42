@@ -6,12 +6,46 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:54:43 by obouayed          #+#    #+#             */
-/*   Updated: 2024/10/27 02:49:29 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:39:45 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// Get the last token in the list
+t_token	*last_token(t_token *token)
+{
+	if (!token)
+		return (NULL);
+	while (token->next)
+		token = token->next;
+	return (token);
+}
+
+// Remove quotes from the tokens
+void	remove_quotes(t_data *data)
+{
+	t_token	*token;
+	char	*tmp;
+
+	token = data->token;
+	while (token)
+	{
+		if ((token->value[0] == '"' && token->value[ft_strlen(token->value)
+					- 1] == '"') || (token->value[0] == '\''
+				&& token->value[ft_strlen(token->value) - 1] == '\''))
+		{
+			tmp = ft_substr(token->value, 1, ft_strlen(token->value) - 2);
+			if (!tmp)
+				cleanup(ERROR, "Error: malloc failed\n", ERROR, 2);
+			free(token->value);
+			token->value = tmp;
+		}
+		token = token->next;
+	}
+}
+
+// Print the tokens in the list with their values and types
 void	printf_tokens(t_data *data)
 {
 	t_token	*token;
@@ -36,13 +70,4 @@ void	printf_tokens(t_data *data)
 			printf("ARG)]\n");
 		token = token->next;
 	}
-}
-
-t_token	*last_token(t_token *token)
-{
-	if (!token)
-		return (NULL);
-	while (token->next)
-		token = token->next;
-	return (token);
 }

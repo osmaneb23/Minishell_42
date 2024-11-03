@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
+#    By: apoet <apoet@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/10/27 03:08:13 by obouayed         ###   ########.fr        #
+#    Updated: 2024/11/03 18:53:04 by apoet            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,11 +59,25 @@ INCLUDES = includes
 # Source files with their paths
 SRCS = main.c \
        parsing/checks.c \
+	   parsing/commands.c \
+	   parsing/path.c \
        parsing/token_type.c \
        parsing/tokenization.c \
        utils/cleaning.c \
        utils/data.c \
-       utils/utils_token.c
+	   utils/toolbox.c \
+	   utils/utils_checks.c \
+	   utils/utils_cmd.c \
+       utils/utils_token.c \
+	   builtins/ft_cd.c \
+	   builtins/ft_env.c \
+	   builtins/ft_export.c \
+	   builtins/ft_pwd.c \
+	   builtins/ft_unset.c \
+	   builtins/utils/builtins_utils.c \
+	   builtins/utils/utils_export.c \
+	   builtins/utils/init_envp.c \
+	   exec/exec.c
 
 # Generate object file paths
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
@@ -74,7 +88,7 @@ OBJ_SUBDIRS = $(addprefix $(OBJ_DIR)/,$(SRC_SUBDIRS))
 
 # Commands
 RM = rm -rf
-VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
+VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=supp.supp
 
 # Compilation rules
 all: $(NAME)

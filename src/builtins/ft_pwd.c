@@ -1,8 +1,7 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-// possibilite de trouver current path avec getenv() mais bon
-//! exec pwd peu importe quelle/combien d'argument le suit
-int ft_pwd()
+//! with no options
+int ft_pwd(void)
 {
     char cwd[PATH_MAX];
 
@@ -13,7 +12,7 @@ int ft_pwd()
     }
     else
     {
-        perror("Failure: getcwd\n");
-        return (FAILURE);
+        perror("Error: getcwd\n");
+        return (ERROR);
     }
 }
