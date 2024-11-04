@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:42:34 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 18:39:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/04 18:46:09 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,25 +68,18 @@ char	*tokenizer(char *line, unsigned int *i, bool *squote_open,
 			(*i)++;
 		return (value);
 	}
-	return (handle_quote(line, i, squote_open, dquote_open));
+	return (handle_quote(line, i));
 }
 
-char	*handle_quote(char *line, unsigned int *i, bool *squote_open,
-		bool *dquote_open)
+char	*handle_quote(char *line, unsigned int *i)
 {
 	unsigned int	j;
 	char			*value;
 
 	j = *i;
-	while ((*squote_open || *dquote_open) && line[*i])
-	{
+	while (line[*i] != ' ' && line[*i] != '<' && line[*i] != '>'
+		&& line[*i] != '|' && line[*i])
 		(*i)++;
-		if (line[*i] == 34 && !*squote_open)
-			*dquote_open = !*dquote_open;
-		if (line[*i] == 39 && !*dquote_open)
-			*squote_open = !*squote_open;
-	}
-	(*i)++;
 	value = ft_substr(line, j, *i - j);
 	while (line[*i] == ' ')
 		(*i)++;
