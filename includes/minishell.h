@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 23:47:00 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/04 18:52:52 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,7 @@ int					determine_basic_type(char *value);
 bool				tokenization(char *line);
 char				*tokenizer(char *line, unsigned int *i, bool *squote_open,
 						bool *dquote_open);
-char				*handle_quote(char *line, unsigned int *i,
-						bool *squote_open, bool *dquote_open);
+char				*handle_quote(char *line, unsigned int *i);
 bool				create_token(char *value);
 bool				add_token_to_list(t_token *token, t_token *data);
 
@@ -204,6 +203,8 @@ t_cmd				*last_command(t_cmd *command);
 
 t_token				*last_token(t_token *token);
 void				remove_quotes(t_data *data);
+char				*return_new_value(char *value, bool squote_open,
+						bool dquote_open);
 void				printf_tokens(t_data *data);
 
 #endif
