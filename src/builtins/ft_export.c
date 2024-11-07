@@ -93,7 +93,7 @@ int export_just_display(t_data *data)
     char **tab_envp;
 
     count = count_envp_nodes(data->envp);
-    tab_envp = copy_envp_to_tab(data->envp, count);
+    tab_envp = copy_envp_to_tab(data, data->envp);
     sort_envp_and_print(tab_envp, count);
     ft_free_tabtab(tab_envp);
     return (SUCCESS);

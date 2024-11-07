@@ -6,7 +6,7 @@
 /*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/03 19:33:44 by apoet            ###   ########.fr       */
+/*   Updated: 2024/11/07 19:37:21 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,10 @@ typedef struct s_data
 // exec.c
 int exec();
 
+// exec_utils.c
+void				wait_all(t_data *data);
+int 				t_cmd_len(t_cmd *cmd);
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                    BUILTINS                                */
@@ -168,7 +172,7 @@ int 				verif_var_char(char *var);
 int 				remplace_if_already_exist(char *var, char* val);
 int 				envp_tab_bubble_sort(char **envp, int count);
 int 				sort_envp_and_print(char **envp, int count);
-char 				**copy_envp_to_tab(t_env *envp, int count);
+char 				**copy_envp_to_tab(t_data *data, t_env *envp);
 
 // utils_export.c //OKOK
 void				ft_free_tabtab(char **tabtab);

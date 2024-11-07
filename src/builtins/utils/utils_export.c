@@ -101,16 +101,18 @@ int sort_envp_and_print(char **envp, int count)
 
 //?OKOK
 //+ Permet de convertir la liste env en tabtab et de la retourner
-char **copy_envp_to_tab(t_env *envp, int count)
+char **copy_envp_to_tab(t_data *data, t_env *envp)
 {
     int i;
     t_env *tmp;
     char **env_tab;
+    int count;
     
     i = 0;
     tmp = envp;
+    count = count_envp_nodes(data->envp);
     env_tab = malloc((count + 1) * sizeof(char *));
-    if (!env_tab)
+    if (!env_tab || count == FAILURE)
         return (NULL);
     while (i < count)
     {

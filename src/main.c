@@ -6,7 +6,7 @@
 /*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/03 18:47:04 by apoet            ###   ########.fr       */
+/*   Updated: 2024/11/07 21:03:40 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int	main(int ac, char **av, char **env)
 			}
 		}
 		add_history(data->line);
+        printf("\n");
 	}
 	rl_clear_history();
 	return (cleanup(SUCCESS, NULL, NO_EXIT, 0));

@@ -6,7 +6,7 @@
 #    By: apoet <apoet@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/11/03 18:53:04 by apoet            ###   ########.fr        #
+#    Updated: 2024/11/07 19:39:11 by apoet            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,8 @@ SRCS = main.c \
 	   builtins/utils/builtins_utils.c \
 	   builtins/utils/utils_export.c \
 	   builtins/utils/init_envp.c \
-	   exec/exec.c
+	   exec/exec.c \
+	   exec/exec_utils.c
 
 # Generate object file paths
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
