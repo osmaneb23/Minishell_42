@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 23:49:43 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:05:13 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ bool	main_routine(t_data *data, char **envp)
 	(void)envp;
 	if (!check_openquote(data->line))
 	{
-		// Echo ""$USER""
 		tokenization(data->line);
+		if (ft_strlen(data->token->value) == 0)
+			return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
 		init_environment(data, envp);
 		replace_value_with_variable(data);
 		remove_quotes(data);
@@ -82,6 +83,8 @@ int	main(int ac, char **av, char **envp)
 			rl_clear_history();
 			return (cleanup(SUCCESS, "exit\n", NO_EXIT, 2));
 		}
+		if (ft_strlen(data->line) == 0)
+			continue ;
 		main_routine(data, envp);
 		add_history(data->line);
 	}
