@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/08 22:45:56 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:33:58 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ int	ft_exit(char **args)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	while (args[i])
 	{
+        printf("ARG==%s\n\n", args[i]);
 		j = 0;
 		while (args[i][j])
 		{
@@ -33,6 +34,6 @@ int	ft_exit(char **args)
 	if (i > 2)
 		return (cleanup(1, "exit: too many arguments\n", NO_EXIT, 2));
 	if (i == 1)
-		return (cleanup(0, "exit", 0, 1));
+		return (cleanup(0, "exit\n", 0, 1));
 	return (cleanup(ft_atoi(args[1]), "exit", ft_atoi(args[1]), 1));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:43:02 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 23:44:41 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:27:13 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ bool	append_node_envp(t_env **envp, char *line)
 	return (SUCCESS);
 }
 
-t_env	*find_last_node(t_env *node)
-{
-	if (node == NULL)
-		return (NULL);
-	while (node->next)
-		node = node->next;
-	return (node);
-}
+// t_env	*find_last_node(t_env *node)
+// {
+// 	if (node == NULL)
+// 		return (NULL);
+// 	while (node->next)
+// 		node = node->next;
+// 	return (node);
+// }
 
 char	*search_env_var(char *var)
 {

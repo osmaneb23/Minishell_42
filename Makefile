@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
+#    By: apoet <apoet@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/11/02 23:45:43 by obouayed         ###   ########.fr        #
+#    Updated: 2024/11/21 16:22:16 by apoet            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,6 @@ INCLUDES = includes
 # Source files with their paths
 SRCS = main.c \
        parsing/checks.c \
-	   parsing/commands.c \
 	   parsing/path.c \
        parsing/token_type.c \
        parsing/tokenization.c \
@@ -69,8 +68,20 @@ SRCS = main.c \
 	   utils/signals.c \
 	   utils/toolbox.c \
 	   utils/utils_checks.c \
-	   utils/utils_cmd.c \
-       utils/utils_token.c
+       utils/utils_token.c \
+	   builtins/ft_cd.c \
+	   builtins/ft_env.c \
+	   builtins/ft_export.c \
+	   builtins/ft_pwd.c \
+	   builtins/ft_unset.c \
+	   builtins/ft_exit.c \
+	   builtins/utils/builtins_utils.c \
+	   builtins/utils/utils_export.c \
+	   builtins/utils/init_envp.c \
+	   exec/exec.c \
+	   exec/exec_utils.c \
+	   exec/commands.c \
+	   exec/utils_cmd.c \
 
 # Generate object file paths
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

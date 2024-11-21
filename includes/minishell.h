@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/08 22:48:40 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:26:17 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
 # include <linux/limits.h>           // INT_MAX, INT_MIN, PATH_MAX etc
+# include <stdio.h>                  // printf
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
 # include <signal.h>                 // signal
 # include <stdbool.h>                // bool
-# include <stdio.h>                  // printf
 # include <stdlib.h>                 // malloc, free, exit
 # include <sys/stat.h>               // stat
 # include <sys/types.h>              // pid_t
@@ -58,7 +58,10 @@ typedef struct s_cmd
 	int				outfile;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
+
+	pid_t 			f_pid;
 }					t_cmd;
+
 
 /*
 Structure to store the environment variables:
@@ -101,6 +104,8 @@ Structure to store the data of minishell:
 */
 typedef struct s_data
 {
+	int 			pip[2];
+	
 	t_token			*token;
 	t_env			*envp;
 	t_cmd			*cmd;
@@ -115,13 +120,87 @@ bool				main_routine(t_data *data, char **envp);
 
 /* ************************************************************************** */
 /*                                                                            */
-/*                                  BUILTINS                                  */
+/*                                    EXEC                                    */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Ft_exit
+// exec.c
+int 				exec();
 
+// exec_utils.c
+int					wait_all(t_data *data);
+int 				t_cmd_len(t_cmd *cmd);
+
+
+// Commands
+//!
+int count_nbr_cmd(t_token *token);
+int	init_cmd_nodes(t_data *data);
+int init_cmd(t_data *data);
+//!
+// void				init_cmd(t_data *data);
+// char	**init_cmd_param(t_cmd *cmd, t_token *token);
+bool				add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
+
+
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                    BUILTINS                                */
+/*                                                                            */
+/* ************************************************************************** */
+
+// ft_pwd.c //OKOK
+int 				ft_pwd(void);
+
+// ft_env.c //OKOK
+int 				ft_env(void);
+
+// ft_unset.c //OKOK
+int 				search_and_del(char *var);
+int 				ft_unset(char **cmd_param);
+
+// ft_cd.c //OKOK
+int 				change_cd(char *direction);
+int 				ft_cd(char **cmd_param);
+
+// ft_export.c //OKOK
+int 				print_export_line(char *line);
+int 				export_just_new_var(t_env *envp, char *var);
+int 				export_new_var_and_val(t_env *envp, char *var_and_val);
+int 				export_just_display(t_data *data);
+int 				ft_export(char **cmd_param);
+
+// ft_exit.c //OKOK
 int					ft_exit(char **args);
+
+//! ft_echo.c
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                              BUILTINS UTILS                                */
+/*                                                                            */
+/* ************************************************************************** */
+
+// init_envp.c //OKOK
+t_env				*find_last_node(t_env *node);
+void				del_node_t_env(t_env **envp);
+// int					append_node_envp(t_env **envp, char *line);
+int 				make_env_if_le_correcteur_clc(t_data* data);
+void				make_env(t_data *data, char **env);
+
+// utils_export.c //OKOK
+int 				verif_var_char(char *var);
+int 				remplace_if_already_exist(char *var, char* val);
+int 				envp_tab_bubble_sort(char **envp, int count);
+int 				sort_envp_and_print(char **envp, int count);
+char 				**copy_envp_to_tab(t_data *data, t_env *envp);
+
+// utils_export.c //OKOK
+void				ft_free_tabtab(char **tabtab);
+int 				tabtablen(char **s);
+char				*join_var_and_val(char const *s1, char const *s2);
+int					 count_envp_nodes(t_env *envp);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -134,12 +213,6 @@ int					ft_exit(char **args);
 bool				check_openquote(char *line);
 int					check_misplacements(t_data *data);
 int					check_valid_commands(t_data *data);
-
-// Commands
-
-void				init_cmd(t_data *data);
-char				**init_cmd_param(t_token *token);
-bool				add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
 
 // Path
 
@@ -186,7 +259,6 @@ void				initialize_data(t_data **data);
 void				init_environment(t_data *data, char **env);
 bool				create_environment(t_data *data);
 bool				append_node_envp(t_env **envp, char *line);
-t_env				*find_last_node(t_env *node);
 char				*search_env_var(char *var);
 
 // Signals

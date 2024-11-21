@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 02:27:41 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 20:13:09 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:49:11 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,13 @@ int	cleanup(int exit_status, char *message, int exit_call, int fd)
 	}
 	if (message)
 		ft_putstr_fd(message, fd);
+	
 	if (exit_call != NO_EXIT)
 	{
+		printf("%i", exit_call);
 		rl_clear_history();
+		exit(exit_call);
+		exit(exit_call);
 		exit(exit_call);
 	}
 	return (exit_status);
