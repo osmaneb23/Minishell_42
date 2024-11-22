@@ -253,6 +253,7 @@ int exec(t_data *data)
     t_cmd *tmp;
     int *pip;
 
+    init_cmd(data); //! belek return
     tmp = data->cmd;
     pip = data->pip;
     while (tmp)

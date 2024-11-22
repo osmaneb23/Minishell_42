@@ -6,7 +6,7 @@
 /*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/21 17:19:49 by apoet            ###   ########.fr       */
+/*   Updated: 2024/11/21 18:52:25 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,17 @@ bool	main_routine(t_data *data, char **envp)
 		init_environment(data, envp);
 		replace_value_with_variable(data);
 		remove_quotes(data);
-			printf("\n");
-        init_cmd(data);
-        exec(data);
 		printf_tokens(data);
+		printf("\n");
 		if (!check_misplacements(data))
 		{
 			if (!check_valid_commands(data))
-				cleanup(SUCCESS, NULL, NO_EXIT, 0);
+			{
+				if (!exec(data))
+					cleanup(SUCCESS, NULL, NO_EXIT, 0);
+			}
 		}
+		
 	}
 	return (SUCCESS);
 }
@@ -86,7 +88,7 @@ int	main(int ac, char **av, char **envp)
 	setup_signals();
 	while (1)
 	{
-		data->line = readline("minishell> ");
+		data->line = readline("\033[1;37mminishell> \033[0;37m");
 		if (data->line == NULL)
 		{
 			rl_clear_history();
@@ -98,5 +100,6 @@ int	main(int ac, char **av, char **envp)
 		add_history(data->line);
 	}
 	rl_clear_history();
+	// printf("\033[0m");    // Réinitialise les couleurs à la fin
 	return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
 }
