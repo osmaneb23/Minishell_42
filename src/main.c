@@ -6,98 +6,101 @@
 /*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/07 21:03:40 by apoet            ###   ########.fr       */
+/*   Updated: 2024/11/25 16:02:32 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-pid_t	g_pid;
-
-
-void sigint_handler(int sig)
+void    process_variable(t_token *token, t_data *data)
 {
-    (void)sig;
-    // If there's a child process running
-    if (g_pid != 0)
-    {
-        kill(g_pid, SIGINT);
-        write(STDERR_FILENO, "\n", 1);
-        g_pid = 0;
-    }
+    char    *value;
+    char    *tmp;
+    char    *tmp2;
+
+    tmp2 = token->value;
+    if (token->value[0] == '"')
+        token->value = ft_substr(token->value, 2,
+                ft_strlen(token->value) - 3);
     else
+        token->value = ft_substr(token->value, 1,
+                ft_strlen(token->value) - 1);
+    free(tmp2);
+    if (ft_strcmp(token->value, "$?"))
+        value = ft_itoa(data->exit_status);
+    else
+        value = search_env_var(token->value);
+    if (value)
     {
-        // Clear the current line and print a new prompt
-        write(STDERR_FILENO, "\n", 1);
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
+        tmp = token->value;
+        token->value = value;
+        free(tmp);
     }
 }
 
-void sigquit_handler(int sig)
+void    replace_value_with_variable(t_data *data)
 {
-    (void)sig;
-    // If there's a child process running
-    if (g_pid != 0)
+    t_token    *token;
+
+    token = data->token;
+    while (token)
     {
-        kill(g_pid, SIGQUIT);
-        printf("Quit (core dumped)\n");
-        g_pid = 0;
+        if ((token->value[0] == '$') || (token->value[0] == '"'
+                && token->value[1] == '$'))
+            process_variable(token, data);
+        token = token->next;
     }
-    // Do nothing if no child process
 }
 
-void setup_signals(void)
+bool	main_routine(t_data *data, char **envp)
 {
-    struct sigaction sa_int;
-    struct sigaction sa_quit;
-
-    // Setup SIGINT handler (ctrl-C)
-    sa_int.sa_handler = sigint_handler;
-    sigemptyset(&sa_int.sa_mask);
-    sa_int.sa_flags = SA_RESTART;
-    sigaction(SIGINT, &sa_int, NULL);
-
-    // Setup SIGQUIT handler (ctrl-\)
-    sa_quit.sa_handler = sigquit_handler;
-    sigemptyset(&sa_quit.sa_mask);
-    sa_quit.sa_flags = SA_RESTART;
-    sigaction(SIGQUIT, &sa_quit, NULL);
+	(void)envp;
+	if (!check_openquote(data->line))
+	{
+		tokenization(data->line);
+		if (ft_strlen(data->token->value) == 0)
+			return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
+		make_env(data, envp);
+		replace_value_with_variable(data);
+		remove_quotes(data);
+		printf_tokens(data);
+		printf("\n");
+		if (!check_misplacements(data))
+		{
+			if (!check_valid_commands(data))
+			{
+				if (!exec(data))
+					cleanup(SUCCESS, NULL, NO_EXIT, 0);
+			}
+		}
+		
+	}
+	return (SUCCESS);
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **envp)
 {
 	t_data	*data;
 
 	(void)ac;
 	(void)av;
-	initialize_data(&data, env);
-	g_pid = 0;
+	initialize_data(&data);
 	setup_signals();
-    make_env(data, env);
 	while (1)
 	{
-		data->line = readline("minishell$ ");
-		if (!check_openquote(data->line))
+		data->line = readline("\033[1;37mminishell> \033[0;37m");
+		// data->line = readline("minishell> ");
+		if (data->line == NULL)
 		{
-			tokenization(data->line);
-			remove_quotes(data);
-			printf_tokens(data);
-			if (!check_misplacements(data))
-			{
-				if (!check_valid_commands(data))
-                {
-                    init_cmd(data);
-                    exec(data);
-                    free_commands(&data);
-                    free_tokens(&data);
-                }
-			}
+			rl_clear_history();
+			return (cleanup(SUCCESS, "exit\n", NO_EXIT, 2));
 		}
+		if (ft_strlen(data->line) == 0)
+			continue ;
+		main_routine(data, envp);
 		add_history(data->line);
-        printf("\n");
 	}
 	rl_clear_history();
+	// printf("\033[0m");    // Réinitialise les couleurs à la fin
 	return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
 }

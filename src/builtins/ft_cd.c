@@ -1,16 +1,5 @@
 #include "../../includes/minishell.h"
 
-char	*ft_strcpy(char *dst, const char *src)
-{
-	int		i;
-
-	i = -1;
-	while (src[++i])
-		dst[i] = src[i];
-	dst[i] = '\0';
-	return (dst);
-}
-
 //? OKOK
 //+ Recherche dans env la variable donnee en argument
 //+ et retourne la valeur associee
@@ -43,31 +32,49 @@ char *search_env_var(char *var)
     return (NULL);
 }
 
+int change_cd_env_var(char *symbole)
+{
+    char *res;
+    char *path;
+
+    if (ft_strcmp(symbole, "") == 0 || ft_strcmp(symbole, "~") == 0 || ft_strcmp(symbole, "--") == 0)
+    {   
+        path = "HOME";
+        res = search_env_var(path); 
+    }
+    if (ft_strcmp(symbole, "-") == 0)
+    {
+        path = "OLDPWD";
+        res = search_env_var(path);
+    }
+    if (!res)
+    {
+        printf("Error: cd: %s not set\n", path);
+        return (ERROR);
+    }
+    chdir(res);
+    free(res);
+    return (SUCCESS);
+}
+
 //? OKOK
 int change_cd(char *direction)
 {
-    char *res;
     char oldpwd[PATH_MAX];
     char pwd[PATH_MAX];
 
     getcwd(oldpwd, PATH_MAX);
-    if (ft_strcmp(direction, "") == 0 || ft_strcmp(direction, "~") == 0 || ft_strcmp(direction, "--") == 0)
-    {
-        res = search_env_var("HOME");
-        if (!res)
-        {
-            printf("Error: cd: HOME not set\n");
-            return (ERROR);
-        }
-        chdir(res);
-        free(res);
-    }
+
+    if (ft_strcmp(direction, "") == 0 || ft_strcmp(direction, "~") == 0 ||\
+        ft_strcmp(direction, "--") == 0 || ft_strcmp(direction, "-") == 0)
+        change_cd_env_var(direction);  
+    
     else if (chdir(direction) == -1) 
     {    
         printf("Error: cd: %s: No such file or directory\n", direction);
         return (FAILURE);
     }
-    remplace_if_already_exist("OLDPWD", oldpwd);   
+    remplace_if_already_exist("OLDPWD", oldpwd);
     getcwd(pwd, PATH_MAX);
     remplace_if_already_exist("PWD", pwd);   
     return (SUCCESS);

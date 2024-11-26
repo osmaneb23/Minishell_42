@@ -35,7 +35,7 @@ void	del_node_t_env(t_env **envp)
 }
 
 //?OKOK
-//+ Permet d'ajouter un noeud a la liste env
+// + Permet d'ajouter un noeud a la liste env
 int append_node_envp(t_env **envp, char *line)
 {
     t_env *new_node;

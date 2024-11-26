@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:43:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 22:02:09 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:53:11 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,17 @@ int	check_valid_commands(t_data *data)
 		if (token->type == CMD && !is_builtin(token->value))
 		{
 			if (contains_char(token->value, '/'))
-			{
 				exit_status = check_access(token);
-				if (exit_status)
-					return (exit_status);
-			}
-			else
+			else if (check_command_in_path(token->value)
+				|| token->value[0] == '\0')
 			{
-				if (check_command_in_path(token->value))
-					return (printf("%s: command not found\n", token->value),
-						cleanup(127, NULL, NO_EXIT, 0));
+				printf("%s: command not found\n", token->value);
+				exit_status = 127;
 			}
 		}
 		token = token->next;
 	}
+	if (exit_status)
+		return (cleanup(exit_status, NULL, NO_EXIT, 0));
 	return (SUCCESS);
 }

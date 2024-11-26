@@ -10,7 +10,7 @@ int print_export_line(char *line)
     i = 0;
     if (!line)
         return (ERROR);
-    printf("declare -x ");
+    printf("export ");
     while (line[i] != '=')
     {
         printf("%c", line[i]);
@@ -128,3 +128,33 @@ int ft_export(char **cmd_param)
         return (SUCCESS);
     return (FAILURE);
 }
+
+
+
+
+
+// int print_export_line(char *line)
+// {
+//     int i;
+    
+//     i = 0;
+//     if (!line)
+//         return (ERROR);
+//     printf("declare -x ");
+//     while (line[i] != '=')
+//     {
+//         printf("%c", line[i]);
+//         i++;
+//     }
+//     printf("=");
+//     i++;
+//     printf("\"");
+//     while (line[i])
+//     {
+//         printf("%c", line[i]);
+//         i++;
+//     }
+//     printf("\"");
+//     printf("\n");
+//     return (SUCCESS);
+// }

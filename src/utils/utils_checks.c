@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:15:55 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/01 21:53:10 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:06:59 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,10 @@ int	check_access(t_token *token)
 	struct stat	path_stat;
 
 	if (access(token->value, F_OK) != 0)
-		return (printf("%s: No such file or directory\n", token->value),
-			cleanup(127, NULL, NO_EXIT, 0));
+		return (printf("%s: No such file or directory\n", token->value), 127);
 	if (stat(token->value, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
-		return (printf("%s: Is a directory\n", token->value), cleanup(126, NULL,
-				NO_EXIT, 0));
+		return (printf("%s: Is a directory\n", token->value), 126);
 	if (access(token->value, X_OK) != 0)
-		return (printf("%s: Permission denied\n", token->value), cleanup(126,
-				NULL, NO_EXIT, 0));
+		return (printf("%s: Permission denied\n", token->value), 126);
 	return (SUCCESS);
 }

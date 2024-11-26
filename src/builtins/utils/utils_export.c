@@ -45,7 +45,7 @@ int remplace_if_already_exist(char *var, char* val)
     {
         if (ft_strncmp(var, tmp->line, len) == 0)
         {
-            to_print = join_var_and_val(var, val);    
+            to_print = join_var_and_val(var, val);  
             tmp->line = to_print;
             return (SUCCESS);
         }

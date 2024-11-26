@@ -6,7 +6,7 @@
 /*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/07 19:37:21 by apoet            ###   ########.fr       */
+/*   Updated: 2024/11/22 18:14:59 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ typedef struct s_cmd
 	int				outfile;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
+
+	pid_t 			f_pid;
 }					t_cmd;
+
 
 /*
 Structure to store the environment variables:
@@ -108,7 +111,12 @@ typedef struct s_data
 	t_cmd			*cmd;
 	char			*line;
 	int				exit_status;
+	pid_t			current_pid;
 }					t_data;
+
+// Main
+
+bool				main_routine(t_data *data, char **envp);
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -117,11 +125,24 @@ typedef struct s_data
 /* ************************************************************************** */
 
 // exec.c
-int exec();
+int 				exec();
 
 // exec_utils.c
-void				wait_all(t_data *data);
+int					wait_all(t_data *data);
 int 				t_cmd_len(t_cmd *cmd);
+
+
+// Commands
+//!
+int count_nbr_cmd(t_token *token);
+int	init_cmd_nodes(t_data *data);
+int init_cmd(t_data *data);
+//!
+// void				init_cmd(t_data *data);
+// char	**init_cmd_param(t_cmd *cmd, t_token *token);
+bool				add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
+
+
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -140,7 +161,7 @@ int 				search_and_del(char *var);
 int 				ft_unset(char **cmd_param);
 
 // ft_cd.c //OKOK
-char 				*search_env_var(char *var);
+char *search_env_var(char *var);
 int 				change_cd(char *direction);
 int 				ft_cd(char **cmd_param);
 
@@ -151,8 +172,10 @@ int 				export_new_var_and_val(t_env *envp, char *var_and_val);
 int 				export_just_display(t_data *data);
 int 				ft_export(char **cmd_param);
 
+// ft_exit.c //OKOK
+int					ft_exit(char **args);
+
 //! ft_echo.c
-//! ft_exit.c
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -174,7 +197,7 @@ int 				envp_tab_bubble_sort(char **envp, int count);
 int 				sort_envp_and_print(char **envp, int count);
 char 				**copy_envp_to_tab(t_data *data, t_env *envp);
 
-// utils_export.c //OKOK
+// builtins_utils.c //OKOK
 void				ft_free_tabtab(char **tabtab);
 int 				tabtablen(char **s);
 char				*join_var_and_val(char const *s1, char const *s2);
@@ -191,12 +214,6 @@ int					 count_envp_nodes(t_env *envp);
 bool				check_openquote(char *line);
 int					check_misplacements(t_data *data);
 int					check_valid_commands(t_data *data);
-
-// Commands
-
-void				init_cmd(t_data *data);
-char				**init_cmd_param(t_token *token);
-bool				add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
 
 // Path
 
@@ -236,7 +253,13 @@ void				free_commands(t_data **data);
 // Data
 
 void				*get_data(void);
-void				initialize_data(t_data **data, char **env);
+void				initialize_data(t_data **data);
+
+// Signals
+
+void				setup_signals(void);
+void				sigint_handler(int sig);
+void				sigquit_handler(int sig);
 
 // Toolbox
 
@@ -257,6 +280,8 @@ t_cmd				*last_command(t_cmd *command);
 
 t_token				*last_token(t_token *token);
 void				remove_quotes(t_data *data);
+char				*return_new_value(char *value, bool squote_open,
+						bool dquote_open);
 void				printf_tokens(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:42:34 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/02 18:39:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/11/04 19:38:22 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ char	*handle_quote(char *line, unsigned int *i, bool *squote_open,
 		if (line[*i] == 39 && !*dquote_open)
 			*squote_open = !*squote_open;
 	}
-	(*i)++;
+	while (line[*i] != ' ' && line[*i] != '<' && line[*i] != '>'
+		&& line[*i] != '|' && line[*i])
+		(*i)++;
 	value = ft_substr(line, j, *i - j);
 	while (line[*i] == ' ')
 		(*i)++;
