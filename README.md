@@ -126,4 +126,3 @@
 - **[Conseils pour Minishell](https://medium.com/@mostafa.omrane/mes-conseils-si-je-devais-recommencer-minishell-a9783c51ba1b)**
 - **[Apprendre Git](https://learngitbranching.js.org/)**
 - **[Petit guide d'un Github](https://github.com/Hqndler/42-minishell)**
-- **[Exit status Bash Posix](https://bencane.com/understanding-exit-codes-in-bash-6942a8b96ce5)**
