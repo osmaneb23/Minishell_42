@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:43:47 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 15:41:18 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/03 19:06:07 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,11 +241,7 @@ int init_cmd_nodes(t_data *data)
     {
         cmd = malloc(sizeof(t_cmd));
         if (!cmd)
-        {
-            perror("Error: malloc failed");
-            free_cmds(&data->cmd);
-            return (ERROR);
-        }
+            return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
         cmd->infile = -2;
         cmd->outfile = -2;
         cmd->cmd_param = NULL;
