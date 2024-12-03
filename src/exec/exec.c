@@ -114,8 +114,8 @@ int exec_builtin(char **cmd)
         return (ft_env());
     if (ft_strcmp(cmd[0], "exit") == 0)
         return (ft_exit(cmd));
-    // if (ft_strcmp(cmd[0], "echo") == 0)
-    //     return (ft_echo());
+    if (ft_strcmp(cmd[0], "echo") == 0)
+        return (ft_echo(cmd));
     return (ERROR);
 }
 

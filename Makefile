@@ -6,7 +6,7 @@
 #    By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/21 18:40:22 by obouayed          #+#    #+#              #
-#    Updated: 2024/12/03 17:55:20 by obouayed         ###   ########.fr        #
+#    Updated: 2024/12/03 18:30:16 by obouayed         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,6 +76,7 @@ SRCS = main.c \
 	   builtins/ft_pwd.c \
 	   builtins/ft_unset.c \
 	   builtins/ft_exit.c \
+	   builtins/ft_echo.c \
 	   builtins/utils/builtins_utils.c \
 	   builtins/utils/utils_export.c \
 	   builtins/utils/init_envp.c \

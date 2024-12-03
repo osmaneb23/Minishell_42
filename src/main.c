@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 17:51:57 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:49:40 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	main_routine(t_data *data, char **envp)
 		tokenization(data->line);
 		if (ft_strlen(data->token->value) == 0)
 			return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
-		replace_var_val(data);
+		replace_var_val(data); // \$
 		remove_quotes(data);
 		printf_tokens(data);
 		printf("\n");
