@@ -8,39 +8,40 @@ void	ft_free_multi_array(char **tabtab)
 
 	i = 0;
 	while (tabtab[i])
-    {
+	{
 		free(tabtab[i]);
-        i++;
-    }
-    free(tabtab);
+		i++;
+	}
+	free(tabtab);
 	tabtab = NULL;
 }
 
 //?OKOK
 //+ Permet de compter les lignes d'un char**
-int tabtablen(char **s)
+int	ft_multi_array_len(char **s)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (s[i] != NULL)
-        i++;
-    return (i);
+	i = 0;
+	while (s[i] != NULL)
+		i++;
+	return (i);
 }
 
 //?OKOK
 //+ Permet de joindre une VAR, un '=' ainsi qu'une VAL
 //+ Retourne le resultat
+//+ 2 == = et 0
 char	*join_var_and_val(char const *s1, char const *s2)
 {
 	char	*str;
-	int		i, j;
 
+	int i, j;
 	i = 0;
 	j = 0;
 	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2); //? 1 pour '=' 1 pour '\0'
+	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
 	if (!str)
 		return (NULL);
 	while (s1[i])
@@ -48,8 +49,8 @@ char	*join_var_and_val(char const *s1, char const *s2)
 		str[i] = s1[i];
 		i++;
 	}
-    str[i] = '=';
-    i++;
+	str[i] = '=';
+	i++;
 	while (s2[j])
 	{
 		str[i] = s2[j];
@@ -62,19 +63,19 @@ char	*join_var_and_val(char const *s1, char const *s2)
 
 //?OKOK
 //+ Permet de compter le nombre de noeud dans la liste env
-int count_envp_nodes(t_env *envp)
+int	count_envp_nodes(t_env *envp)
 {
-    t_env *tmp;
-    int i;
+	t_env	*tmp;
+	int		i;
 
-    i = 0;
-    if (!envp || !envp->next)
-        return (FAILURE);
-    tmp = envp;
-    while(tmp != NULL)
-    {
-        i++;
-        tmp = tmp->next;
-    }
-    return (i);
+	i = 0;
+	if (!envp || !envp->next)
+		return (FAILURE);
+	tmp = envp;
+	while (tmp != NULL)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
 }

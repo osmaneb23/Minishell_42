@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/04 17:05:19 by febouana          #+#    #+#             */
+/*   Updated: 2024/12/04 17:16:48 by febouana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -12,7 +23,7 @@ int ft_env(void)
     tmp = data->envp;
     while(tmp != NULL)
     {
-        if (ft_strchr(tmp->line, '=')) //! NUANCE RAJOUTEE DEPUIS NEW MAKE_ENV() : BIEN ? PAS BIEN ?
+        if (ft_strchr(tmp->line, '='))
             printf("%s\n", tmp->line);
         tmp = tmp->next;
     }

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 18:00:24 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:16:50 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// Max size etc etc
 
 int	ft_exit(char **args)
 {

@@ -1,4 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   envp_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
+/*   Updated: 2024/12/04 19:52:16 by febouana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
+
+//+ Detruit une liste t_env
+void free_t_env_list(t_env **envp) 
+{
+    t_env *current;
+
+    if (envp == NULL || *envp == NULL)
+        return;
+    current = *envp;
+    while (current != NULL) 
+    {
+        t_env *next_node = current->next;
+        del_node_t_env(&current);
+        current = next_node;
+    }
+    *envp = NULL;
+}
 
 //?OKOK
 //+ Cherche et retourne le dernier noeud d'une liste
@@ -64,7 +93,7 @@ int append_node_envp(t_env **envp, char *line)
 
 //?OKOK
 //+ Permet de creer un env si minishell est exec avec env -i
-int make_env_if_le_correcteur_clc(t_data* data)
+int init_env_if_le_correcteur_clc(t_data* data)
 {
 	char	path[PATH_MAX];
 	char	*tmp;
@@ -78,21 +107,3 @@ int make_env_if_le_correcteur_clc(t_data* data)
     return (SUCCESS);
 }
 
-//?OKOK
-void make_env(t_data *data, char **env)
-{
-    int i;
-    
-    i = 0;
-    data->envp = NULL;
-    if (!(*env))
-    {
-        make_env_if_le_correcteur_clc(data);
-        return ;
-    }
-    while (env[i])
-    {
-        append_node_envp(&data->envp, env[i]);
-        i++;
-    }
-}

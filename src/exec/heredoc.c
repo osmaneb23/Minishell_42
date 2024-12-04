@@ -1,40 +1,5 @@
 #include "../../includes/minishell.h"
 
-
-void ft_free_contents_nodes(t_data *data)
-{
-    t_cmd *cmd;
-
-    if (!data)
-        return ;
-    if (data->pip[0] >= 0) 
-        close(data->pip[0]);
-    if (data->pip[1] >= 0) 
-        close(data->pip[1] );
-    cmd = data->cmd;
-    while (cmd)
-    {
-        if (cmd->cmd_param)
-            ft_free_multi_array(cmd->cmd_param);
-        if (cmd->outfile >= 0) 
-            close(cmd->outfile);
-        if (cmd->infile >= 0) 
-            close(cmd->infile);
-        cmd->f_pid = 0;
-        cmd = cmd->next;
-    }
-    cmd = NULL;
-    printf("WATI-FREE-SUCCESS\n\n");
-    // free les nodes (+ prev next) une par une en + ou deja fait ?
-}
-
-bool	print_error(char *str)
-{
-	if (str)
-		write(2, str, ft_strlen(str));
-	return (true);
-}
-
 void escape_heredoc(char *limiter)
 {
     print_error("warning: here-document delimited by end-of-file (wanted '");
@@ -80,11 +45,9 @@ int heredoc(t_cmd *cmd, char *limiter)
     {
         printf("UNLINK-FILE\n\n");
         unlink(".minishell.heredoc.tmp");
-        ft_free_contents_nodes(data);
+        close_all_redi_of_each_nodes(data);
         return (FAILURE); //? OKOK
     }
     unlink(".minishell.heredoc.tmp");
     return (SUCCESS);
 }
-
-//! tmp

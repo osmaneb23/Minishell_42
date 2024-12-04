@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 18:49:40 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:51:01 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+//! laisser ici ?
+bool	print_error(char *str)
+{
+	if (str)
+		write(2, str, ft_strlen(str));
+	return (true);
+}
+
+//! laisser ici ?
+//?OKOK
+void init_env(t_data *data, char **env)
+{
+    int i;
+    
+    i = 0;
+    data->envp = NULL;
+    if (!(*env))
+    {
+        init_env_if_le_correcteur_clc(data);
+        return ;
+    }
+    while (env[i])
+    {
+        append_node_envp(&data->envp, env[i]);
+        i++;
+    }
+}
 
 void	replace_var_val(t_data *data)
 {
@@ -69,11 +97,10 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	initialize_data(&data);
 	setup_signals();
-	make_env(data, envp);
-	printf(WHITE); // Active la couleur blanche pour le reste
+	init_env(data, envp);
+	printf(WHITE);
 	while (1)
 	{
-		// Prompt avec fond noir et texte en blanc
 		// data->line = readline("\001" BWHITE "\002" "minishell> " WHITE);
 		data->line = readline("minishell> ");
 		if (data->line == NULL)
@@ -88,7 +115,10 @@ int	main(int ac, char **av, char **envp)
 		free(data->line); // ??
 	}
 	rl_clear_history();
-	printf(DEFAULT); // Réinitialise les couleurs
+	printf(DEFAULT);
 	return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
 }
 
+//? LEAKS
+
+//! cas env BIZARRE

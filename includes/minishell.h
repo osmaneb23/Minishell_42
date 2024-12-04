@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 18:30:07 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:50:45 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
 # include <linux/limits.h>           // INT_MAX, INT_MIN, PATH_MAX etc
-# include <stdio.h>                  // printf
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
 # include <signal.h>                 // signal
 # include <stdbool.h>                // bool
+# include <stdio.h>                  // printf
 # include <stdlib.h>                 // malloc, free, exit
 # include <sys/stat.h>               // stat
 # include <sys/types.h>              // pid_t
@@ -61,9 +61,8 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 
-	pid_t 			f_pid;
+	pid_t			f_pid;
 }					t_cmd;
-
 
 /*
 Structure to store the environment variables:
@@ -106,8 +105,8 @@ Structure to store the data of minishell:
 */
 typedef struct s_data
 {
-	int 			pip[2];
-	
+	int				pip[2];
+
 	t_token			*token;
 	t_env			*envp;
 	t_cmd			*cmd;
@@ -116,133 +115,144 @@ typedef struct s_data
 	pid_t			current_pid;
 }					t_data;
 
-// Main
+/* ************************************************************************** */
+/*                                    MAIN                                    */
+/* ************************************************************************** */
 
+void				init_env(t_data *data, char **env);
+void				replace_var_val(t_data *data);
 bool				main_routine(t_data *data, char **envp);
+bool				print_error(char *str);
 
 /* ************************************************************************** */
-/*                                                                            */
-/*                                  BUILTINS                                  */
-/*                                                                            */
-/* ************************************************************************** */
-
-// Ft_exit
-
-int					ft_exit(char **args);
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                    EXEC                                    */
-/*                                                                            */
-/* ************************************************************************** */
-
-void ft_free_contents_nodes(t_data *data);
-
-// exec.c
-int 				exec();
-
-// exec_utils.c
-int					wait_all(t_data *data);
-int 				t_cmd_len(t_cmd *cmd);
-
-
-// Commands
-//!
-int count_nbr_cmd(t_token *token);
-int	init_cmd_nodes(t_data *data);
-int init_cmd(t_data *data);
-//!
-// void				init_cmd(t_data *data);
-// char	**init_cmd_param(t_cmd *cmd, t_token *token);
-bool				add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
-
-int heredoc(t_cmd *cmd, char *limiter);
-
-/* ************************************************************************** */
-/*                                                                            */
 /*                                    BUILTINS                                */
-/*                                                                            */
 /* ************************************************************************** */
 
-// ft_pwd.c //OKOK
-int 				ft_pwd(void);
+// ft_pwd.c
+int					ft_pwd(void);
 
-// ft_env.c //OKOK
-int 				ft_env(void);
+// ft_env.c
+int					ft_env(void);
 
-// ft_unset.c //OKOK
-int 				search_and_del(char *var);
-int 				ft_unset(char **cmd_param);
+// ft_unset.c
+int					search_and_del(char *var);
+int					ft_unset(char **cmd_param);
 
-// ft_cd.c //OKOK
-char *search_env_var(char *var);
-int 				change_cd(char *direction);
-int 				ft_cd(char **cmd_param);
+// ft_cd.c
+char				*search_env_var(char *var);
+int					change_cd(char *direction);
+int					ft_cd(char **cmd_param);
 
-// ft_export.c //OKOK
-int 				print_export_line(char *line);
-int 				export_just_new_var(t_env *envp, char *var);
-int export_new_var_and_val(t_env *envp, char *var_and_val, int i);
-int 				export_just_display(t_data *data);
-int 				ft_export(char **cmd_param);
+// ft_export.c
+int					print_export_line(char *line);
+int					export_just_new_var(t_env *envp, char *var);
+int					export_new_var_and_val(t_env *envp, char *var_and_val,
+						int i);
+int					export_just_display(t_data *data);
+int					ft_export(char **cmd_param);
 
-// ft_exit.c //OKOK
-int					ft_exit(char **args);
+// ft_exit.c
+int					ft_exit(char **cmd_param);
 
-//! ft_echo.c
-bool	ft_echo(char **cmd_params);
+// ft_echo.c
+int					ft_echo(char **cmd_params);
 
 /* ************************************************************************** */
-/*                                                                            */
-/*                              BUILTINS UTILS                                */
-/*                                                                            */
+/*                             (BUILTINS) UTILS                               */
 /* ************************************************************************** */
 
-// init_envp.c //OKOK
+// builtins_utils.c
+void				ft_free_multi_array(char **tabtab);
+int					ft_multi_array_len(char **s);
+char				*join_var_and_val(char const *s1, char const *s2);
+int					count_envp_nodes(t_env *envp);
+
+// envp_utils.c
+void				free_t_env_list(t_env **envp);
 t_env				*find_last_node(t_env *node);
 void				del_node_t_env(t_env **envp);
 int					append_node_envp(t_env **envp, char *line);
-int 				make_env_if_le_correcteur_clc(t_data* data);
-void 				make_env(t_data *data, char **env);
+int					init_env_if_le_correcteur_clc(t_data *data);
 
-// utils_export.c //OKOK
-int 				verif_var_char(char *var);
-int 				remplace_if_already_exist(char *var, char* val);
-int 				envp_tab_bubble_sort(char **envp, int count);
-int 				sort_envp_and_print(char **envp, int count);
-char 				**copy_envp_to_tab(t_data *data, t_env *envp);
+// ft_export_utils.c
+void				ft_free_var_and_val(char **var, char **val);
+int					search_egal_symbol(char *cmd_param);
+char				*return_var(char *var_and_val, int limit);
+char				*return_val(char *var_and_val, int start);
 
-// builtins_utils.c //OKOK
-void				ft_free_multi_array(char **tabtab);
-int 				tabtablen(char **s);
-char				*join_var_and_val(char const *s1, char const *s2);
-int					 count_envp_nodes(t_env *envp);
+// ft_export_utils2.c
+int					verif_var_char(char *var);
+int					remplace_if_already_exist(char *var, char *val);
+int					envp_tab_bubble_sort(char **envp, int count);
+int					sort_envp_and_print(char **envp, int count);
+char				**copy_envp_to_tab(t_data *data, t_env *envp);
 
 /* ************************************************************************** */
-/*                                                                            */
+/*                                    EXEC                                    */
+/* ************************************************************************** */
+
+// exec.c
+int					redirect_input_output(t_cmd *cmd, int *pip);
+int					parent_process(int *pip, t_cmd *next_cmd);
+int					child_process(t_data *data, t_cmd *cmd, int *pip,
+						char **env);
+int					exec_cmd(t_data *data, t_cmd *cmd, int *pip);
+int					exec(t_data *data);
+
+// exec_utils.c
+int					wait_all(t_data *data);
+char				*get_path_next(char **path);
+char				*check_solo_path(char *dir, char *command);
+char				*return_command_in_path(char *command);
+
+// heredoc.c
+void				escape_heredoc(char *limiter);
+bool				heredoc_cpy(int fd, char *limiter);
+int					heredoc(t_cmd *cmd, char *limiter);
+
+// launch_builtin.c
+int					exec_builtin(char **cmd);
+bool				launch_builtin(t_cmd *cmd);
+
+// commands.c
+int					count_cmd_param(t_token *og_token);
+char				**init_cmd_param(t_token *og_token);
+int					fill_cmd_nodes(t_data *data);
+int					init_cmd_nodes(t_data *data);
+int					init_cmd(t_data *data);
+
+// commands_utils.c
+int					cmd_list_len(t_cmd *cmd);
+int					add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
+int					count_nbr_cmd(t_token *token);
+t_cmd				*return_last_cmd_node(t_cmd *command);
+void				free_all_cmd_nodes(t_cmd **cmd_list);
+
+// gestion_redirections.c
+int					close_all_redi(t_data *data);
+void				close_all_redi_of_each_nodes(t_data *data);
+int					fill_cmd_nodes_redirections(t_cmd *cmd, t_token *token);
+int					init_file(t_cmd *cmd, char *filename, int type);
+
+/* ************************************************************************** */
 /*                                  PARSING                                   */
-/*                                                                            */
 /* ************************************************************************** */
 
-// Checks
-
+// checks.c
 bool				check_openquote(char *line);
 int					check_misplacements(t_data *data);
 int					check_valid_commands(t_data *data);
 
-// Path
-
+// path.c
 int					check_command_in_path(char *command);
 char				*get_next_path(char **path);
 int					check_single_path(char *dir, char *command);
 
-// Token_type
-
+// token_type.c
 void				assign_type_to_tokens(void);
 int					determine_basic_type(char *value);
 
-// Tokenization
-
+// tokenization.c
 bool				tokenization(char *line);
 char				*tokenizer(char *line, unsigned int *i, bool *squote_open,
 						bool *dquote_open);
@@ -252,47 +262,38 @@ bool				create_token(char *value);
 bool				add_token_to_list(t_token *token, t_token *data);
 
 /* ************************************************************************** */
-/*                                                                            */
 /*                                    UTILS                                   */
-/*                                                                            */
 /* ************************************************************************** */
 
-// Cleaning
-
+// cleaning.c
 int					cleanup(int exit_status, char *message, int exit_call,
 						int fd);
 void				free_data(t_data **data);
 void				free_tokens(t_data **data);
 void				free_commands(t_data **data);
 
-// Data
-
+// data.c
 void				*get_data(void);
 void				initialize_data(t_data **data);
 
-// Signals
-
+// signals.c
 void				setup_signals(void);
 void				sigint_handler(int sig);
 void				sigquit_handler(int sig);
 
-// Toolbox
-
+// toolbox.c
 bool				contains_char(char *str, char c);
 
-// Utils_checks
-
+// utils_checks.c
 int					check_misplacements_pipe(t_token *token);
 int					check_misplacements_redirection(t_token *token);
 bool				is_builtin(char *cmd);
 int					check_access(t_token *token);
 
-// Utils_cmd
+// utils_cmd.c
+t_cmd				*return_last_cmd_node(t_cmd *command);
 
-t_cmd				*last_command(t_cmd *command);
-
-// Utils_dollar
-
+// utils_dollar.c
 void				main_handle_var(char *tmp, char *new_value, t_data *data);
 int					handle_exit_status(t_data *data, char *new_value, int j,
 						int *i);
@@ -306,8 +307,7 @@ size_t				get_exit_status_length(int status);
 size_t				skip_variable_name(const char *str);
 size_t				get_env_var_length(const char *start, int len);
 
-// Utils_token
-
+// utils_token.c
 t_token				*last_token(t_token *token);
 void				remove_quotes(t_data *data);
 char				*return_new_value(char *value, bool squote_open,

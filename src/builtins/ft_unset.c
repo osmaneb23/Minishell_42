@@ -27,7 +27,7 @@ int search_and_del(char *var)
 //! with no options
 int ft_unset(char **cmd_param)
 {
-    if (!cmd_param || tabtablen(cmd_param) == 1 || ft_strcmp(cmd_param[1], "") == 0) // SI pas d'argument ==> RIEN + RETURN (//bash posix)
+    if (!cmd_param || ft_multi_array_len(cmd_param) == 1 || ft_strcmp(cmd_param[1], "") == 0) // SI pas d'argument ==> RIEN + RETURN (//bash posix)
         return (ERROR);
     else
     {

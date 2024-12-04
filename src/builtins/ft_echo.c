@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:25:24 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 18:38:32 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:40:35 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-bool	ft_echo(char **cmd_params)
+int	ft_echo(char **cmd_params)
 {
 	int		i;
 	bool	newline;
