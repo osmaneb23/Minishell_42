@@ -43,7 +43,7 @@ char	*join_var_and_val(char const *s1, char const *s2)
 		return (NULL);
 	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
 	if (!str)
-		return (NULL);
+		return (cleanup(ERROR, ERR_MALLOC, ERROR, 2), NULL);
 	while (s1[i])
 	{
 		str[i] = s1[i];
@@ -69,10 +69,10 @@ int	count_envp_nodes(t_env *envp)
 	int		i;
 
 	i = 0;
-	if (!envp || !envp->next)
-		return (FAILURE);
+	if (!envp)
+		return (NULL); //! Vie de mrd (ajouter une node dans envp)
 	tmp = envp;
-	while (tmp != NULL)
+	while (tmp)
 	{
 		i++;
 		tmp = tmp->next;

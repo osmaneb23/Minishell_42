@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/04 19:51:01 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:23:35 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	main(int ac, char **av, char **envp)
 	printf(WHITE);
 	while (1)
 	{
-		// data->line = readline("\001" BWHITE "\002" "minishell> " WHITE);
 		data->line = readline("minishell> ");
 		if (data->line == NULL)
 		{
@@ -116,7 +115,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	rl_clear_history();
 	printf(DEFAULT);
-	return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
+	return (cleanup(SUCCESS, NULL, SUCCESS, 0));
 }
 
 //? LEAKS

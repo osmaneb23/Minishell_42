@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:43:47 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/04 17:36:36 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:15:20 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,11 @@ int init_cmd(t_data *data)
 }
 
 //! RE TESTER COMPORTEMENT EXEC CMD (// repertoire courant)
+
+//! revoir cas avec prompt avce pipe mais sans cmd avec type < infile.txt | wc 
+
+
+
 
 // t_cmd * tmp = data->cmd;
 // printf("\n\n1=%s\n", tmp->cmd_param[0]);

@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:13:34 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/04 17:16:40 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/06 23:04:47 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ char	*search_env_var(char *var)
 	if (!var)
 		return (NULL);
 	data = get_data();
-	if (!data || !data->envp)
-		return (NULL);
 	len = ft_strlen(var);
 	tmp = data->envp;
 	while (tmp != NULL)
@@ -35,7 +33,7 @@ char	*search_env_var(char *var)
 		{
 			value = malloc(ft_strlen(tmp->line + len + 1) + 1);
 			if (!value)
-				return (NULL);
+				return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
 			ft_strcpy(value, tmp->line + len + 1);
 			return (value);
 		}
@@ -44,7 +42,7 @@ char	*search_env_var(char *var)
 	return (NULL);
 }
 
-int	change_cd_env_var(char *symbole)
+bool	change_cd_env_var(char *symbole)
 {
 	char	*res;
 	char	*path;
@@ -61,8 +59,9 @@ int	change_cd_env_var(char *symbole)
 		res = search_env_var(path);
 		if (!res)
 		{
-			printf("Error: cd: %s not set\n", path);
-			return (ERROR);
+			print_error("minishell: cd: ");
+			print_error(path);
+			return (cleanup(1, " not set\n", NO_EXIT, 2));
 		}
 		printf("%s\n", res);
 	}
@@ -83,8 +82,9 @@ int	change_cd(char *direction)
 		change_cd_env_var(direction);
 	else if (chdir(direction) == -1)
 	{
-		printf("Error: cd: %s: No such file or directory\n", direction);
-		return (FAILURE);
+		print_error("minishell: cd: ");
+		print_error(direction);
+		return (cleanup(1, ": No such file or directory\n", NO_EXIT, 2));
 	}
 	remplace_if_already_exist("OLDPWD", oldpwd);
 	getcwd(pwd, PATH_MAX);
@@ -94,18 +94,14 @@ int	change_cd(char *direction)
 
 int	ft_cd(char **cmd_param)
 {
-	int	exit;
 	int	nbr_param;
 
 	nbr_param = ft_multi_array_len(cmd_param);
 	if (nbr_param > 2)
-	{
-		printf("Error: cd: Too many arguments\n");
-		return (ERROR);
-	}
+		return (cleanup(1, "cd: too many arguments\n", NO_EXIT, 2));
 	if (nbr_param == 2)
-		exit = change_cd(cmd_param[1]);
+		return (change_cd(cmd_param[1]));
 	if (nbr_param == 1)
-		exit = change_cd("");
-	return (exit);
+		return (change_cd(""));
+	return (SUCCESS);
 }

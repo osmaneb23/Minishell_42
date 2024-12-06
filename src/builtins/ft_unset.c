@@ -36,5 +36,5 @@ int ft_unset(char **cmd_param)
         else
             printf("Error: unset: %s not found\n", cmd_param[1]); //! bash posix ne renvoi rien lui
     }
-    return (FAILURE);
+    return (SUCCESS);
 }

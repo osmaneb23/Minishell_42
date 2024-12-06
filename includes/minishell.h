@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/04 19:50:45 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/06 22:38:34 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@
 # define ARG 7     // argument
 
 # define ERR_MALLOC "Error: malloc failed\n"
+# define ERR_PIPE "Error: pipe failed\n"
+# define ERR_FORK "Error: fork failed\n"
+# define ERR_WAIT "Error: wait failed\n"
 
 /*
 Structure to store the commands:
@@ -129,7 +132,7 @@ bool				print_error(char *str);
 /* ************************************************************************** */
 
 // ft_pwd.c
-int					ft_pwd(void);
+bool					ft_pwd(void);
 
 // ft_env.c
 int					ft_env(void);
@@ -155,7 +158,7 @@ int					ft_export(char **cmd_param);
 int					ft_exit(char **cmd_param);
 
 // ft_echo.c
-int					ft_echo(char **cmd_params);
+int					ft_echo(char **cmd_param);
 
 /* ************************************************************************** */
 /*                             (BUILTINS) UTILS                               */
@@ -168,7 +171,7 @@ char				*join_var_and_val(char const *s1, char const *s2);
 int					count_envp_nodes(t_env *envp);
 
 // envp_utils.c
-void				free_t_env_list(t_env **envp);
+void				destroy_envp_list(t_env **envp);
 t_env				*find_last_node(t_env *node);
 void				del_node_t_env(t_env **envp);
 int					append_node_envp(t_env **envp, char *line);
@@ -193,10 +196,9 @@ char				**copy_envp_to_tab(t_data *data, t_env *envp);
 
 // exec.c
 int					redirect_input_output(t_cmd *cmd, int *pip);
-int					parent_process(int *pip, t_cmd *next_cmd);
-int					child_process(t_data *data, t_cmd *cmd, int *pip,
-						char **env);
-int					exec_cmd(t_data *data, t_cmd *cmd, int *pip);
+int				parent_process(int *pip, t_cmd *next_cmd);
+int				child_process(t_cmd *cmd, int *pip, char **env);
+int				exec_cmd(t_data *data, t_cmd *cmd, int *pip);
 int					exec(t_data *data);
 
 // exec_utils.c
@@ -211,8 +213,8 @@ bool				heredoc_cpy(int fd, char *limiter);
 int					heredoc(t_cmd *cmd, char *limiter);
 
 // launch_builtin.c
-int					exec_builtin(char **cmd);
-bool				launch_builtin(t_cmd *cmd);
+void					exec_builtin(char **cmd);
+void				launch_builtin(t_cmd *cmd);
 
 // commands.c
 int					count_cmd_param(t_token *og_token);

@@ -6,14 +6,14 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/04 19:52:16 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/06 14:57:14 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
 //+ Detruit une liste t_env
-void free_t_env_list(t_env **envp) 
+void destroy_envp_list(t_env **envp) 
 {
     t_env *current;
 

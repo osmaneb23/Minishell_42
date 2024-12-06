@@ -6,32 +6,34 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:19:21 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/04 16:19:51 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/06 22:37:23 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int exec_builtin(char **cmd)
+void exec_builtin(char **cmd)
 {
-    if (ft_strcmp(cmd[0], "cd") == 0)
-        return (ft_cd(cmd));
+    t_data *data;
+    
+    data = get_data();
     if (ft_strcmp(cmd[0], "pwd") == 0)
-        return (ft_pwd());
+        ft_pwd();
+    if (ft_strcmp(cmd[0], "cd") == 0)
+        ft_cd(cmd);
     if (ft_strcmp(cmd[0], "export") == 0)
-        return (ft_export(cmd));
-    if (ft_strcmp(cmd[0], "unset") == 0)
-        return (ft_unset(cmd));
+        ft_export(cmd);
+     if (ft_strcmp(cmd[0], "unset") == 0)
+        ft_unset(cmd);
     if (ft_strcmp(cmd[0], "env") == 0)
-        return (ft_env());
+        ft_env();
     if (ft_strcmp(cmd[0], "exit") == 0)
-        return (ft_exit(cmd));
+        ft_exit(cmd);
     if (ft_strcmp(cmd[0], "echo") == 0)
-        return (ft_echo(cmd));
-    return (ERROR);
+        ft_echo(cmd);
 }
 
-bool	launch_builtin(t_cmd *cmd)
+void	launch_builtin(t_cmd *cmd)
 {
 	int	save_stdout;
 
@@ -48,6 +50,5 @@ bool	launch_builtin(t_cmd *cmd)
         dup2(save_stdout, STDOUT_FILENO);
         close(save_stdout);
     }
-	return (SUCCESS);
 }
 
