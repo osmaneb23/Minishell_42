@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:13:34 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/06 23:04:47 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:29:58 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*search_env_var(char *var)
 		{
 			value = malloc(ft_strlen(tmp->line + len + 1) + 1);
 			if (!value)
-				return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
+				cleanup(ERROR, ERR_MALLOC, ERROR, 2); //! oui?
 			ft_strcpy(value, tmp->line + len + 1);
 			return (value);
 		}
@@ -92,16 +92,22 @@ int	change_cd(char *direction)
 	return (SUCCESS);
 }
 
+//! EXIT STATUS KO
 int	ft_cd(char **cmd_param)
 {
+	t_data* data;
 	int	nbr_param;
 
+	data = get_data();
 	nbr_param = ft_multi_array_len(cmd_param);
 	if (nbr_param > 2)
-		return (cleanup(1, "cd: too many arguments\n", NO_EXIT, 2));
+		return (data->exit_status = 1, print_error("cd: too many arguments\n"));
+		// return (cleanup(1, "cd: too many arguments\n", NO_EXIT, 2));
 	if (nbr_param == 2)
 		return (change_cd(cmd_param[1]));
 	if (nbr_param == 1)
 		return (change_cd(""));
 	return (SUCCESS);
 }
+
+//? "=XXXXXXX" OKOK

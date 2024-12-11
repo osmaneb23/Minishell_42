@@ -44,15 +44,14 @@ int	destroy_child_process(int exit_status)
 		data->exit_status = exit_status;
 	}
     rl_clear_history();
+	printf("\n\nEXIT-STATUS==%d\n\n", exit_status);
 	exit (exit_status);
 }
 
 int	child_process(t_cmd *cmd, int *pip, char **env)
 {
 
-t_data* data = get_data();
-
-
+	t_data* data = get_data();
 	char	*path;
 
 	if (cmd->infile >= 0)
@@ -67,10 +66,16 @@ t_data* data = get_data();
 	else
 	{
 		redirect_input_output(cmd, pip);
-		path = return_command_in_path(cmd->cmd_param[0]);
-		execve(path, cmd->cmd_param, env);
-		free(path);
+		if (access(cmd->cmd_param[0], X_OK) == 0)
+			execve(cmd->cmd_param[0], cmd->cmd_param, env); //! signaux avec ./minishell
+		else 
+		{	
+			path = return_command_in_path(cmd->cmd_param[0]);
+			execve(path, cmd->cmd_param, env);
+			free(path);
+		}
 	}
+	printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs\n\n");
     ft_free_multi_array(env);
     destroy_child_process(data->exit_status);
 	return (SUCCESS); // VOID ?
@@ -133,11 +138,21 @@ int	exec(t_data *data)
 // WIFEXITED ==> verifie le status
 // WEXITSTATUS ==> retourne l'exit_status
 
-//! revoir exit status de chaque builtins 
-//! revoir return ERR malloc...etc dans exec 
-//! revoir comportement builtin // repertoire courant
+
+
+//? =======================================================
+// FEHIM: 
+//* corriger appel chemin absolu et executable
+//* revoir comportement builtin // repertoire courant (ASKIP)
+
 //! secu si envp entierement unset
 
+//! revoir exit status de chaque builtins 
+//! revoir return ERR malloc...etc dans exec 
 
+//! corriger cmd_init (// "< infile | wc" ==> cas d'encule)
 
-//! < infile | wc ==> cas d'encule (// init_cmd)
+//? =======================================================
+// OSMANE:
+//! corriger ft_exit (//strtol)
+//! cas signaux si execute dans minishell (// ctrl-C)

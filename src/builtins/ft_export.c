@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:05:59 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/06 23:58:26 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/10 23:17:46 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,31 +78,23 @@ int	export_new_var_and_val(t_env *envp, char *var_and_val, int i)
 
 	var = return_var(var_and_val, i);
 	val = return_val(var_and_val, i);
-	if (verif_var_char(var))
+	if (!strcmp(var, "") || verif_var_char(var))
 	{
 		print_error("minishell: export: `");
 		print_error(var_and_val);
-		return (free(var), free(val), cleanup(1, "': not a valid identifier\n",
-				NO_EXIT, 2));
+		return (free(var), free(val), print_error("': not a valid identifier\n"), 1); //OKOK
 	}
 	if (!remplace_if_already_exist(var, val))
 		return (free(val), free(var), SUCCESS);
-
-
-//! JE SUIS LA
-
-		
 	if (ft_strcmp(val, "") == 0)
 	{
 		to_print = join_var_and_val(var, "");
-		return (free(val),
-				free(var), append_node_envp(&envp,
-											to_print),
-				SUCCESS);
+		return (free(val), free(var), append_node_envp(&envp, to_print),
+			SUCCESS);
 	}
 	to_print = join_var_and_val(var, val);
 	append_node_envp(&envp, to_print);
-	return (ft_free_var_and_val(&var, &val), SUCCESS);
+	return (free(val), free(var), SUCCESS);
 }
 
 //?OKOK
@@ -136,9 +128,9 @@ void	ft_export(char **cmd_param)
 	{
 		i = search_egal_symbol(cmd_param[j]);
 		if (i >= 0)
-			export_new_var_and_val(data->envp, cmd_param[j], i);
+			data->exit_status = export_new_var_and_val(data->envp, cmd_param[j], i);
 		if (i == -1)
-			export_just_new_var(data->envp, cmd_param[j]);
+			data->exit_status = export_just_new_var(data->envp, cmd_param[j]);
 		j++;
 	}
 }

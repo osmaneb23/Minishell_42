@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:08:32 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/06 23:56:38 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/10 22:15:22 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char	**copy_envp_to_tab(t_data *data, t_env *envp)
 		return (NULL);
 	env_tab = malloc((count + 1) * sizeof(char *));
 	if (!env_tab)
-		return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
+		cleanup(ERROR, ERR_MALLOC, ERROR, 2);
 	while (i < count)
 	{
 		env_tab[i] = ft_strdup(tmp->line); // av fn interdite

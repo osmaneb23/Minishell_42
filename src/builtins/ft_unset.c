@@ -1,5 +1,22 @@
 #include "../../includes/minishell.h"
 
+int cmd_list_envp(t_env *envp)
+{
+    t_env *tmp;
+    int i;
+
+    if (!envp)
+        return (FAILURE);
+    tmp = envp;
+    i = 0;
+    while (tmp != NULL)
+    {
+        tmp = tmp->next;
+        i++;
+    }
+    return (i);
+}
+
 //+ Permet de chercher puis supprimer la VAR donnee en argument
 int search_and_del(char *var)
 {
@@ -12,11 +29,13 @@ int search_and_del(char *var)
 		return (ERROR);
     len = ft_strlen(var);
     tmp = data->envp;
+    if (cmd_list_envp(data->envp) == 1) //! A TESTER 
+        append_node_envp(&data->envp, ""); //! reverifier dans append et supp "" si on ajoute un nv node
     while (tmp != NULL)
     {
         if (ft_strncmp(var, tmp->line, len) == 0)
         {
-            del_node_t_env(&tmp);
+            del_node_envp(&tmp);
             return (SUCCESS);
         }
         tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/06 22:38:34 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:01:12 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <sys/types.h>              // pid_t
 # include <sys/wait.h>               // waitpid
 # include <unistd.h>                 // execve, fork, pipe
+# include <limits.h>
 
 # define SUCCESS 0
 # define ERROR 1
@@ -34,6 +35,7 @@
 # define TRUE 1
 # define FALSE 0
 # define NO_EXIT -42
+# define NO_CHANGE -42
 
 # define INPUT 1   // <
 # define HEREDOC 2 // <<
@@ -47,6 +49,8 @@
 # define ERR_PIPE "Error: pipe failed\n"
 # define ERR_FORK "Error: fork failed\n"
 # define ERR_WAIT "Error: wait failed\n"
+
+
 
 /*
 Structure to store the commands:
@@ -132,7 +136,7 @@ bool				print_error(char *str);
 /* ************************************************************************** */
 
 // ft_pwd.c
-bool					ft_pwd(void);
+bool				ft_pwd(void);
 
 // ft_env.c
 int					ft_env(void);
@@ -147,12 +151,12 @@ int					change_cd(char *direction);
 int					ft_cd(char **cmd_param);
 
 // ft_export.c
-int					print_export_line(char *line);
+void					print_export_line(char *line);
 int					export_just_new_var(t_env *envp, char *var);
 int					export_new_var_and_val(t_env *envp, char *var_and_val,
 						int i);
-int					export_just_display(t_data *data);
-int					ft_export(char **cmd_param);
+void					export_just_display(t_data *data);
+void					ft_export(char **cmd_param);
 
 // ft_exit.c
 int					ft_exit(char **cmd_param);
@@ -173,21 +177,20 @@ int					count_envp_nodes(t_env *envp);
 // envp_utils.c
 void				destroy_envp_list(t_env **envp);
 t_env				*find_last_node(t_env *node);
-void				del_node_t_env(t_env **envp);
+void				del_node_envp(t_env **envp);
 int					append_node_envp(t_env **envp, char *line);
 int					init_env_if_le_correcteur_clc(t_data *data);
 
 // ft_export_utils.c
-void				ft_free_var_and_val(char **var, char **val);
 int					search_egal_symbol(char *cmd_param);
 char				*return_var(char *var_and_val, int limit);
 char				*return_val(char *var_and_val, int start);
 
 // ft_export_utils2.c
-int					verif_var_char(char *var);
+bool					verif_var_char(char *var);
 int					remplace_if_already_exist(char *var, char *val);
-int					envp_tab_bubble_sort(char **envp, int count);
-int					sort_envp_and_print(char **envp, int count);
+void					envp_tab_bubble_sort(char **envp, int count);
+void					sort_envp_and_print(char **envp, int count);
 char				**copy_envp_to_tab(t_data *data, t_env *envp);
 
 /* ************************************************************************** */
@@ -196,9 +199,9 @@ char				**copy_envp_to_tab(t_data *data, t_env *envp);
 
 // exec.c
 int					redirect_input_output(t_cmd *cmd, int *pip);
-int				parent_process(int *pip, t_cmd *next_cmd);
-int				child_process(t_cmd *cmd, int *pip, char **env);
-int				exec_cmd(t_data *data, t_cmd *cmd, int *pip);
+int					parent_process(int *pip, t_cmd *next_cmd);
+int					child_process(t_cmd *cmd, int *pip, char **env);
+int					exec_cmd(t_data *data, t_cmd *cmd, int *pip);
 int					exec(t_data *data);
 
 // exec_utils.c
@@ -213,7 +216,7 @@ bool				heredoc_cpy(int fd, char *limiter);
 int					heredoc(t_cmd *cmd, char *limiter);
 
 // launch_builtin.c
-void					exec_builtin(char **cmd);
+void				exec_builtin(char **cmd);
 void				launch_builtin(t_cmd *cmd);
 
 // commands.c

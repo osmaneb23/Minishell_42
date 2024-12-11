@@ -1,5 +1,6 @@
 #include "../../includes/minishell.h"
 
+//+ EXIT STATUS OKOK
 //! with no options
 bool	ft_pwd(void)
 {

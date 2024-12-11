@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/06 14:57:14 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:02:10 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void destroy_envp_list(t_env **envp)
     while (current != NULL) 
     {
         t_env *next_node = current->next;
-        del_node_t_env(&current);
+        del_node_envp(&current);
         current = next_node;
     }
     *envp = NULL;
@@ -42,7 +42,7 @@ t_env	*find_last_node(t_env *node)
 
 //?OKOK
 //+ Permet de supprimer une noeud dans la liste env
-void	del_node_t_env(t_env **envp)
+void	del_node_envp(t_env **envp)
 {
 	t_env	*del_node;
 	t_env	*new_next;

@@ -69,8 +69,8 @@ int	count_envp_nodes(t_env *envp)
 	int		i;
 
 	i = 0;
-	if (!envp)
-		return (NULL); //! Vie de mrd (ajouter une node dans envp)
+	// if (!envp)
+	// 	return (NULL); //! Vie de mrd (ajouter une node dans envp)
 	tmp = envp;
 	while (tmp)
 	{
