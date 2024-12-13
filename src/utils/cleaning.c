@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 02:27:41 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/11 14:33:35 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:24:33 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,19 @@ int	cleanup(int exit_status, char *message, int exit_call, int fd)
 	{
 		free_data(&data);
 		if (exit_status != NO_CHANGE)
-            data->exit_status = exit_status;
+			data->exit_status = exit_status;
 	}
 	if (message)
-		ft_putstr_fd(message, fd);	
+		ft_putstr_fd(message, fd);
 	if (exit_call != NO_EXIT)
 	{
-		if (data->envp)
-			destroy_envp_list(&data->envp); //+ DETRUIT ENV
-		free(data->line);
+		if (data)
+		{
+			if (data->envp)
+				destroy_envp_list(&data->envp);
+			if (data->line)
+				free(data->line);
+		}
 		rl_clear_history();
 		exit(exit_call);
 	}

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:25:24 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/10 20:34:02 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:45:45 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//+ EXIT STATUS OKOK
+//+ exit status OKOK
 int	ft_echo(char **cmd_param)
 {
 	int		i;

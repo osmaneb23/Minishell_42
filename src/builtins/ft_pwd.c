@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-//+ EXIT STATUS OKOK
+//+ exit status OKOK
 //! with no options
 bool	ft_pwd(void)
 {
@@ -9,8 +9,8 @@ bool	ft_pwd(void)
 	if (getcwd(cwd, PATH_MAX)) //! cherche direct dans l'env
 	{
 	    printf("%s\n", cwd);
-	    return (SUCCESS);
+	    return (0);
 	}
 	else
-		return (cleanup(1, "Error: getcwd\n", NO_EXIT, 2));
+		return (print_error("Error: getcwd\n"), 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:08:32 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/10 22:15:22 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 22:50:35 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ bool	verif_var_char(char *var)
 
 //?OKOK
 //+ Permet de remplacer la valeur existante de VAR par VAL
+//! laisser return (ERROR)
 int	remplace_if_already_exist(char *var, char *val)
 {
 	char	*to_print;
@@ -94,10 +95,13 @@ void	sort_envp_and_print(char **envp, int count)
 	envp_tab_bubble_sort(envp, count);
 	while (envp[i])
 	{
-		if (ft_strchr(envp[i], '='))
-			print_export_line(envp[i]);
-		else
-			printf("export %s\n", envp[i]);
+		if (strncmp(envp[i], "_=", 2) != 0)
+		{
+			if (ft_strchr(envp[i], '='))
+				print_export_line(envp[i]);
+			else
+				printf("export %s\n", envp[i]);
+		}
 		i++;
 	}
 }
@@ -118,13 +122,13 @@ char	**copy_envp_to_tab(t_data *data, t_env *envp)
 		return (NULL);
 	env_tab = malloc((count + 1) * sizeof(char *));
 	if (!env_tab)
-		cleanup(ERROR, ERR_MALLOC, ERROR, 2);
+		cleanup(ERROR, ERR_MALLOC, ERROR, 2); //ERR_MALLOC
 	while (i < count)
 	{
-		env_tab[i] = ft_strdup(tmp->line); // av fn interdite
+		env_tab[i] = ft_strdup(tmp->line);
 		if (!env_tab[i])
 			return (ft_free_multi_array(env_tab), cleanup(ERROR, ERR_MALLOC,
-					ERROR, 2), NULL);
+					ERROR, 2), NULL); //ERR_MALLOC
 		tmp = tmp->next;
 		i++;
 	}

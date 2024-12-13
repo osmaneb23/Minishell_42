@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:19:21 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/06 22:37:23 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:44:51 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,21 @@
 void exec_builtin(char **cmd)
 {
     t_data *data;
-    
     data = get_data();
     if (ft_strcmp(cmd[0], "pwd") == 0)
-        ft_pwd();
-    if (ft_strcmp(cmd[0], "cd") == 0)
-        ft_cd(cmd);
-    if (ft_strcmp(cmd[0], "export") == 0)
-        ft_export(cmd);
-     if (ft_strcmp(cmd[0], "unset") == 0)
-        ft_unset(cmd);
-    if (ft_strcmp(cmd[0], "env") == 0)
-        ft_env();
-    if (ft_strcmp(cmd[0], "exit") == 0)
-        ft_exit(cmd);
-    if (ft_strcmp(cmd[0], "echo") == 0)
-        ft_echo(cmd);
+        data->exit_status = ft_pwd();
+    else if (ft_strcmp(cmd[0], "cd") == 0)
+        data->exit_status = ft_cd(cmd);
+    else if (ft_strcmp(cmd[0], "export") == 0)
+        data->exit_status = ft_export(cmd);
+    else if (ft_strcmp(cmd[0], "unset") == 0)
+        data->exit_status = ft_unset(cmd);
+    else if (ft_strcmp(cmd[0], "env") == 0)
+        data->exit_status = ft_env();
+    else if (ft_strcmp(cmd[0], "exit") == 0)
+        data->exit_status = ft_exit(cmd);
+    else if (ft_strcmp(cmd[0], "echo") == 0)
+        data->exit_status = ft_echo(cmd);
 }
 
 void	launch_builtin(t_cmd *cmd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:07:10 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/10 22:51:54 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:01:15 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	search_egal_symbol(char *cmd_param)
 	int	i;
 
 	i = 0;
-	// if (cmd_param[0] == '=')
-	// 	return (-2);
 	while (cmd_param[i])
 	{
 		if (cmd_param[i] == '=')
@@ -36,7 +34,7 @@ char	*return_var(char *var_and_val, int limit)
 	start = 0;
 	var = (char *)malloc(sizeof(char) * (limit + 1));
 	if (!var)
-		cleanup(ERROR, ERR_MALLOC, ERROR, 2); //! oui?
+		cleanup(ERROR, ERR_MALLOC, ERROR, 2); // ERR_MALLOC
 	while (start < limit)
 	{
 		var[start] = var_and_val[start];
@@ -56,7 +54,7 @@ char	*return_val(char *var_and_val, int start)
 	limit = ft_strlen(var_and_val);
 	val = (char *)malloc(sizeof(char) * (limit - start));
 	if (!val)
-		cleanup(ERROR, ERR_MALLOC, ERROR, 2); //! oui?
+		cleanup(ERROR, ERR_MALLOC, ERROR, 2); // ERR_MALLOC
 	start++;
 	while (start < limit)
 	{

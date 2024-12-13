@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/11 14:01:12 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:20:22 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
 # include <linux/limits.h>           // INT_MAX, INT_MIN, PATH_MAX etc
+# include <stdio.h>                  // printf
 # include <readline/history.h>       // add_history
 # include <readline/readline.h>      // readline
 # include <signal.h>                 // signal
 # include <stdbool.h>                // bool
-# include <stdio.h>                  // printf
 # include <stdlib.h>                 // malloc, free, exit
 # include <sys/stat.h>               // stat
 # include <sys/types.h>              // pid_t
@@ -36,6 +36,8 @@
 # define FALSE 0
 # define NO_EXIT -42
 # define NO_CHANGE -42
+
+# define EXIT_MALLOC -42
 
 # define INPUT 1   // <
 # define HEREDOC 2 // <<
@@ -67,8 +69,9 @@ typedef struct s_cmd
 	int				outfile;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
-
 	pid_t			f_pid;
+
+	bool			skip_cmd;
 }					t_cmd;
 
 /*
@@ -156,7 +159,7 @@ int					export_just_new_var(t_env *envp, char *var);
 int					export_new_var_and_val(t_env *envp, char *var_and_val,
 						int i);
 void					export_just_display(t_data *data);
-void					ft_export(char **cmd_param);
+int					ft_export(char **cmd_param);
 
 // ft_exit.c
 int					ft_exit(char **cmd_param);
@@ -198,9 +201,9 @@ char				**copy_envp_to_tab(t_data *data, t_env *envp);
 /* ************************************************************************** */
 
 // exec.c
-int					redirect_input_output(t_cmd *cmd, int *pip);
-int					parent_process(int *pip, t_cmd *next_cmd);
-int					child_process(t_cmd *cmd, int *pip, char **env);
+void					redirect_input_output(t_cmd *cmd, int *pip);
+void					parent_process(int *pip, t_cmd *next_cmd);
+void					child_process(t_cmd *cmd, int *pip, char **env);
 int					exec_cmd(t_data *data, t_cmd *cmd, int *pip);
 int					exec(t_data *data);
 
@@ -229,7 +232,7 @@ int					init_cmd(t_data *data);
 // commands_utils.c
 int					cmd_list_len(t_cmd *cmd);
 int					add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
-int					count_nbr_cmd(t_token *token);
+int					count_nb_sequences(t_token *token);
 t_cmd				*return_last_cmd_node(t_cmd *command);
 void				free_all_cmd_nodes(t_cmd **cmd_list);
 

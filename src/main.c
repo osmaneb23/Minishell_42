@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/10 23:22:32 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:30:37 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,11 @@ bool	main_routine(t_data *data, char **envp)
 		{
 			if (!check_valid_commands(data))
 			{
-				if (!exec(data))
-					cleanup(SUCCESS, NULL, NO_EXIT, 0);
+				if (!init_cmd(data))
+				{
+					if (!exec(data))
+						cleanup(SUCCESS, NULL, NO_EXIT, 0);
+				}
 			}
 		}
 		

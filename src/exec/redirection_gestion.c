@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_gestion.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/06 16:42:28 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/12 22:03:58 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int fill_cmd_nodes_redirections(t_cmd *cmd, t_token *token)
             return (ERROR);
         if (token->next->next) //MON PRECIEUX
             token = token->next->next;
-        if (!cmd->prev && token->type == ARG && (check_command_in_path(token->value) == SUCCESS || is_builtin(token->value) == true))
+        if ((!token->prev || token->prev->type == PIPE) && token->type == ARG && (check_command_in_path(token->value) == SUCCESS || is_builtin(token->value) == true))
             token->type = CMD;  
-        printf("\n"); //! a supp ? pour rendre lisible plusieurs heredoc
+        printf("\n"); // a supp ? pour rendre lisible plusieurs heredoc
     }
     else if (access(token->next->value, F_OK) == 0)
     {
@@ -57,7 +57,7 @@ int fill_cmd_nodes_redirections(t_cmd *cmd, t_token *token)
             return (ERROR);
         if (token->next->next) //MON PRECIEUX
             token = token->next->next;
-        if (!cmd->prev && token->type == ARG && (check_command_in_path(token->value) == SUCCESS || is_builtin(token->value) == true))
+        if ((!token->prev || token->prev->type == PIPE) && token->type == ARG && (check_command_in_path(token->value) == SUCCESS || is_builtin(token->value) == true))
             token->type = CMD;
     }
     return (SUCCESS);

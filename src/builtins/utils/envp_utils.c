@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/11 14:02:10 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/12 22:59:55 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,18 @@ void	del_node_envp(t_env **envp)
 	t_env	*del_node;
 	t_env	*new_next;
 
-	if (envp == NULL || *envp == NULL)
+	if (envp == NULL)
 		return ;
 	del_node = *envp;
 	new_next = del_node->next;
 	if (new_next)
 		new_next->prev = del_node->prev;
-
 	if (del_node->prev)
 		del_node->prev->next = new_next;
-
 	*envp = new_next;
 	del_node->next = NULL;
 	del_node->prev = NULL;
-	free(del_node);
+    free(del_node);
 }
 
 //?OKOK
@@ -74,7 +72,7 @@ int append_node_envp(t_env **envp, char *line)
         return (ERROR);
     new_node = malloc(sizeof(t_env));
     if (!new_node)
-        return (ERROR);
+        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
     new_node->next = NULL;
     new_node->line = line;
     if (*envp == NULL)
@@ -100,10 +98,16 @@ int init_env_if_le_correcteur_clc(t_data* data)
     
     tmp = ft_strdup("OLDPWD");
     if (!tmp || append_node_envp(&data->envp, tmp) == ERROR || getcwd(path, PATH_MAX) == NULL)
-        return (ERROR); 
+        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
     tmp = ft_strjoin("PWD=", path);
     if (!tmp || append_node_envp(&data->envp, tmp) == ERROR)
-        return (ERROR); 
+        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
+    tmp = ft_strdup("SHLVL=1");
+    if (!tmp || append_node_envp(&data->envp, tmp) == ERROR)
+        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
+    tmp = ft_strdup("_=/usr/bin/env");
+    if (!tmp || append_node_envp(&data->envp, tmp) == ERROR)
+        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
     return (SUCCESS);
 }
 

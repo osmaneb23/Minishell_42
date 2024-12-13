@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:43:47 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/06 17:15:20 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/12 22:39:52 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,17 @@ int fill_cmd_nodes(t_data *data)
             if (fill_cmd_nodes_redirections(cmd, token) == ERROR)
                 return(ERROR);
         if (token && token->type == PIPE)
+        {
+            if (!cmd->cmd_param) //! ne change pas de noeud si pas de cmd trouve
+            {    
+                cmd->skip_cmd = true;
+                // cmd->cmd_param = malloc(sizeof(char *) * 3);
+                // cmd->cmd_param[0] = ft_strdup("");
+                // cmd->cmd_param[1] = ft_strdup("");
+                // cmd->cmd_param[2] = ft_strdup("");
+            }
             cmd = cmd->next;
+        }
         if (token && token->type == CMD)
         {
 			cmd->cmd_param = init_cmd_param(token);
@@ -104,15 +114,13 @@ int init_cmd_nodes(t_data *data)
 {
     t_cmd *cmd;
     t_token *token;
-    int nbr_cmd;
+    int nb_sq;
 
-    if (!data || !data->token)
-        return (ERROR);
     token = data->token;
-    nbr_cmd = count_nbr_cmd(token);
-    if (nbr_cmd <= 0)
+    nb_sq = count_nb_sequences(token);
+    if (nb_sq == FAILURE)
         return (ERROR);
-    while (nbr_cmd > 0)
+    while (nb_sq > 0)
     {
         cmd = malloc(sizeof(t_cmd));
         if (!cmd)
@@ -122,29 +130,42 @@ int init_cmd_nodes(t_data *data)
         cmd->cmd_param = NULL;
         cmd->next = NULL;
         cmd->prev = NULL;
+        cmd->skip_cmd = false;
         if (!data->cmd)
             data->cmd = cmd;
         else
             add_cmd_to_list(cmd, data->cmd);
-        nbr_cmd--;
+        nb_sq--;
     }
     return (SUCCESS);
 }
 
 int init_cmd(t_data *data)
 {
-    if (!data || !data->token)
-        return (ERROR);
     if (init_cmd_nodes(data) == ERROR)
         return (ERROR); 
     if (fill_cmd_nodes(data) == ERROR)
         return (ERROR); 
+
+//? test sip_cmd
+    // t_cmd * tmp = data->cmd;
+    // printf("1=%s\n", tmp->cmd_param[0]);
+    // printf("1=%s\n", tmp->cmd_param[1]);
+    // printf("1=%s\n", tmp->cmd_param[2]);
+    // tmp = tmp->next;
+    // printf("2=%s\n", tmp->cmd_param[0]);
+    // printf("2=%s\n", tmp->cmd_param[1]);
+    // printf("2=%s\n", tmp->cmd_param[2]);
+    // tmp = tmp->next;
+    // printf("3=%s\n", tmp->cmd_param[0]);
+    // printf("3=%s\n", tmp->cmd_param[1]);
+    // printf("3=%s\n", tmp->cmd_param[2]);
+
+        
     return (SUCCESS);
 }
 
-//! RE TESTER COMPORTEMENT EXEC CMD (// repertoire courant)
 
-//! revoir cas avec prompt avce pipe mais sans cmd avec type < infile.txt | wc 
 
 
 
@@ -163,3 +184,67 @@ int init_cmd(t_data *data)
 // printf("3=%s\n", tmp->cmd_param[2]);
 
     // free_all_cmd_nodes(&data->cmd);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//! difference entre compter les cmd et les sequences... 
+//! ...donc plus trop utile
+// int cmd_counter_ce_gros_bg_la()
+// {
+//     int i;
+//     t_data* data;
+//     t_token *tmp;
+
+//     data = get_data();
+//     tmp = data->token;
+//     i = 0;
+//     while (tmp)
+//     {
+//         if ((tmp->type >= 1 && tmp->type <= 4) && (!tmp->prev || tmp->prev->type == PIPE) && tmp->next && tmp->next->next && tmp->next->next->type == ARG)
+//             if (check_command_in_path(tmp->next->next->value) == SUCCESS || is_builtin(tmp->next->next->value) == true)
+//                 i++;
+//         if (tmp->type == CMD)
+//             i++;
+//         tmp = tmp->next;
+//     } 
+//     return (i);
+// }
+
+//! difference entre compter les cmd et les sequences... doinc plus trop utile
+// int cmd_counter_ce_gros_bg_la()
+// {
+//     int i;
+//     t_data* data;
+//     t_token *tmp;
+
+//     data = get_data();
+//     tmp = data->token;
+//     i = 0;
+//     while (tmp)
+//     {
+//         if ((tmp->type >= 1 && tmp->type <= 4) && (!tmp->prev || tmp->prev->type == PIPE) && tmp->next && tmp->next->next && tmp->next->next->type == ARG)
+//             if (check_command_in_path(tmp->next->next->value) == SUCCESS || is_builtin(tmp->next->next->value) == true)
+//                 i++;
+//         if (tmp->type == CMD)
+//             i++;
+//         tmp = tmp->next;
+//     } 
+//     return (i);
+// }
+
