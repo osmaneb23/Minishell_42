@@ -84,8 +84,8 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 	env = copy_envp_to_tab(data, data->envp);
 	if (!env)
 		return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
-	cmd->f_pid = fork();
-	if (cmd->f_pid == 0)
+	data->current_pid = fork();
+	if (data->current_pid == 0)
 	{
 		if (cmd->cmd_param && cmd->cmd_param[0])
 			child_process(cmd, pip, env);

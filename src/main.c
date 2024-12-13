@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/11 18:30:37 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/13 23:55:14 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@ bool	print_error(char *str)
 
 //! laisser ici ?
 //?OKOK
-void init_env(t_data *data, char **env)
+void	init_env(t_data *data, char **env)
 {
-    int i;
-    
-    i = 0;
-    data->envp = NULL;
-    if (!(*env))
-    {
-        init_env_if_le_correcteur_clc(data);
-        return ;
-    }
-    while (env[i])
-    {
-        append_node_envp(&data->envp, env[i]);
-        i++;
-    }
+	int	i;
+
+	i = 0;
+	data->envp = NULL;
+	if (!(*env))
+	{
+		init_env_if_le_correcteur_clc(data);
+		return ;
+	}
+	while (env[i])
+	{
+		append_node_envp(&data->envp, env[i]);
+		i++;
+	}
 }
 
 void	replace_var_val(t_data *data)
@@ -83,7 +83,6 @@ bool	main_routine(t_data *data, char **envp)
 				}
 			}
 		}
-		
 	}
 	return (SUCCESS);
 }
@@ -106,10 +105,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		data->line = readline("minishell> ");
 		if (data->line == NULL)
-		{
-			rl_clear_history();
-			return (cleanup(SUCCESS, "exit\n", NO_EXIT, 1));
-		}
+			return (cleanup(NO_CHANGE, "exit\n", data->exit_status, 1));
 		if (ft_strlen(data->line) == 0)
 			continue ;
 		main_routine(data, envp);

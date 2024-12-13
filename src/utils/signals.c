@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:11:36 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/13 20:49:17 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/13 23:55:52 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void	setup_signals(void)
 {
+	t_data				*data;
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 
+	data = get_data();
 	sa_int.sa_handler = sigint_handler;
 	if (sigemptyset(&sa_int.sa_mask) == -1)
 		cleanup(ERROR, "Error: sigemptyset failed\n", ERROR, 2);
@@ -37,6 +39,7 @@ void	sigint_handler(int sig)
 
 	(void)sig;
 	data = get_data();
+	// Comprendre pq c pas linverse
 	if (data && data->current_pid != 0)
 	{
 		if (kill(data->current_pid, SIGINT) == -1)
@@ -67,5 +70,11 @@ void	sigquit_handler(int sig)
 		ft_putstr_fd("Quit (core dumped)\n", 2);
 		data->current_pid = 0;
 		data->exit_status = 131;
+	}
+	else
+	{
+		rl_on_new_line();   // Reset to a new line
+    rl_replace_line("", 0); // Clear the input line
+    rl_redisplay();     // Redisplay the prompt
 	}
 }
