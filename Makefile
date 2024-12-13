@@ -24,7 +24,7 @@ LIBFT = Libft/libft.a
 
 SRC_DIR = src
 OBJ_DIR = obj
-INCLUDES = includes
+INCLUDES = includes/minishell.h
 
 SRCS = main.c \
        parsing/checks.c \
@@ -68,12 +68,15 @@ VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --track-
 
 all: $(NAME)
 
+env: $(NAME)
+	env -i valgrind $(VAL_FLAGS) ./$(NAME)
+
 $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(WHITE)Linking objects...$(DEFAULT)"
 	$(CC) $(CFLAGS) $(OBJS) -lreadline $(LIBFT) -o $(NAME)
 	@printf "\n${WHITE}$$BANNER${DEFAULT}\n\n"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDES)
 	@mkdir -p $(dir $@)
 	@echo "$(WHITE)Compiling $<...$(DEFAULT)"
 	@$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@

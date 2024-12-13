@@ -6,11 +6,11 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 19:44:42 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 15:16:49 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/13 19:04:38 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 size_t	estimate_new_length(const char *value, t_data *data)
 {

@@ -6,11 +6,11 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 19:25:22 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 15:10:28 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/13 19:04:42 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	main_handle_var(char *tmp, char *new_value, t_data *data)
 {

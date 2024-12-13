@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/12 17:20:22 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/13 20:29:04 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@
 # define ERR_PIPE "Error: pipe failed\n"
 # define ERR_FORK "Error: fork failed\n"
 # define ERR_WAIT "Error: wait failed\n"
-
-
 
 /*
 Structure to store the commands:
@@ -286,6 +284,7 @@ void				initialize_data(t_data **data);
 
 // signals.c
 void				setup_signals(void);
+void				setup_heredoc_signals(void);
 void				sigint_handler(int sig);
 void				sigquit_handler(int sig);
 

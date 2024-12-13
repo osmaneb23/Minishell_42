@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/12 22:59:55 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/13 19:26:18 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,24 @@ t_env	*find_last_node(t_env *node)
 }
 
 //?OKOK
-//+ Permet de supprimer une noeud dans la liste env
-void	del_node_envp(t_env **envp)
+//+ Permet de supprimer un noeud dans la liste env
+void del_node_envp(t_env **envp)
 {
-	t_env	*del_node;
-	t_env	*new_next;
+    t_env *del_node;
+    t_env *new_next;
+    t_data *data;
 
-	if (envp == NULL)
-		return ;
-	del_node = *envp;
-	new_next = del_node->next;
-	if (new_next)
-		new_next->prev = del_node->prev;
-	if (del_node->prev)
-		del_node->prev->next = new_next;
-	*envp = new_next;
-	del_node->next = NULL;
-	del_node->prev = NULL;
+    if (envp == NULL || *envp == NULL)
+        return;
+    data = get_data();
+    del_node = *envp;
+    new_next = del_node->next;
+    if (new_next)
+        new_next->prev = del_node->prev;
+    if (del_node->prev)
+        del_node->prev->next = new_next;
+    else
+        data->envp = new_next;
     free(del_node);
 }
 
@@ -95,17 +96,20 @@ int init_env_if_le_correcteur_clc(t_data* data)
 {
 	char	path[PATH_MAX];
 	char	*tmp;
-    
-    tmp = ft_strdup("OLDPWD");
-    if (!tmp || append_node_envp(&data->envp, tmp) == ERROR || getcwd(path, PATH_MAX) == NULL)
-        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
+
+    if (getcwd(path, PATH_MAX) == NULL)
+        return (1);
+        
     tmp = ft_strjoin("PWD=", path);
     if (!tmp || append_node_envp(&data->envp, tmp) == ERROR)
-        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
+        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));    
     tmp = ft_strdup("SHLVL=1");
     if (!tmp || append_node_envp(&data->envp, tmp) == ERROR)
         return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
     tmp = ft_strdup("_=/usr/bin/env");
+    if (!tmp || append_node_envp(&data->envp, tmp) == ERROR)
+        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
+    tmp = ft_strdup("OLDPWD");
     if (!tmp || append_node_envp(&data->envp, tmp) == ERROR)
         return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); 
     return (SUCCESS);

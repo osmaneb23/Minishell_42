@@ -29,13 +29,12 @@ int search_and_del(char *var)
     tmp = data->envp;
     while (tmp != NULL)
     {
-        t_env *next = tmp->next; // Stocker le prochain élément
         if (ft_strncmp(var, tmp->line, len) == 0)
         {
-            del_node_envp(&(data->envp)); // Passer l'adresse de la tête globale
+            del_node_envp(&(tmp)); // Passer l'adresse de la tête globale
             return (SUCCESS);
         }
-        tmp = next; // Utiliser le pointeur stocké
+        tmp = tmp->next; 
     }
     return (ERROR);
 }
@@ -47,8 +46,8 @@ int	ft_unset(char **cmd_param)
 	{    
         if (strcmp(cmd_param[1], "_") == 0) // NON WALLAH MERCI BASH POSIX
             return (SUCCESS);
-		if (search_and_del(cmd_param[1]) == SUCCESS){
-			return (SUCCESS);}
+		if (search_and_del(cmd_param[1]) == SUCCESS)
+			return (SUCCESS);
 		else
 			printf("minishell: unset: %s not found\n", cmd_param[1]); // conforama utilisateur
 	}

@@ -89,9 +89,8 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 	{
 		if (cmd->cmd_param && cmd->cmd_param[0])
 			child_process(cmd, pip, env);
-		else{
-			close_all_redi(data);
-			destroy_child_process(SUCCESS, env);} // MY HERO //! +rajouter free pour heredoc???
+		else
+			destroy_child_process(SUCCESS, env); // MY HERO //! +rajouter free pour heredoc???
 	}
 	else
 	{
@@ -109,7 +108,7 @@ int	exec(t_data *data)
 
 	tmp = data->cmd;
 	pip = data->pip;
-	if (tmp->skip_cmd == false && (tmp->cmd_param[0]) && cmd_list_len(data->cmd) == 1)
+	if (tmp->skip_cmd == false && tmp->cmd_param[0] && is_builtin(tmp->cmd_param[0]) && cmd_list_len(data->cmd) == 1)
 	{
 		launch_builtin(tmp);
 		if (data->exit_status != SUCCESS)
@@ -152,5 +151,4 @@ int	exec(t_data *data)
 
 //? =======================================================
 // OSMANE:
-//! corriger ft_exit (//strtol)
-//! cas signaux si execute dans minishell (// ctrl-C)
+//? cas signaux si execute dans minishell (// ctrl-C)

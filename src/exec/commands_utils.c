@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:20:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/12 18:21:39 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/13 19:44:48 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ bool there_is_cmd()
     return (false);
 }
 
-
-
 int count_nb_sequences(t_token *token)
 {
     int i;
@@ -84,9 +82,9 @@ int count_nb_sequences(t_token *token)
     }
     if (i == 0) // SI pas de pipe...
     {
-        // if (there_is_cmd() == true)
+        if (there_is_cmd() == true)
             return (1); // 1) il y a au moins une cmd donc une sequence //! cas heredoc de con
-        // return (FAILURE); // 2) il n'y pas de cmd dans une sequence dooooonc nsm
+        return (FAILURE); // 2) il n'y pas de cmd dans une sequence dooooonc nsm
     }
     return (i + 1); // SI presence d'au moins 1 pipe == presence de 2 sequences
 }

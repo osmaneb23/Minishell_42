@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:43:47 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/12 22:39:52 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/13 19:41:34 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,19 @@ int fill_cmd_nodes(t_data *data)
                 return(ERROR);
         if (token && token->type == PIPE)
         {
-            if (!cmd->cmd_param) //! ne change pas de noeud si pas de cmd trouve
-            {    
+            if (!cmd->cmd_param) //! ne change pas de noeud si pas de cmd trouve  
+            {
+                if (cmd->infile != -2) //!
+                {
+                    close(cmd->infile);
+                    cmd->infile = -2;
+                }
+                if (cmd->outfile != -2)
+                {
+                    close(cmd->outfile);
+                    cmd->outfile = -2;
+                }
                 cmd->skip_cmd = true;
-                // cmd->cmd_param = malloc(sizeof(char *) * 3);
-                // cmd->cmd_param[0] = ft_strdup("");
-                // cmd->cmd_param[1] = ft_strdup("");
-                // cmd->cmd_param[2] = ft_strdup("");
             }
             cmd = cmd->next;
         }
