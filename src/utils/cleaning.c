@@ -57,19 +57,17 @@ int	cleanup(int exit_status, char *message, int exit_call, int fd)
 	}
 	if (message)
 		ft_putstr_fd(message, fd);
-	if (exit_call != NO_EXIT)
+	if (exit_call == NO_EXIT && fd != 1)
+		return (exit_status);
+	if (data)
 	{
-		if (data)
-		{
-			if (data->envp)
-				destroy_envp_list(&data->envp);
-			if (data->line)
-				free(data->line);
-		}
-		rl_clear_history();
-		exit(exit_call);
+		if (data->envp)
+			destroy_envp_list(&data->envp);
+		if (data->line)
+			free(data->line);
 	}
-	return (exit_status);
+	rl_clear_history();
+	exit(exit_call);
 }
 
 // Free the data of minishell
