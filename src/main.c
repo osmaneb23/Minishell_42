@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/13 23:55:14 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:26:50 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		main_routine(data, envp);
 		add_history(data->line);
-		free(data->line); // ??
+		free(data->line);
+		data->line = NULL;
 	}
 	rl_clear_history();
 	printf(DEFAULT);

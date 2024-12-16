@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:24 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/13 20:50:35 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:31:40 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	wait_all(t_data *data)
 		}
 		cmd = cmd->next;
 	}
+	data->current_pid = 0;
 	return (SUCCESS);
 }
 

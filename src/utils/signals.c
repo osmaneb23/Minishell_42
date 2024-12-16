@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:11:36 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/13 23:55:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:23:47 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	setup_signals(void)
 {
 	t_data				*data;
 	struct sigaction	sa_int;
-	struct sigaction	sa_quit;
 
 	data = get_data();
 	sa_int.sa_handler = sigint_handler;
@@ -25,12 +24,7 @@ void	setup_signals(void)
 	sa_int.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa_int, NULL) == -1)
 		cleanup(ERROR, "Error: sigaction failed\n", ERROR, 2);
-	sa_quit.sa_handler = sigquit_handler;
-	if (sigemptyset(&sa_quit.sa_mask) == -1)
-		cleanup(ERROR, "Error: sigemptyset failed\n", ERROR, 2);
-	sa_quit.sa_flags = SA_RESTART;
-	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
-		cleanup(ERROR, "Error: sigaction failed\n", ERROR, 2);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	sigint_handler(int sig)
@@ -39,11 +33,10 @@ void	sigint_handler(int sig)
 
 	(void)sig;
 	data = get_data();
-	// Comprendre pq c pas linverse
 	if (data && data->current_pid != 0)
 	{
 		if (kill(data->current_pid, SIGINT) == -1)
-			cleanup(ERROR, "Error: kill failed\n", ERROR, 2);
+			(cleanup(ERROR, "Error: kill failed\n", ERROR, 2));
 		ft_putstr_fd("\n", 2);
 		data->current_pid = 0;
 	}
@@ -71,10 +64,16 @@ void	sigquit_handler(int sig)
 		data->current_pid = 0;
 		data->exit_status = 131;
 	}
-	else
-	{
-		rl_on_new_line();   // Reset to a new line
-    rl_replace_line("", 0); // Clear the input line
-    rl_redisplay();     // Redisplay the prompt
-	}
+}
+
+void	signal_child_process(void)
+{
+	struct sigaction	sa_quit;
+
+	sa_quit.sa_handler = sigquit_handler;
+	if (sigemptyset(&sa_quit.sa_mask) == -1)
+		cleanup(ERROR, "Error: sigemptyset failed\n", ERROR, 2);
+	sa_quit.sa_flags = SA_RESTART;
+	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
+		cleanup(ERROR, "Error: sigaction failed\n", ERROR, 2);
 }

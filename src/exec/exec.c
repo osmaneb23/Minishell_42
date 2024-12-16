@@ -85,6 +85,7 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 	if (!env)
 		return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
 	data->current_pid = fork();
+	signal_child_process();
 	if (data->current_pid == 0)
 	{
 		if (cmd->cmd_param && cmd->cmd_param[0])
@@ -124,6 +125,7 @@ int	exec(t_data *data)
 	}
 	close_all_redi(data);
 	wait_all(data);
+	setup_signals();
 	if (data->exit_status != SUCCESS)
 		return (cleanup(NO_CHANGE, NULL, NO_EXIT, 2));
 	return (SUCCESS);

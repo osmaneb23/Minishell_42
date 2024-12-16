@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/13 23:50:24 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:12:29 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,7 @@ void				setup_signals(void);
 void				setup_heredoc_signals(void);
 void				sigint_handler(int sig);
 void				sigquit_handler(int sig);
+void				signal_child_process(void);
 
 // toolbox.c
 bool				contains_char(char *str, char c);

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/13 22:52:18 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:31:29 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ void	close_all_redi_of_each_nodes(t_data *data)
 			close(cmd->outfile);
 		if (cmd->infile >= 0)
 			close(cmd->infile);
-		data->current_pid = 0;
 		cmd = cmd->next;
 	}
 	cmd = NULL;
