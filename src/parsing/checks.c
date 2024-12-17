@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:43:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/08 18:53:11 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:21:20 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ int	check_valid_commands(t_data *data)
 			else if (check_command_in_path(token->value)
 				|| token->value[0] == '\0')
 			{
-				printf("%s: command not found\n", token->value);
+				print_error("minishell: ");
+				print_error(token->value);
+				print_error(": command not found\n");
 				exit_status = 127;
 			}
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:05:59 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/12 18:17:36 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/17 18:34:04 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ int	export_just_new_var(t_env *envp, char *var)
 			print_error("': not a valid identifier\n"), 1);
 	to_print = ft_strdup(var);
 	if (!to_print)
-		return (cleanup(ERROR, ERR_MALLOC, ERROR, 2)); //ERR_MALLOC
-	append_node_envp(&envp, to_print);
+		return (EXIT_MALLOC);
+	if (append_node_envp(&envp, to_print) != SUCCESS)
+		return (EXIT_MALLOC);
 	return (SUCCESS);
 }
 
@@ -70,45 +71,45 @@ int	export_just_new_var(t_env *envp, char *var)
 //+ ">export VAR=VAL"
 int	export_new_var_and_val(t_env *envp, char *var_and_val, int i)
 {
-	char	*to_print;
-	char	*var;
-	char	*val;
+	char	*to_print, *var, *val;
 
 	var = return_var(var_and_val, i);
 	val = return_val(var_and_val, i);
-	if (!strcmp(var, "") || verif_var_char(var))
-	{
-		print_error("minishell: export: `");
-		print_error(var_and_val);
-		return (free(var), free(val),
+	if (!var | !val)
+		return (EXIT_MALLOC);
+	if (!ft_strcmp(var, "") || verif_var_char(var))
+		return (free(var), free(val), print_error("minishell: export: `"), print_error(var_and_val),
 			print_error("': not a valid identifier\n"), 1); // OKOK
-	}
-	if (!remplace_if_already_exist(var, val))
+	if (remplace_if_already_exist(var, val) != SUCCESS)
 		return (free(val), free(var), SUCCESS);
 	if (ft_strcmp(val, "") == 0)
 	{
 		to_print = join_var_and_val(var, "");
-		return (free(val), free(var), append_node_envp(&envp, to_print),
-			SUCCESS);
+		if (append_node_envp(&envp, to_print) != SUCCESS)
+			return (free(val), free(var), EXIT_MALLOC);
+		return (free(val), free(var), SUCCESS);
 	}
 	to_print = join_var_and_val(var, val);
-	append_node_envp(&envp, to_print);
+	if (append_node_envp(&envp, to_print) != SUCCESS)
+		return (free(val), free(var), EXIT_MALLOC);
 	return (free(val), free(var), SUCCESS);
 }
 
 //?OKOK
 //+ Permet d'afficher les variables exportes
 //+ ">export"
-void	export_just_display(t_data *data)
+bool	export_just_display(t_data *data)
 {
 	int		count;
 	char	**tab_envp;
 
 	count = count_envp_nodes(data->envp);
 	tab_envp = copy_envp_to_tab(data, data->envp);
+	if (!tab_envp)
+		return (false);
 	sort_envp_and_print(tab_envp, count);
 	ft_free_multi_array(tab_envp);
-	//! GESTION RETURN ERR_MALLOC POUR DESTROY_CHILD_PROCESS
+	return (true);
 }
 
 //?OKOK
@@ -124,9 +125,9 @@ int	ft_export(char **cmd_param)
 	i = 0;
 	j = 1;
 	data = get_data();
-	if (ft_strcmp(cmd_param[0], "export") == 0
-		&& ft_multi_array_len(cmd_param) == 1)
-		return (export_just_display(data), SUCCESS); //!
+	if (ft_strcmp(cmd_param[0], "export") == 0 && ft_multi_array_len(cmd_param) == 1)
+		if (!export_just_display(data))
+			return (EXIT_MALLOC);
 	while (cmd_param[j])
 	{
 		i = search_egal_symbol(cmd_param[j]);

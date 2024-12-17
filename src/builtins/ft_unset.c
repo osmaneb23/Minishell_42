@@ -48,7 +48,7 @@ int	ft_unset(char **cmd_param)
             return (SUCCESS);
 		if (search_and_del(cmd_param[1]) == SUCCESS)
 			return (SUCCESS);
-		else
+		else // sur sortie standard comme pas compter comme une erreur //exit-status a 0??
 			printf("minishell: unset: %s not found\n", cmd_param[1]); // conforama utilisateur
 	}
 	return (SUCCESS);

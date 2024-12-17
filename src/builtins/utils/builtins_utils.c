@@ -7,6 +7,8 @@ void	ft_free_multi_array(char **tabtab)
 	int	i;
 
 	i = 0;
+	if (!tabtab)
+		return ;
 	while (tabtab[i])
 	{
 		free(tabtab[i]);
@@ -23,6 +25,8 @@ int	ft_multi_array_len(char **s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (i);
 	while (s[i] != NULL)
 		i++;
 	return (i);
@@ -43,7 +47,7 @@ char	*join_var_and_val(char const *s1, char const *s2)
 		return (NULL);
 	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
 	if (!str)
-		return (cleanup(ERROR, ERR_MALLOC, ERROR, 2), NULL);
+		return (NULL);
 	while (s1[i])
 	{
 		str[i] = s1[i];
@@ -57,7 +61,7 @@ char	*join_var_and_val(char const *s1, char const *s2)
 		i++;
 		j++;
 	}
-	str[i] = 0;
+	str[i] = '\0';
 	return (str);
 }
 

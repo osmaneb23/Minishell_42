@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/16 17:12:29 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:34:20 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define NO_EXIT -42
 # define NO_CHANGE -42
 
-# define EXIT_MALLOC -42
+# define EXIT_MALLOC 125
 
 # define INPUT 1   // <
 # define HEREDOC 2 // <<
@@ -123,6 +123,13 @@ typedef struct s_data
 	pid_t			current_pid;
 }					t_data;
 
+
+
+
+bool is_valid_cmd(char *cmd);
+
+
+
 /* ************************************************************************** */
 /*                                    MAIN                                    */
 /* ************************************************************************** */
@@ -156,7 +163,7 @@ void					print_export_line(char *line);
 int					export_just_new_var(t_env *envp, char *var);
 int					export_new_var_and_val(t_env *envp, char *var_and_val,
 						int i);
-void					export_just_display(t_data *data);
+bool					export_just_display(t_data *data);
 int					ft_export(char **cmd_param);
 
 // ft_exit.c
@@ -221,8 +228,8 @@ void				exec_builtin(char **cmd);
 void				launch_builtin(t_cmd *cmd);
 
 // commands.c
-int					count_cmd_param(t_token *og_token);
-char				**init_cmd_param(t_token *og_token);
+int					count_cmd_param(t_token *token);
+char				**init_cmd_param(t_token *token);
 int					fill_cmd_nodes(t_data *data);
 int					init_cmd_nodes(t_data *data);
 int					init_cmd(t_data *data);
@@ -237,8 +244,9 @@ void				free_all_cmd_nodes(t_cmd **cmd_list);
 // gestion_redirections.c
 int					close_all_redi(t_data *data);
 void				close_all_redi_of_each_nodes(t_data *data);
-int					fill_cmd_nodes_redirections(t_cmd *cmd, t_token *token);
+int					fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token);
 int					init_file(t_cmd *cmd, char *filename, int type);
+void 				close_null_sq();
 
 /* ************************************************************************** */
 /*                                  PARSING                                   */

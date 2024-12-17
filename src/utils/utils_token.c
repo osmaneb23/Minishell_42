@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:54:43 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/03 17:53:55 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 02:14:09 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*return_new_value(char *value, bool squote_open, bool dquote_open)
 	j = 0;
 	new_value = malloc(ft_strlen(value) + 1);
 	if (!new_value)
-		cleanup(ERROR, ERR_MALLOC, ERROR, 2);
+		return (NULL);
 	while (value[i])
 	{
 		if (value[i] == '\'' && !dquote_open)

@@ -6,7 +6,7 @@
 /*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:13:34 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/12 15:22:42 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/17 00:33:15 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ char	*search_env_var(char *var)
 		if (ft_strncmp(var, tmp->line, len) == 0 && tmp->line[len] == '=')
 		{
 			value = malloc(ft_strlen(tmp->line + len + 1) + 1);
-			if (!value)
-				cleanup(ERROR, ERR_MALLOC, ERROR, 2); //! oui?
+			if (!value) 
+				return (NULL); //?OKOK
 			ft_strcpy(value, tmp->line + len + 1);
 			return (value);
 		}
@@ -52,7 +52,7 @@ bool	change_cd_env_var(char *symbole)
 	{
 		path = "HOME";
 		res = search_env_var(path);
-		if (!res)
+		if (!res) //?OKOK
 			return (print_error("minishell: cd: "), print_error(path),
 				print_error(" not set\n"), 1); // OKOK?
 	}
@@ -60,7 +60,7 @@ bool	change_cd_env_var(char *symbole)
 	{
 		path = "OLDPWD";
 		res = search_env_var(path);
-		if (!res)
+		if (!res) //?OKOK
 			return (print_error("minishell: cd: "), print_error(path),
 				print_error(" not set\n"), 1);
 		printf("%s\n", res);
@@ -78,7 +78,8 @@ int	change_cd(char *direction)
 	int exit_status;
 
 	exit_status = 0;
-	getcwd(oldpwd, PATH_MAX);
+	if (!getcwd(pwd, PATH_MAX))
+		return (print_error("Error: getcwd\n"), 1);
 	if (ft_strcmp(direction, "") == 0 || ft_strcmp(direction, "~") == 0
 		|| ft_strcmp(direction, "--") == 0 || ft_strcmp(direction, "-") == 0)
 		exit_status = change_cd_env_var(direction);
@@ -89,15 +90,19 @@ int	change_cd(char *direction)
 		print_error(": No such file or directory\n");
 		return (1);
 	}
-	remplace_if_already_exist("OLDPWD", oldpwd); //! CAS SI OLDPWD N'EXISTE PAS
-	getcwd(pwd, PATH_MAX);
-	remplace_if_already_exist("PWD", pwd); //! CAS SI PWD N'EXISTE PAS
+	if (remplace_if_already_exist("OLDPWD", oldpwd) == EXIT_MALLOC)
+		return (EXIT_MALLOC);
+	if (!getcwd(pwd, PATH_MAX))
+		return (print_error("Error: getcwd\n"), 1);
+	if (remplace_if_already_exist("PWD", oldpwd) == EXIT_MALLOC)
+		return (EXIT_MALLOC);
 	return (exit_status);
 }
 
 // exit status OKOK
 int	ft_cd(char **cmd_param)
 {
+	return (EXIT_MALLOC);
 	int		nbr_param;
 
 	nbr_param = ft_multi_array_len(cmd_param);

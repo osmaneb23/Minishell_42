@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:07:10 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/11 18:01:15 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:34:14 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*return_var(char *var_and_val, int limit)
 	start = 0;
 	var = (char *)malloc(sizeof(char) * (limit + 1));
 	if (!var)
-		cleanup(ERROR, ERR_MALLOC, ERROR, 2); // ERR_MALLOC
+		return (NULL);
 	while (start < limit)
 	{
 		var[start] = var_and_val[start];
@@ -54,7 +54,7 @@ char	*return_val(char *var_and_val, int start)
 	limit = ft_strlen(var_and_val);
 	val = (char *)malloc(sizeof(char) * (limit - start));
 	if (!val)
-		cleanup(ERROR, ERR_MALLOC, ERROR, 2); // ERR_MALLOC
+		return (NULL);
 	start++;
 	while (start < limit)
 	{

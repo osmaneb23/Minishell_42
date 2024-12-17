@@ -24,7 +24,7 @@ LIBFT = Libft/libft.a
 
 SRC_DIR = src
 OBJ_DIR = obj
-INCLUDES = includes/minishell.h
+INCLUDES = includes
 
 SRCS = main.c \
        parsing/checks.c \

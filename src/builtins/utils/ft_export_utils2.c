@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:08:32 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/11 22:50:35 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 02:17:26 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	remplace_if_already_exist(char *var, char *val)
 		if (ft_strncmp(var, tmp->line, len) == 0)
 		{
 			to_print = join_var_and_val(var, val);
+			if (!to_print)
+				return(EXIT_MALLOC);
 			tmp->line = to_print;
 			return (SUCCESS);
 		}
@@ -122,13 +124,12 @@ char	**copy_envp_to_tab(t_data *data, t_env *envp)
 		return (NULL);
 	env_tab = malloc((count + 1) * sizeof(char *));
 	if (!env_tab)
-		cleanup(ERROR, ERR_MALLOC, ERROR, 2); //ERR_MALLOC
+		return (NULL);
 	while (i < count)
 	{
 		env_tab[i] = ft_strdup(tmp->line);
 		if (!env_tab[i])
-			return (ft_free_multi_array(env_tab), cleanup(ERROR, ERR_MALLOC,
-					ERROR, 2), NULL); //ERR_MALLOC
+			return (NULL); //ERR_MALLOC
 		tmp = tmp->next;
 		i++;
 	}

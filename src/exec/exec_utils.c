@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:24 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/16 17:31:40 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:14:28 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	wait_all(t_data *data)
 		{
 			if (WIFEXITED(status))
 				data->exit_status = WEXITSTATUS(status);
+			if (data->exit_status == EXIT_MALLOC)
+				cleanup(EXIT_MALLOC, ERR_MALLOC, EXIT_MALLOC, 2);
 		}
 		cmd = cmd->next;
 	}

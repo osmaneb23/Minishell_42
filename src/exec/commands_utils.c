@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:20:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/13 19:44:48 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:18:54 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,12 @@ int count_nb_sequences(t_token *token)
     }
     if (i == 0) // SI pas de pipe...
     {
-        if (there_is_cmd() == true)
-            return (1); // 1) il y a au moins une cmd donc une sequence //! cas heredoc de con
-        return (FAILURE); // 2) il n'y pas de cmd dans une sequence dooooonc nsm
+        // if (there_is_cmd() == true)
+            return (1); // 1) il y a au moins une cmd donc une sequence //! cas heredoc de con //! au final NON
+        // return (is_null_sq_heredoc(), FAILURE); // 2) il n'y pas de cmd dans une sequence dooooonc nsm
     }
     return (i + 1); // SI presence d'au moins 1 pipe == presence de 2 sequences
 }
-
-
 
 t_cmd	*return_last_cmd_node(t_cmd *command)
 {

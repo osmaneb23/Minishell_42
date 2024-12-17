@@ -65,10 +65,11 @@ void	child_process(t_cmd *cmd, int *pip, char **env)
 		redirect_input_output(cmd, pip);
 		if (access(cmd->cmd_param[0], X_OK) == 0)
 			execve(cmd->cmd_param[0], cmd->cmd_param, env);
-		//! signaux avec ./minishell
 		else
 		{
 			path = return_command_in_path(cmd->cmd_param[0]);
+			if (!path)
+				destroy_child_process(EXIT_MALLOC, env);
 			execve(path, cmd->cmd_param, env);
 			free(path);
 		}
@@ -83,7 +84,7 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 
 	env = copy_envp_to_tab(data, data->envp);
 	if (!env)
-		return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
+		return (close_all_redi(data), cleanup(ERROR, ERR_MALLOC, ERROR, 2)); //? OKOK
 	data->current_pid = fork();
 	signal_child_process();
 	if (data->current_pid == 0)
@@ -91,7 +92,7 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 		if (cmd->cmd_param && cmd->cmd_param[0])
 			child_process(cmd, pip, env);
 		else
-			destroy_child_process(SUCCESS, env); // MY HERO //! +rajouter free pour heredoc???
+			destroy_child_process(SUCCESS, env); // MY HERO 
 	}
 	else
 	{
@@ -109,13 +110,17 @@ int	exec(t_data *data)
 
 	tmp = data->cmd;
 	pip = data->pip;
-	if (tmp->skip_cmd == false && tmp->cmd_param[0] && is_builtin(tmp->cmd_param[0]) && cmd_list_len(data->cmd) == 1)
+	if (!tmp->skip_cmd && tmp->cmd_param && tmp->cmd_param[0] && is_builtin(tmp->cmd_param[0]) && cmd_list_len(data->cmd) == 1) //verif tmp->cmd_param pour "<< LIMITER"
 	{
+		printf("=======launch-builtin=======\n");
 		launch_builtin(tmp);
+		if (data->exit_status == EXIT_MALLOC)
+			cleanup(EXIT_MALLOC, ERR_MALLOC, EXIT_MALLOC, 2); //!
 		if (data->exit_status != SUCCESS)
 			return (cleanup(NO_CHANGE, NULL, NO_EXIT, 2));
 		return (SUCCESS);
 	}
+	printf("=======pipex=======\n");
 	while (tmp)
 	{
 		if (pipe(pip) == -1)
@@ -138,19 +143,33 @@ int	exec(t_data *data)
 // FEHIM:
 //* corriger appel chemin absolu et executable
 //* revoir comportement builtin // repertoire courant (ASKIP)
-
 //* secu si envp entierement unset
+//* revoir exit status de chaque builtins
+//* corriger cmd_init (// "< infile | wc" ==> cas d'encule)
+//* cas "<< LIMITER" rajouter heredoc pour sq seule et sans commande
+//* faire au propre no such file or directory dans init_commands
+//* revoir return ERR malloc...etc dans exec
 
-//! revoir exit status de chaque builtins
-//! revoir return ERR malloc...etc dans exec
+//! reeeeeeee tester export
 
-//! corriger cmd_init (// "< infile | wc" ==> cas d'encule)
+//! rajouter close redi dans exec_cmd
 
+//! RAJOUTER CA DANS LES FREE DE FIN DE FN
+	//! if (!access(".heredoc.tmp", F_OK))
+	//! 	unlink(".heredoc.tmp");
 
-	// if (!access(".heredoc.tmp", F_OK))
-	// 	unlink(".heredoc.tmp");
-	// RAJOUTER CA DANS LES FREE DE FIN DE FN
+//! changer printf en print_error si besoin
 
 //? =======================================================
-// OSMANE:
-//? cas signaux si execute dans minishell (// ctrl-C)
+
+
+
+
+// Among these, exit status 125 is a special case. It is typically reserved but not explicitly 
+// used by POSIX bash for a specific predefined purpose. While other exit statuses have defined 
+// meanings (like 126 and 127 for execution errors), 125 remains somewhat unique in that it's 
+// available but not standardized for a particular system-level function.
+// Programmers sometimes use exit status 125 as a convention to indicate a "soft" or controlled 
+// failure that differs from more critical errors, but this is not a POSIX-mandated standard. 
+// It's essentially a "free" exit code that can be used flexibly in shell scripts without conflicting 
+// with system-defined meanings.

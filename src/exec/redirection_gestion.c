@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/16 17:31:29 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:14:03 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,39 +37,37 @@ int	init_file(t_cmd *cmd, char *filename, int type)
 	return (SUCCESS);
 }
 
-//*OKOK
-//? Initialise ou remplace la redirection d'entree ou de sortie
-int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token *token)
+bool is_valid_cmd(char *cmd)
 {
-	if (token->next->type == ARG && token->type == HEREDOC)
+	if (check_command_in_path(cmd) == SUCCESS || is_builtin(cmd) == true || access(cmd, X_OK) == 0)
+		return (true);
+	return (false);
+}
+
+int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
+{
+	bool is_pipe;
+	
+	is_pipe = false;
+	while ((*real_token)->type >= 1 && (*real_token)->type <= 4)
 	{
-		if (heredoc(cmd, token->next->value) != SUCCESS)
-			return (ERROR);
-		if (token->next->next) // MON PRECIEUX
-			token = token->next->next;
-		if ((!token->prev || token->prev->type == PIPE) && token->type == ARG
-			&& (check_command_in_path(token->value) == SUCCESS
-				|| is_builtin(token->value) == true))
-			token->type = CMD;
-		printf("\n"); // a supp ? pour rendre lisible plusieurs heredoc
+		if ((*real_token)->type == HEREDOC)
+			if (heredoc(cmd, (*real_token)->next->value) != SUCCESS)
+				return (ERROR);
+		if ((*real_token)->type == INPUT || (*real_token)->type == TRUNC || (*real_token)->type >= APPEND)
+			if (init_file(cmd, (*real_token)->next->value, (*real_token)->type) != SUCCESS)
+				return (ERROR);
+		if ((*real_token)->prev && (*real_token)->prev->type == PIPE)
+			is_pipe = true;
+		if ((*real_token)->next->next) // MON PRECIEUX
+		{
+			(*real_token) = (*real_token)->next->next;
+			if ((!cmd->prev || is_pipe == true) && (*real_token)->type == ARG && is_valid_cmd((*real_token)->value) == true)
+				(*real_token)->type = CMD; 
+		}
+		else
+			return (SUCCESS);
 	}
-	if (access(token->next->value, F_OK) == 0)
-	{
-		if (init_file(cmd, token->next->value, token->type) != SUCCESS)
-			return (ERROR);
-		if (token->next->next) // MON PRECIEUX
-			token = token->next->next;
-		if ((!token->prev || token->prev->type == PIPE) && token->type == ARG
-			&& (check_command_in_path(token->value) == SUCCESS
-				|| is_builtin(token->value) == true))
-			token->type = CMD;
-	}
-	else
-	{
-		printf("minishell: %s: No such file or directory\n",
-			token->next->value); //!
-		exit(0);
-	} //!
 	return (SUCCESS);
 }
 
@@ -115,6 +113,31 @@ void	close_all_redi_of_each_nodes(t_data *data)
 		cmd = cmd->next;
 	}
 	cmd = NULL;
-	// printf("WATI-FREE-SUCCESS\n\n");
-	// free les nodes (+ prev next) une par une en + ou deja fait ?
+}
+
+void close_null_sq()
+{
+    t_data * data;
+    t_cmd *tmp;
+    
+    data = get_data();
+    tmp = data->cmd;
+    while (tmp)
+    {
+        if (!tmp->cmd_param)
+        {  
+            if (tmp->infile > -2)
+            {
+                close(tmp->infile);
+                tmp->infile = -2;
+            }
+            if (tmp->outfile > -2)
+            {
+                close(tmp->outfile);
+                tmp->outfile = -2;
+            }
+            tmp->skip_cmd = true;
+        }
+        tmp = tmp->next;
+    }
 }

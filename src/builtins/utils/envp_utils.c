@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/16 17:28:02 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 01:27:58 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ int append_node_envp(t_env **envp, char *line)
     t_env *new_node;
     t_env *last_node;
 
-    if (!envp)
+    if (!envp || !line)
         return (ERROR);
     new_node = malloc(sizeof(t_env));
     if (!new_node)
-        return (cleanup(ERROR, ERR_MALLOC, ERROR, 2));
+        return (ERROR);
     new_node->next = NULL;
     new_node->line = line;
     if (*envp == NULL)
