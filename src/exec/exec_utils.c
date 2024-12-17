@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:24 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 18:14:28 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 23:03:54 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	wait_all(t_data *data)
 		pid = waitpid(0, &status, 0);
 		if (pid == -1)
 			return (cleanup(ERROR, ERR_WAIT, ERROR, 2));
-		if (pid == data->current_pid) // verifie s'il s'agit du id de fork
+		if (pid == data->current_pid)
 		{
 			if (WIFEXITED(status))
 				data->exit_status = WEXITSTATUS(status);
@@ -101,12 +101,15 @@ char	*return_command_in_path(char *command)
 	{
 		full_path = check_solo_path(dir, command);
 		if (full_path)
-		{
-			free(original_ptr);
-			return (full_path);
-		}
+			return (free(original_ptr), full_path);
 		dir = get_path_next(&path_copy);
 	}
 	free(original_ptr);
 	return (NULL);
+}
+
+void	print_error(char *str)
+{
+	if (str)
+		write(2, str, ft_strlen(str));
 }

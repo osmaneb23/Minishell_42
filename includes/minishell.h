@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/17 18:34:20 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 23:07:31 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,18 @@
 # include "../Libft/get_next_line.h" // get_next_line
 # include "../Libft/libft.h"         // libft
 # include <fcntl.h>                  // open, close
-# include <linux/limits.h>           // INT_MAX, INT_MIN, PATH_MAX etc
-# include <stdio.h>                  // printf
-# include <readline/history.h>       // add_history
-# include <readline/readline.h>      // readline
-# include <signal.h>                 // signal
-# include <stdbool.h>                // bool
-# include <stdlib.h>                 // malloc, free, exit
-# include <sys/stat.h>               // stat
-# include <sys/types.h>              // pid_t
-# include <sys/wait.h>               // waitpid
-# include <unistd.h>                 // execve, fork, pipe
 # include <limits.h>
+# include <linux/limits.h>      // INT_MAX, INT_MIN, PATH_MAX etc
+# include <readline/history.h>  // add_history
+# include <readline/readline.h> // readline
+# include <signal.h>            // signal
+# include <stdbool.h>           // bool
+# include <stdio.h>             // printf
+# include <stdlib.h>            // malloc, free, exit
+# include <sys/stat.h>          // stat
+# include <sys/types.h>         // pid_t
+# include <sys/wait.h>          // waitpid
+# include <unistd.h>            // execve, fork, pipe
 
 # define SUCCESS 0
 # define ERROR 1
@@ -39,13 +39,13 @@
 
 # define EXIT_MALLOC 125
 
-# define INPUT 1   // <
-# define HEREDOC 2 // <<
-# define TRUNC 3   // >
-# define APPEND 4  // >>
-# define PIPE 5    // |
-# define CMD 6     // command
-# define ARG 7     // argument
+# define INPUT 1   // # <
+# define HEREDOC 2 // # <<
+# define TRUNC 3   // # >
+# define APPEND 4  // # >>
+# define PIPE 5    // # |
+# define CMD 6     // # command
+# define ARG 7     // # argument
 
 # define ERR_MALLOC "Error: malloc failed\n"
 # define ERR_PIPE "Error: pipe failed\n"
@@ -123,13 +123,6 @@ typedef struct s_data
 	pid_t			current_pid;
 }					t_data;
 
-
-
-
-bool is_valid_cmd(char *cmd);
-
-
-
 /* ************************************************************************** */
 /*                                    MAIN                                    */
 /* ************************************************************************** */
@@ -137,7 +130,7 @@ bool is_valid_cmd(char *cmd);
 void				init_env(t_data *data, char **env);
 void				replace_var_val(t_data *data);
 bool				main_routine(t_data *data, char **envp);
-bool				print_error(char *str);
+void				print_error(char *str);
 
 /* ************************************************************************** */
 /*                                    BUILTINS                                */
@@ -159,11 +152,11 @@ int					change_cd(char *direction);
 int					ft_cd(char **cmd_param);
 
 // ft_export.c
-void					print_export_line(char *line);
+void				print_export_line(char *line);
 int					export_just_new_var(t_env *envp, char *var);
 int					export_new_var_and_val(t_env *envp, char *var_and_val,
 						int i);
-bool					export_just_display(t_data *data);
+bool				export_just_display(t_data *data);
 int					ft_export(char **cmd_param);
 
 // ft_exit.c
@@ -179,7 +172,7 @@ int					ft_echo(char **cmd_param);
 // builtins_utils.c
 void				ft_free_multi_array(char **tabtab);
 int					ft_multi_array_len(char **s);
-char				*join_var_and_val(char const *s1, char const *s2);
+char				*join_var_and_val(char *s1, char *s2);
 int					count_envp_nodes(t_env *envp);
 
 // envp_utils.c
@@ -195,10 +188,10 @@ char				*return_var(char *var_and_val, int limit);
 char				*return_val(char *var_and_val, int start);
 
 // ft_export_utils2.c
-bool					verif_var_char(char *var);
+bool				verif_var_char(char *var);
 int					remplace_if_already_exist(char *var, char *val);
-void					envp_tab_bubble_sort(char **envp, int count);
-void					sort_envp_and_print(char **envp, int count);
+void				envp_tab_bubble_sort(char **envp, int count);
+void				sort_envp_and_print(char **envp, int count);
 char				**copy_envp_to_tab(t_data *data, t_env *envp);
 
 /* ************************************************************************** */
@@ -206,11 +199,11 @@ char				**copy_envp_to_tab(t_data *data, t_env *envp);
 /* ************************************************************************** */
 
 // exec.c
-void					redirect_input_output(t_cmd *cmd, int *pip);
-void					parent_process(int *pip, t_cmd *next_cmd);
-void					child_process(t_cmd *cmd, int *pip, char **env);
+void				redirect_input_output(t_cmd *cmd, int *pip);
+void				parent_process(int *pip, t_cmd *next_cmd);
+void				child_process(t_cmd *cmd, int *pip, char **env);
 int					exec_cmd(t_data *data, t_cmd *cmd, int *pip);
-int					exec(t_data *data);
+int					exec(t_data *data, t_cmd *cmd, int *pip);
 
 // exec_utils.c
 int					wait_all(t_data *data);
@@ -226,27 +219,33 @@ int					heredoc(t_cmd *cmd, char *limiter);
 // launch_builtin.c
 void				exec_builtin(char **cmd);
 void				launch_builtin(t_cmd *cmd);
+bool				is_valid_cmd(char *cmd);
+void				print_error(char *str);
 
 // commands.c
 int					count_cmd_param(t_token *token);
 char				**init_cmd_param(t_token *token);
-int					fill_cmd_nodes(t_data *data);
+int					fill_cmd_nodes(t_cmd *cmd, t_token *token);
 int					init_cmd_nodes(t_data *data);
 int					init_cmd(t_data *data);
 
 // commands_utils.c
+int					check_access_redirections(t_data *data);
+int					count_cmd_param(t_token *token);
+int					count_nb_sequences(t_token *token);
+
+// envp_commands_utils.c
 int					cmd_list_len(t_cmd *cmd);
 int					add_cmd_to_list(t_cmd *cmd, t_cmd *data_cmd);
-int					count_nb_sequences(t_token *token);
 t_cmd				*return_last_cmd_node(t_cmd *command);
-void				free_all_cmd_nodes(t_cmd **cmd_list);
 
 // gestion_redirections.c
+void				redirect_input_output(t_cmd *cmd, int *pip);
 int					close_all_redi(t_data *data);
-void				close_all_redi_of_each_nodes(t_data *data);
-int					fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token);
+int					fill_cmd_nodes_redirections(t_cmd *cmd,
+						t_token **real_token);
 int					init_file(t_cmd *cmd, char *filename, int type);
-void 				close_null_sq();
+void				close_null_sq(void);
 
 /* ************************************************************************** */
 /*                                  PARSING                                   */

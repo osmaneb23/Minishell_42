@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/17 22:11:15 by obouayed          #+#    #+#             */
+/*   Updated: 2024/12/17 22:13:12 by obouayed         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 //?OKOK
@@ -36,33 +48,21 @@ int	ft_multi_array_len(char **s)
 //+ Permet de joindre une VAR, un '=' ainsi qu'une VAL
 //+ Retourne le resultat
 //+ 2 == = et 0
-char	*join_var_and_val(char const *s1, char const *s2)
+char	*join_var_and_val(char *var, char *val)
 {
-	char	*str;
+	char	*to_print;
+	size_t	len_var;
+	size_t	len_val;
 
-	int i, j;
-	i = 0;
-	j = 0;
-	if (s1 == NULL || s2 == NULL)
+	len_var = ft_strlen(var);
+	len_val = ft_strlen(val);
+	to_print = malloc(len_var + 1 + len_val + 1);
+	if (!to_print)
 		return (NULL);
-	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
-	if (!str)
-		return (NULL);
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	str[i] = '=';
-	i++;
-	while (s2[j])
-	{
-		str[i] = s2[j];
-		i++;
-		j++;
-	}
-	str[i] = '\0';
-	return (str);
+	ft_strcpy(to_print, var);
+	to_print[len_var] = '=';
+	ft_strcpy(to_print + len_var + 1, val);
+	return (to_print);
 }
 
 //?OKOK

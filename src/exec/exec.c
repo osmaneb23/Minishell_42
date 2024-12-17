@@ -1,20 +1,16 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/17 22:19:49 by obouayed          #+#    #+#             */
+/*   Updated: 2024/12/17 23:31:22 by obouayed         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	redirect_input_output(t_cmd *cmd, int *pip)
-{
-	if (cmd->infile >= 0) // si redirection d'entree de precisee ?
-	{
-		dup2(cmd->infile, STDIN_FILENO);
-		close(cmd->infile);
-	}
-	if (cmd->outfile >= 0)
-	{
-		dup2(cmd->outfile, STDOUT_FILENO); // si redirection de sortie de precisee ? + //! secu
-		close(cmd->outfile);
-	}
-	else if (cmd->next != NULL) // si cmd n'est pas la derniere cmd
-		dup2(pip[1], STDOUT_FILENO);
-}
+#include "../../includes/minishell.h"
 
 void	parent_process(int *pip, t_cmd *next_cmd)
 {
@@ -55,14 +51,11 @@ void	child_process(t_cmd *cmd, int *pip, char **env)
 		close(pip[0]);
 	if (cmd->outfile < 0 && cmd->next != NULL)
 		cmd->outfile = pip[1];
+	redirect_input_output(cmd, pip);
 	if (is_builtin(cmd->cmd_param[0]))
-	{
-		redirect_input_output(cmd, pip);
 		exec_builtin(cmd->cmd_param);
-	}
 	else
 	{
-		redirect_input_output(cmd, pip);
 		if (access(cmd->cmd_param[0], X_OK) == 0)
 			execve(cmd->cmd_param[0], cmd->cmd_param, env);
 		else
@@ -77,14 +70,13 @@ void	child_process(t_cmd *cmd, int *pip, char **env)
 	destroy_child_process(data->exit_status, env);
 }
 
-
 int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 {
 	char	**env;
 
 	env = copy_envp_to_tab(data, data->envp);
 	if (!env)
-		return (close_all_redi(data), cleanup(ERROR, ERR_MALLOC, ERROR, 2)); //? OKOK
+		return (close_all_redi(data), cleanup(ERROR, ERR_MALLOC, ERROR, 2));
 	data->current_pid = fork();
 	signal_child_process();
 	if (data->current_pid == 0)
@@ -92,7 +84,7 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 		if (cmd->cmd_param && cmd->cmd_param[0])
 			child_process(cmd, pip, env);
 		else
-			destroy_child_process(SUCCESS, env); // MY HERO 
+			destroy_child_process(SUCCESS, env);
 	}
 	else
 	{
@@ -103,30 +95,26 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 	return (SUCCESS);
 }
 
-int	exec(t_data *data)
+int	exec(t_data *data, t_cmd *cmd, int *pip)
 {
-	t_cmd	*tmp;
-	int		*pip;
-
-	tmp = data->cmd;
-	pip = data->pip;
-	if (!tmp->skip_cmd && tmp->cmd_param && tmp->cmd_param[0] && is_builtin(tmp->cmd_param[0]) && cmd_list_len(data->cmd) == 1) //verif tmp->cmd_param pour "<< LIMITER"
+	if (!cmd->skip_cmd && cmd->cmd_param && cmd->cmd_param[0]
+		&& is_builtin(cmd->cmd_param[0]) && cmd_list_len(data->cmd) == 1)
 	{
-		printf("=======launch-builtin=======\n");
-		launch_builtin(tmp);
+		launch_builtin(cmd);
+		if (cmd->infile >= 0)
+			close(cmd->infile);
 		if (data->exit_status == EXIT_MALLOC)
-			cleanup(EXIT_MALLOC, ERR_MALLOC, EXIT_MALLOC, 2); //!
+			return (cleanup(EXIT_MALLOC, ERR_MALLOC, EXIT_MALLOC, 2));
 		if (data->exit_status != SUCCESS)
 			return (cleanup(NO_CHANGE, NULL, NO_EXIT, 2));
 		return (SUCCESS);
 	}
-	printf("=======pipex=======\n");
-	while (tmp)
+	while (cmd)
 	{
 		if (pipe(pip) == -1)
 			return (cleanup(ERROR, ERR_PIPE, ERROR, 2));
-		exec_cmd(data, tmp, pip);
-		tmp = tmp->next;
+		exec_cmd(data, cmd, pip);
+		cmd = cmd->next;
 	}
 	close_all_redi(data);
 	wait_all(data);
@@ -139,37 +127,13 @@ int	exec(t_data *data)
 // WIFEXITED ==> verifie le status
 // WEXITSTATUS ==> retourne l'exit_status
 
-//? =======================================================
+//? =======================================
 // FEHIM:
-//* corriger appel chemin absolu et executable
-//* revoir comportement builtin // repertoire courant (ASKIP)
-//* secu si envp entierement unset
-//* revoir exit status de chaque builtins
-//* corriger cmd_init (// "< infile | wc" ==> cas d'encule)
-//* cas "<< LIMITER" rajouter heredoc pour sq seule et sans commande
-//* faire au propre no such file or directory dans init_commands
-//* revoir return ERR malloc...etc dans exec
-
-//! reeeeeeee tester export
-
 //! rajouter close redi dans exec_cmd
 
-//! RAJOUTER CA DANS LES FREE DE FIN DE FN
-	//! if (!access(".heredoc.tmp", F_OK))
-	//! 	unlink(".heredoc.tmp");
+//! check_access_redirections ==> exit status pas prit en compte
 
-//! changer printf en print_error si besoin
-
-//? =======================================================
-
-
-
-
-// Among these, exit status 125 is a special case. It is typically reserved but not explicitly 
-// used by POSIX bash for a specific predefined purpose. While other exit statuses have defined 
-// meanings (like 126 and 127 for execution errors), 125 remains somewhat unique in that it's 
-// available but not standardized for a particular system-level function.
-// Programmers sometimes use exit status 125 as a convention to indicate a "soft" or controlled 
-// failure that differs from more critical errors, but this is not a POSIX-mandated standard. 
-// It's essentially a "free" exit code that can be used flexibly in shell scripts without conflicting 
-// with system-defined meanings.
+//! RAJOUTER CA DANS LES FREE DE FIN DE FN ???
+//! if (!access(".heredoc.tmp", F_OK))
+//! 	unlink(".heredoc.tmp");
+//? =======================================

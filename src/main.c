@@ -6,21 +6,12 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/17 18:40:40 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 22:59:22 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-//! laisser ici ?
-bool	print_error(char *str)
-{
-	if (str)
-		write(2, str, ft_strlen(str));
-	return (true);
-}
-
-//! laisser ici ?
 //?OKOK
 void	init_env(t_data *data, char **env)
 {
@@ -68,7 +59,7 @@ bool	main_routine(t_data *data, char **envp)
 		tokenization(data->line);
 		if (ft_strlen(data->token->value) == 0)
 			return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
-		replace_var_val(data); // \$
+		replace_var_val(data);
 		remove_quotes(data);
 		printf_tokens(data);
 		printf("\n");
@@ -78,7 +69,7 @@ bool	main_routine(t_data *data, char **envp)
 			{
 				if (!init_cmd(data))
 				{
-					if (!exec(data))
+					if (!exec(data, data->cmd, data->pip))
 						cleanup(SUCCESS, NULL, NO_EXIT, 0);
 				}
 			}

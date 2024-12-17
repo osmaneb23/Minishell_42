@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 18:14:03 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 23:00:28 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,38 +37,48 @@ int	init_file(t_cmd *cmd, char *filename, int type)
 	return (SUCCESS);
 }
 
-bool is_valid_cmd(char *cmd)
-{
-	if (check_command_in_path(cmd) == SUCCESS || is_builtin(cmd) == true || access(cmd, X_OK) == 0)
-		return (true);
-	return (false);
-}
-
+//! si pbl avec v2 voir v1 plus bas
 int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
 {
-	bool is_pipe;
-	
-	is_pipe = false;
 	while ((*real_token)->type >= 1 && (*real_token)->type <= 4)
 	{
 		if ((*real_token)->type == HEREDOC)
 			if (heredoc(cmd, (*real_token)->next->value) != SUCCESS)
 				return (ERROR);
-		if ((*real_token)->type == INPUT || (*real_token)->type == TRUNC || (*real_token)->type >= APPEND)
-			if (init_file(cmd, (*real_token)->next->value, (*real_token)->type) != SUCCESS)
+		if ((*real_token)->type == INPUT || (*real_token)->type == TRUNC
+			|| (*real_token)->type >= APPEND)
+			if (init_file(cmd, (*real_token)->next->value,
+					(*real_token)->type) != SUCCESS)
 				return (ERROR);
-		if ((*real_token)->prev && (*real_token)->prev->type == PIPE)
-			is_pipe = true;
-		if ((*real_token)->next->next) // MON PRECIEUX
+		if ((*real_token)->next->next)
 		{
 			(*real_token) = (*real_token)->next->next;
-			if ((!cmd->prev || is_pipe == true) && (*real_token)->type == ARG && is_valid_cmd((*real_token)->value) == true)
-				(*real_token)->type = CMD; 
+			if ((!cmd->prev || ((*real_token)->prev
+						&& (*real_token)->prev->type == PIPE))
+				&& (*real_token)->type == ARG
+				&& is_valid_cmd((*real_token)->value) == true)
+				(*real_token)->type = CMD;
 		}
 		else
 			return (SUCCESS);
 	}
 	return (SUCCESS);
+}
+
+void	redirect_input_output(t_cmd *cmd, int *pip)
+{
+	if (cmd->infile >= 0)
+	{
+		dup2(cmd->infile, STDIN_FILENO);
+		close(cmd->infile);
+	}
+	if (cmd->outfile >= 0)
+	{
+		dup2(cmd->outfile, STDOUT_FILENO);
+		close(cmd->outfile);
+	}
+	else if (cmd->next != NULL)
+		dup2(pip[1], STDOUT_FILENO);
 }
 
 int	close_all_redi(t_data *data)
@@ -91,53 +101,59 @@ int	close_all_redi(t_data *data)
 	return (SUCCESS);
 }
 
-void	close_all_redi_of_each_nodes(t_data *data)
+void	close_null_sq(void)
 {
-	t_cmd	*cmd;
+	t_data	*data;
+	t_cmd	*tmp;
 
-	if (!data)
-		return ;
-	if (data->pip[0] >= 0)
-		close(data->pip[0]);
-	if (data->pip[1] >= 0)
-		close(data->pip[1]);
-	cmd = data->cmd;
-	while (cmd)
+	data = get_data();
+	tmp = data->cmd;
+	while (tmp)
 	{
-		if (cmd->cmd_param)
-			ft_free_multi_array(cmd->cmd_param);
-		if (cmd->outfile >= 0)
-			close(cmd->outfile);
-		if (cmd->infile >= 0)
-			close(cmd->infile);
-		cmd = cmd->next;
+		if (!tmp->cmd_param)
+		{
+			if (tmp->infile > -2)
+			{
+				close(tmp->infile);
+				tmp->infile = -2;
+			}
+			if (tmp->outfile > -2)
+			{
+				close(tmp->outfile);
+				tmp->outfile = -2;
+			}
+			tmp->skip_cmd = true;
+		}
+		tmp = tmp->next;
 	}
-	cmd = NULL;
 }
 
-void close_null_sq()
-{
-    t_data * data;
-    t_cmd *tmp;
-    
-    data = get_data();
-    tmp = data->cmd;
-    while (tmp)
-    {
-        if (!tmp->cmd_param)
-        {  
-            if (tmp->infile > -2)
-            {
-                close(tmp->infile);
-                tmp->infile = -2;
-            }
-            if (tmp->outfile > -2)
-            {
-                close(tmp->outfile);
-                tmp->outfile = -2;
-            }
-            tmp->skip_cmd = true;
-        }
-        tmp = tmp->next;
-    }
-}
+// int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
+// {
+// 	bool	is_pipe;
+
+// 	is_pipe = false;
+// 	while ((*real_token)->type >= 1 && (*real_token)->type <= 4)
+// 	{
+// 		if ((*real_token)->type == HEREDOC)
+// 			if (heredoc(cmd, (*real_token)->next->value) != SUCCESS)
+// 				return (ERROR);
+// 		if ((*real_token)->type == INPUT || (*real_token)->type == TRUNC
+// 			|| (*real_token)->type >= APPEND)
+// 			if (init_file(cmd, (*real_token)->next->value,
+// 					(*real_token)->type) != SUCCESS)
+// 				return (ERROR);
+// 		if ((*real_token)->prev && (*real_token)->prev->type == PIPE)
+// 			is_pipe = true;
+// 		if ((*real_token)->next->next)
+// 		{
+// 			(*real_token) = (*real_token)->next->next;
+// 			if ((!cmd->prev || is_pipe == true) && (*real_token)->type == ARG
+// 				&& is_valid_cmd((*real_token)->value) == true)
+// 				(*real_token)->type = CMD;
+// 		}
+// 		else
+// 			return (SUCCESS);
+// 	}
+// 	return (SUCCESS);
+// }

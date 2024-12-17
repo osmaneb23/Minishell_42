@@ -52,6 +52,7 @@ SRCS = main.c \
        builtins/utils/ft_export_utils2.c \
        exec/commands.c \
        exec/commands_utils.c \
+       exec/envp_utils.c \
        exec/exec.c \
        exec/exec_utils.c \
        exec/launch_builtin.c \

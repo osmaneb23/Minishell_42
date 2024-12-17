@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:57:59 by obouayed          #+#    #+#             */
-/*   Updated: 2023/11/22 13:49:44 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/17 19:39:32 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	int	a;
 
 	a = 0;
+	if (!s)
+		return (0);
 	while (s[a])
 		a++;
 	return (a);

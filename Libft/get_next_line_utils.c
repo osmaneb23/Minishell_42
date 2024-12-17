@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 14:07:24 by febouana          #+#    #+#             */
-/*   Updated: 2024/11/26 19:55:59 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/17 22:34:21 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ char	*ft_substr2(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {

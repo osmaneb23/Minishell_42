@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:08:32 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 02:17:26 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/17 22:16:52 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@ bool	verif_var_char(char *var)
 {
 	int		i;
 	int		j;
-	char	invalide_char[26] = "!@#$%^&*()+=,.:/?<>{}[]|-";
+	char	invalid_char[26];
 
 	i = 0;
 	j = 0;
+	ft_strcpy(invalid_char, "!@#$%^&*()+=,.:/?<>{}[]|-");
 	if (isdigit(var[0]))
 		return (ERROR);
 	while (var[j])
 	{
-		while (invalide_char[i])
+		while (invalid_char[i])
 		{
-			if (var[j] == invalide_char[i])
+			if (var[j] == invalid_char[i])
 				return (ERROR);
 			i++;
 		}
@@ -48,16 +49,17 @@ int	remplace_if_already_exist(char *var, char *val)
 	t_env	*tmp;
 	int		len;
 
+	to_print = NULL;
 	data = get_data();
 	tmp = data->envp;
 	len = ft_strlen(var);
-	while (tmp != NULL)
+	while (tmp)
 	{
 		if (ft_strncmp(var, tmp->line, len) == 0)
 		{
 			to_print = join_var_and_val(var, val);
 			if (!to_print)
-				return(EXIT_MALLOC);
+				return (EXIT_MALLOC);
 			tmp->line = to_print;
 			return (SUCCESS);
 		}
@@ -129,7 +131,7 @@ char	**copy_envp_to_tab(t_data *data, t_env *envp)
 	{
 		env_tab[i] = ft_strdup(tmp->line);
 		if (!env_tab[i])
-			return (NULL); //ERR_MALLOC
+			return (NULL);
 		tmp = tmp->next;
 		i++;
 	}

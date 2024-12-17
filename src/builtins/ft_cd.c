@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:13:34 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 00:33:15 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/17 22:08:47 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//? OKOK
 //+ Recherche dans env la variable donnee en argument
 //+ et retourne la valeur associee
 char	*search_env_var(char *var)
@@ -32,8 +31,8 @@ char	*search_env_var(char *var)
 		if (ft_strncmp(var, tmp->line, len) == 0 && tmp->line[len] == '=')
 		{
 			value = malloc(ft_strlen(tmp->line + len + 1) + 1);
-			if (!value) 
-				return (NULL); //?OKOK
+			if (!value)
+				return (NULL);
 			ft_strcpy(value, tmp->line + len + 1);
 			return (value);
 		}
@@ -52,15 +51,15 @@ bool	change_cd_env_var(char *symbole)
 	{
 		path = "HOME";
 		res = search_env_var(path);
-		if (!res) //?OKOK
+		if (!res)
 			return (print_error("minishell: cd: "), print_error(path),
-				print_error(" not set\n"), 1); // OKOK?
+				print_error(" not set\n"), 1);
 	}
 	if (ft_strcmp(symbole, "-") == 0)
 	{
 		path = "OLDPWD";
 		res = search_env_var(path);
-		if (!res) //?OKOK
+		if (!res)
 			return (print_error("minishell: cd: "), print_error(path),
 				print_error(" not set\n"), 1);
 		printf("%s\n", res);
@@ -70,16 +69,11 @@ bool	change_cd_env_var(char *symbole)
 	return (SUCCESS);
 }
 
-//? OKOK
 int	change_cd(char *direction)
 {
-	char	oldpwd[PATH_MAX];
-	char	pwd[PATH_MAX];
-	int exit_status;
+	int	exit_status;
 
 	exit_status = 0;
-	if (!getcwd(pwd, PATH_MAX))
-		return (print_error("Error: getcwd\n"), 1);
 	if (ft_strcmp(direction, "") == 0 || ft_strcmp(direction, "~") == 0
 		|| ft_strcmp(direction, "--") == 0 || ft_strcmp(direction, "-") == 0)
 		exit_status = change_cd_env_var(direction);
@@ -90,29 +84,32 @@ int	change_cd(char *direction)
 		print_error(": No such file or directory\n");
 		return (1);
 	}
-	if (remplace_if_already_exist("OLDPWD", oldpwd) == EXIT_MALLOC)
-		return (EXIT_MALLOC);
-	if (!getcwd(pwd, PATH_MAX))
-		return (print_error("Error: getcwd\n"), 1);
-	if (remplace_if_already_exist("PWD", oldpwd) == EXIT_MALLOC)
-		return (EXIT_MALLOC);
 	return (exit_status);
 }
 
-// exit status OKOK
 int	ft_cd(char **cmd_param)
 {
-	return (EXIT_MALLOC);
 	int		nbr_param;
+	int		exit_status;
+	char	pwd[PATH_MAX];
+	char	oldpwd[PATH_MAX];
 
+	exit_status = 0;
 	nbr_param = ft_multi_array_len(cmd_param);
+	printf("nbr_param = %d\n", nbr_param);
 	if (nbr_param > 2)
 		return (print_error("minishell: cd: too many arguments\n"), 1);
+	if (!getcwd(oldpwd, PATH_MAX))
+		return (print_error("Error: getcwd\n"), 1);
 	if (nbr_param == 2)
-		return (change_cd(cmd_param[1]));
-	if (nbr_param == 1)
-		return (change_cd(""));
-	return (SUCCESS);
+		exit_status = change_cd(cmd_param[1]);
+	else
+		exit_status = change_cd("");
+	if (!getcwd(pwd, PATH_MAX))
+		return (print_error("Error: getcwd\n"), 1);
+	if (remplace_if_already_exist("OLDPWD", oldpwd) == EXIT_MALLOC)
+		return (EXIT_MALLOC);
+	if (remplace_if_already_exist("PWD", pwd) == EXIT_MALLOC)
+		return (EXIT_MALLOC);
+	return (exit_status);
 }
-
-//? "=XXXXXXX" OKOK
