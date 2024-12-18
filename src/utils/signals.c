@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:11:36 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/16 17:23:47 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:06:27 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	setup_signals(void)
 {
-	t_data				*data;
 	struct sigaction	sa_int;
 
-	data = get_data();
 	sa_int.sa_handler = sigint_handler;
 	if (sigemptyset(&sa_int.sa_mask) == -1)
 		cleanup(ERROR, "Error: sigemptyset failed\n", ERROR, 2);

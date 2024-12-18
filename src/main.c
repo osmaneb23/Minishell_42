@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/17 22:59:22 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:16:06 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 //?OKOK
 void	init_env(t_data *data, char **env)
 {
+	char *line;
 	int	i;
 
+	line = NULL;
 	i = 0;
 	data->envp = NULL;
 	if (!(*env))
@@ -26,7 +28,8 @@ void	init_env(t_data *data, char **env)
 	}
 	while (env[i])
 	{
-		append_node_envp(&data->envp, env[i]);
+		line = ft_strdup(env[i]);
+		append_node_envp(&data->envp, line);
 		i++;
 	}
 }
@@ -108,7 +111,3 @@ int	main(int ac, char **av, char **envp)
 	printf(DEFAULT);
 	return (cleanup(SUCCESS, NULL, SUCCESS, 0));
 }
-
-//? LEAKS
-
-//! cas env BIZARRE

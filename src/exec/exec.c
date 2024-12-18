@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:49 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/17 23:31:22 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:16:18 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 {
 	char	**env;
 
+	if (!cmd->prev && cmd->cmd_param && is_builtin(cmd->cmd_param[0]))
+		return (link_builtin_to_pipex(cmd, pip), SUCCESS);
 	env = copy_envp_to_tab(data, data->envp);
 	if (!env)
 		return (close_all_redi(data), cleanup(ERROR, ERR_MALLOC, ERROR, 2));
@@ -101,8 +103,6 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 		&& is_builtin(cmd->cmd_param[0]) && cmd_list_len(data->cmd) == 1)
 	{
 		launch_builtin(cmd);
-		if (cmd->infile >= 0)
-			close(cmd->infile);
 		if (data->exit_status == EXIT_MALLOC)
 			return (cleanup(EXIT_MALLOC, ERR_MALLOC, EXIT_MALLOC, 2));
 		if (data->exit_status != SUCCESS)
@@ -129,11 +129,11 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 
 //? =======================================
 // FEHIM:
-//! rajouter close redi dans exec_cmd
 
 //! check_access_redirections ==> exit status pas prit en compte
 
-//! RAJOUTER CA DANS LES FREE DE FIN DE FN ???
-//! if (!access(".heredoc.tmp", F_OK))
-//! 	unlink(".heredoc.tmp");
+
+//* builtin.link.pip.OK-memoire.envp.OK
+
+
 //? =======================================

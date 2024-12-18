@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:20:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 23:07:19 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:15:32 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-//! EXIT_STATUS == 1 PAS PRIT EN COMPTE ???
 int	check_access_redirections(t_data *data)
 {
 	t_token	*token;

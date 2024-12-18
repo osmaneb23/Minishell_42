@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:08:32 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 22:16:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:06:10 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ int	remplace_if_already_exist(char *var, char *val)
 			to_print = join_var_and_val(var, val);
 			if (!to_print)
 				return (EXIT_MALLOC);
-			tmp->line = to_print;
-			return (SUCCESS);
+			free(tmp->line);
+			tmp->line = NULL;
+			return (tmp->line = to_print, SUCCESS);
 		}
 		tmp = tmp->next;
 	}

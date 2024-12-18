@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:24 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 23:03:54 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:48:53 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	wait_all(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
+		if (!cmd->prev && cmd->cmd_param && is_builtin(cmd->cmd_param[0]))
+			cmd = cmd->next;
 		pid = waitpid(0, &status, 0);
 		if (pid == -1)
 			return (cleanup(ERROR, ERR_WAIT, ERROR, 2));

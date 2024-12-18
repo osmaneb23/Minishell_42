@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:57 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/17 23:16:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:51:04 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	escape_heredoc(char *limiter)
 {
-	print_error("minishell: warning: here-document delimited\
-		by end-of-file (wanted '");
+	print_error("minishell: warning: here-document");
+	print_error("delimited by end-of-file (wanted '");
 	print_error(limiter);
 	print_error("')\n");
 }
 
 //! cas prevu si ctrl-D ...mais ctrl-C ?
-bool	heredoc_cpy(int fd, char *limiter)
+int	heredoc_cpy(int fd, char *limiter)
 {
 	char	*line;
 
@@ -30,7 +30,7 @@ bool	heredoc_cpy(int fd, char *limiter)
 	{
 		line = readline("> ");
 		if (!line)
-			escape_heredoc(limiter);
+			return (escape_heredoc(limiter), SUCCESS);
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		ft_putstr_fd(line, fd);
@@ -39,30 +39,31 @@ bool	heredoc_cpy(int fd, char *limiter)
 	}
 	free(line);
 	close(fd);
-	fd = open(".minishell.heredoc.tmp", O_RDONLY);
+	fd = open("/tmp/.minishell.heredoc.", O_RDONLY);
 	if (fd == -1)
-		return (false);
-	return (true);
+		return (ERROR);
+	return (SUCCESS);
 }
 
 int	heredoc(t_cmd *cmd, char *limiter)
 {
-	t_data	*data;
-
-	data = get_data();
 	if (cmd->infile >= 0)
 		close(cmd->infile);
-	cmd->infile = open(".minishell.heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC,
+	cmd->infile = open("/tmp/.minishell.heredoc.", O_CREAT | O_WRONLY | O_TRUNC,
 			0644);
 	if (cmd->infile == -1)
 		return (ERROR);
-	if (!heredoc_cpy(cmd->infile, limiter))
+	if (heredoc_cpy(cmd->infile, limiter) != SUCCESS)
 	{
-		unlink(".minishell.heredoc.tmp");
-		close_all_redi(data);
+		close(cmd->infile);
+		unlink("/tmp/.minishell.heredoc.");
+		cleanup(0, NULL, NO_EXIT, 1); //! si exit du coup != ctrl-D
 		return (FAILURE);
 	}
-	unlink(".minishell.heredoc.tmp");
+	unlink("/tmp/.minishell.heredoc.");
 	printf("\n");
 	return (SUCCESS);
 }
+
+// exit status heredoc ctrl-D ==> 0
+// exit status heredoc ctrl-C ==> 130

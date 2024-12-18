@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 22:04:13 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:01:56 by apoet            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	del_node_envp(t_env **envp)
 		del_node->prev->next = new_next;
 	else
 		data->envp = new_next;
+	if (del_node->line)
+		free(del_node->line);
 	free(del_node);
 }
 
