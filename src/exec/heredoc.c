@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:57 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/18 21:51:04 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/19 18:05:12 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	heredoc(t_cmd *cmd, char *limiter)
 	{
 		close(cmd->infile);
 		unlink("/tmp/.minishell.heredoc.");
-		cleanup(0, NULL, NO_EXIT, 1); //! si exit du coup != ctrl-D
+		cleanup(0, NULL, NO_EXIT, 1);
 		return (FAILURE);
 	}
 	unlink("/tmp/.minishell.heredoc.");
@@ -67,3 +67,4 @@ int	heredoc(t_cmd *cmd, char *limiter)
 
 // exit status heredoc ctrl-D ==> 0
 // exit status heredoc ctrl-C ==> 130
+//! si exit du coup != ctrl-D (ligne 60)

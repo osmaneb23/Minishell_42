@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/18 21:45:06 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/19 18:04:43 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <fcntl.h>                  // open, close
 # include <limits.h>
 # include <linux/limits.h>      // INT_MAX, INT_MIN, PATH_MAX etc
-# include <stdio.h>             // printf
 # include <readline/history.h>  // add_history
 # include <readline/readline.h> // readline
 # include <signal.h>            // signal
 # include <stdbool.h>           // bool
+# include <stdio.h>             // printf
 # include <stdlib.h>            // malloc, free, exit
 # include <sys/stat.h>          // stat
 # include <sys/types.h>         // pid_t
@@ -218,7 +218,7 @@ int					heredoc_cpy(int fd, char *limiter);
 int					heredoc(t_cmd *cmd, char *limiter);
 
 // launch_builtin.c
-void 				link_builtin_to_pipex(t_cmd *cmd, int *pip);
+void				link_builtin_to_pipex(t_cmd *cmd, int *pip);
 void				exec_builtin(char **cmd);
 void				launch_builtin(t_cmd *cmd);
 bool				is_valid_cmd(char *cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:49 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/18 22:16:18 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/19 18:05:21 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,6 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 
 //! check_access_redirections ==> exit status pas prit en compte
 
-
 //* builtin.link.pip.OK-memoire.envp.OK
-
 
 //? =======================================

@@ -101,4 +101,4 @@ re: fclean all
 valgrind: $(NAME)
 	@valgrind $(VAL_FLAGS) ./$(NAME)
 	
-.PHONY: all clean fclean re valgrind
+.PHONY: all clean fclean re valgrind env
