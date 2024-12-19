@@ -6,39 +6,11 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 19:25:22 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/13 19:04:42 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/19 23:54:49 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	main_handle_var(char *tmp, char *new_value, t_data *data)
-{
-	int		i;
-	int		j;
-	bool	in_single_quotes;
-
-	i = 0;
-	j = 0;
-	in_single_quotes = false;
-	while (tmp[i])
-	{
-		if (tmp[i] == '\'')
-		{
-			in_single_quotes = !in_single_quotes;
-			new_value[j++] = tmp[i++];
-		}
-		else if (in_single_quotes || tmp[i] != '$' || !tmp[i + 1])
-			new_value[j++] = tmp[i++];
-		else if (tmp[i + 1] == '?')
-			j = handle_exit_status(data, new_value, j, &i);
-		else if (ft_isalnum(tmp[i + 1]) || tmp[i + 1] == '_')
-			j = handle_var_names(&i, tmp, new_value, j);
-		else
-			new_value[j++] = tmp[i++];
-	}
-	new_value[j] = '\0';
-}
 
 int	handle_exit_status(t_data *data, char *new_value, int j, int *i)
 {

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/19 18:04:43 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/19 23:35:14 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,7 @@ int					check_access(t_token *token);
 t_cmd				*return_last_cmd_node(t_cmd *command);
 
 // utils_dollar.c
-void				main_handle_var(char *tmp, char *new_value, t_data *data);
+void				main_handle_var(char *tmp, char *new_value);
 int					handle_exit_status(t_data *data, char *new_value, int j,
 						int *i);
 int					handle_var_names(int *i, char *tmp, char *new_value, int j);

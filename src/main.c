@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/19 18:05:29 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/19 23:34:53 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	replace_var_val(t_data *data)
 		new_value = malloc(sizeof(char) * len);
 		if (!new_value)
 			cleanup(ERROR, ERR_MALLOC, ERROR, 2);
-		main_handle_var(token->value, new_value, data);
+		main_handle_var(token->value, new_value);
 		free(token->value);
 		token->value = new_value;
 		token = token->next;
