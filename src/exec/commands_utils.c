@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:20:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/18 22:15:32 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/19 22:28:53 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	check_access_redirections(t_data *data)
 	token = data->token;
 	while (token)
 	{
-		if (token->type == INPUT || token->type == TRUNC
-			|| token->type == APPEND)
+		if (token->type == INPUT)
 		{
 			if (token->next && token->next->type == ARG)
 			{
@@ -35,7 +34,7 @@ int	check_access_redirections(t_data *data)
 	}
 	return (SUCCESS);
 }
-
+		
 //*OKOK
 //? Compte les paramètres de commande
 int	count_cmd_param(t_token *token)

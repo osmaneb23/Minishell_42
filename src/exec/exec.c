@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:49 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/19 18:05:21 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/20 02:25:09 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,4 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 // WIFEXITED ==> verifie le status
 // WEXITSTATUS ==> retourne l'exit_status
 
-//? =======================================
-// FEHIM:
-
-//! check_access_redirections ==> exit status pas prit en compte
-
-//* builtin.link.pip.OK-memoire.envp.OK
-
-//? =======================================
+// cat | cat | ls
