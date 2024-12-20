@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/19 23:35:14 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:32:54 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int					ft_export(char **cmd_param);
 int					ft_exit(char **cmd_param);
 
 // ft_echo.c
-int					ft_echo(char **cmd_param);
+void					ft_echo(char **cmd_param);
 
 /* ************************************************************************** */
 /*                             (BUILTINS) UTILS                               */
