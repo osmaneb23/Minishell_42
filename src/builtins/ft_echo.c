@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:25:24 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/20 19:32:43 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:38:52 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	check_n_flag(char **cmd_param, int *i)
 	return (newline);
 }
 
-void	ft_echo(char **cmd_param)
+int	ft_echo(char **cmd_param)
 {
 	int i;
 	bool newline;
@@ -43,7 +43,7 @@ void	ft_echo(char **cmd_param)
 	if (!cmd_param[i])
 	{
 		printf("\n");
-		return ;
+		return (SUCCESS);
 	}
 	newline = check_n_flag(cmd_param, &i);
 	while (cmd_param[i])
@@ -55,4 +55,5 @@ void	ft_echo(char **cmd_param)
 	}
 	if (newline)
 		printf("\n");
+	return (SUCCESS);
 }

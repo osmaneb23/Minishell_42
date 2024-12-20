@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:57 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/20 19:20:13 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/20 22:39:57 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	heredoc_sigint_handler(int sig)
+{
+	t_data	*data;
+
+	data = get_data();
+	(void)sig;
+	if (data->current_pid == 0)
+    {
+        ft_putstr_fd("\n", 2);
+        data->exit_status = 130;
+		exit(130);
+    }
+}
 
 void	escape_heredoc(char *limiter)
 {
@@ -22,49 +36,81 @@ void	escape_heredoc(char *limiter)
 int	heredoc_cpy(int fd, char *limiter)
 {
 	char	*line;
+	int		pip[2];
+	t_data	*data;
+		char buffer[1024];
+		int bytes_read;
 
-	line = "";
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-		{
-			escape_heredoc(limiter);
-			break;
-		}
-		if (ft_strcmp(line, limiter) == 0)
-			break ;
-		ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-		free(line);
-		line = NULL;
-	}
-	if (line)
-		free(line);
-	close(fd);
-	fd = open("/tmp/.minishell.heredoc.", O_RDONLY);
-	if (fd == -1)
+	data = get_data();
+	if (pipe(pip) == -1)
 		return (ERROR);
-	return (SUCCESS);
+	data->current_pid = fork();
+    setup_signals();
+	if (data->current_pid == -1)
+	{
+		close(pip[0]);
+		close(pip[1]);
+		return (ERROR);
+	}
+	if (data->current_pid == 0) // Child
+	{
+		close(pip[0]); // Close read end
+		while (1)
+		{
+			line = readline("> ");
+			if (!line) // Handle EOF (Ctrl+D)
+			{
+				escape_heredoc(limiter);
+				close(pip[1]);
+				exit(EXIT_SUCCESS);
+			}
+			if (ft_strcmp(line, limiter) == 0)
+			{
+				free(line);
+				break ;
+			}
+			ft_putstr_fd(line, pip[1]); // Write to pipe instead of STDOUT
+			ft_putstr_fd("\n", pip[1]);
+			free(line);
+		}
+		close(pip[1]);
+		exit(EXIT_SUCCESS);
+	}
+	else // Parent
+	{
+		close(pip[1]); // Close write end
+		while ((bytes_read = read(pip[0], buffer, sizeof(buffer))) > 0)
+		{
+			write(fd, buffer, bytes_read); // Write to parent's fd
+		}
+		close(pip[0]);
+		return (SUCCESS);
+	}
 }
 
 int	heredoc(t_cmd *cmd, char *limiter)
 {
+	int	status;
+
 	if (cmd->infile >= 0)
 		close(cmd->infile);
-	cmd->infile = open("/tmp/.minishell.heredoc.", O_CREAT | O_WRONLY | O_TRUNC,
-			0644);
-	if (cmd->infile == -1)
-		return (ERROR);
-	if (heredoc_cpy(cmd->infile, limiter) != SUCCESS)
-	{
-		close(cmd->infile);
-		unlink("/tmp/.minishell.heredoc.");
-		cleanup(0, NULL, NO_EXIT, 1);
-		return (FAILURE);
-	}
-	unlink("/tmp/.minishell.heredoc.");
-	printf("\n");
+	// cmd->infile = open("/tmp/.minishell.heredoc.",
+			// O_CREAT | O_WRONLY | O_TRUNC,
+	// 		0644);
+	// if (cmd->infile == -1)
+	// 	return (ERROR);
+	// cmd->infile = open("/tmp/.minishell.heredoc.",
+			// O_CREAT | O_RDWR | O_TRUNC);
+	heredoc_cpy(cmd->infile, limiter);
+	waitpid(0, &status, 0);
+	// if ctrl D et error
+	// {
+	// 	// close(cmd->infile);
+	// 	unlink("/tmp/.minishell.heredoc.");
+	// 	cleanup(0, NULL, NO_EXIT, 1);
+	// 	return (FAILURE);
+	// }
+	// signal(SIGINT, SIG_IGN);
 	return (SUCCESS);
 }
 
