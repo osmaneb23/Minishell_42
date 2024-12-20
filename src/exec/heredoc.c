@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:57 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/19 18:05:12 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:20:13 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	escape_heredoc(char *limiter)
 {
-	print_error("minishell: warning: here-document");
-	print_error("delimited by end-of-file (wanted '");
-	print_error(limiter);
-	print_error("')\n");
+	printf("minishell: warning: here-document delimited by end-of-file (wanted '%s')\n",
+		limiter);
 }
 
 //! cas prevu si ctrl-D ...mais ctrl-C ?
@@ -30,14 +28,19 @@ int	heredoc_cpy(int fd, char *limiter)
 	{
 		line = readline("> ");
 		if (!line)
-			return (escape_heredoc(limiter), SUCCESS);
+		{
+			escape_heredoc(limiter);
+			break;
+		}
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("\n", fd);
 		free(line);
+		line = NULL;
 	}
-	free(line);
+	if (line)
+		free(line);
 	close(fd);
 	fd = open("/tmp/.minishell.heredoc.", O_RDONLY);
 	if (fd == -1)
