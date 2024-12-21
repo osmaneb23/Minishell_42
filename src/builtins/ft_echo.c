@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:25:24 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/20 19:38:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/21 04:27:09 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ bool	check_n_flag(char **cmd_param, int *i)
 
 int	ft_echo(char **cmd_param)
 {
-	int i;
-	bool newline;
+	int		i;
+	bool	newline;
 
 	i = 1;
 	if (!cmd_param[i])

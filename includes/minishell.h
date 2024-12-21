@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/20 19:38:01 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/21 04:27:47 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@
 # define ERR_PIPE "Error: pipe failed\n"
 # define ERR_FORK "Error: fork failed\n"
 # define ERR_WAIT "Error: wait failed\n"
+
+typedef struct s_parser
+{
+	bool			in_single_quotes;
+	bool			in_double_quotes;
+	int				i;
+	int				j;
+}					t_parser;
 
 /*
 Structure to store the commands:
@@ -329,5 +337,6 @@ void				remove_quotes(t_data *data);
 char				*return_new_value(char *value, bool squote_open,
 						bool dquote_open);
 void				printf_tokens(t_data *data);
+void				remove_backslash(t_data *data);
 
 #endif

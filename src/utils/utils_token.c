@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoet <apoet@student.42.fr>                +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:54:43 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/17 02:14:09 by apoet            ###   ########.fr       */
+/*   Updated: 2024/12/21 04:25:53 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,34 @@ void	printf_tokens(t_data *data)
 			printf("CMD)]\n");
 		else if (token->type == 7)
 			printf("ARG)]\n");
+		token = token->next;
+	}
+}
+
+void	remove_backslash(t_data *data)
+{
+	t_token	*token;
+	char	*new_value;
+	int		i;
+	int		j;
+
+	token = data->token;
+	while (token)
+	{
+		new_value = malloc(ft_strlen(token->value) + 1);
+		if (!new_value)
+			cleanup(ERROR, "Error: malloc failed\n", ERROR, 2);
+		i = 0;
+		j = 0;
+		while (token->value[i])
+		{
+			if (token->value[i] != '\\')
+				new_value[j++] = token->value[i];
+			i++;
+		}
+		new_value[j] = '\0';
+		free(token->value);
+		token->value = new_value;
 		token = token->next;
 	}
 }

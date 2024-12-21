@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/19 23:34:53 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/21 04:43:37 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ void	init_env(t_data *data, char **env)
 	}
 }
 
+bool	ft_isvalid_first_var(char c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '$' || c == '?')
+		return (true);
+	return (false);
+}
+
 void	replace_var_val(t_data *data)
 {
 	t_token	*token;
@@ -43,13 +50,19 @@ void	replace_var_val(t_data *data)
 	token = data->token;
 	while (token)
 	{
-		len = estimate_new_length(token->value, data);
-		new_value = malloc(sizeof(char) * len);
-		if (!new_value)
-			cleanup(ERROR, ERR_MALLOC, ERROR, 2);
-		main_handle_var(token->value, new_value);
-		free(token->value);
-		token->value = new_value;
+		if (token->value[0] == '$' && !ft_isvalid_first_var(token->value[1]))
+			token->value = ft_substr(token->value, 2, ft_strlen(token->value)
+				- 1);
+		else
+		{
+			len = estimate_new_length(token->value, data);
+			new_value = malloc(sizeof(char) * len);
+			if (!new_value)
+				cleanup(ERROR, ERR_MALLOC, ERROR, 2);
+			main_handle_var(token->value, new_value);
+			free(token->value);
+			token->value = new_value;
+		}
 		token = token->next;
 	}
 }
@@ -64,6 +77,7 @@ bool	main_routine(t_data *data, char **envp)
 			return (cleanup(SUCCESS, NULL, NO_EXIT, 0));
 		replace_var_val(data);
 		remove_quotes(data);
+		remove_backslash(data);
 		printf_tokens(data);
 		printf("\n");
 		if (!check_misplacements(data))
