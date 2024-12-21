@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:11:36 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/20 21:32:51 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/21 17:47:27 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ void	sigint_handler(int sig)
 	data = get_data();
 	if (data && data->current_pid != 0)
 	{
-		if (kill(data->current_pid, SIGINT) == -1)
-			(cleanup(ERROR, "Error: kill failed\n", ERROR, 2));
+		kill(data->current_pid, SIGINT);
 		ft_putstr_fd("\n", 2);
 		data->current_pid = 0;
 	}
@@ -56,8 +55,7 @@ void	sigquit_handler(int sig)
 	data = get_data();
 	if (data && data->current_pid != 0)
 	{
-		if (kill(data->current_pid, SIGQUIT) == -1)
-			cleanup(ERROR, "Error: kill failed\n", ERROR, 2);
+		kill(data->current_pid, SIGQUIT);
 		ft_putstr_fd("Quit (core dumped)\n", 2);
 		data->current_pid = 0;
 		data->exit_status = 131;

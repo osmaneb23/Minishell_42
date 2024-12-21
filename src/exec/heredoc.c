@@ -6,24 +6,24 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:57 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/20 22:39:57 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/21 18:14:37 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	heredoc_sigint_handler(int sig)
+void	signals_heredoc(int sig)
 {
 	t_data	*data;
 
 	data = get_data();
 	(void)sig;
 	if (data->current_pid == 0)
-    {
-        ft_putstr_fd("\n", 2);
-        data->exit_status = 130;
-		exit(130);
-    }
+	{
+		ft_putstr_fd("\n", 2);
+		data->exit_status = 130;
+		destroy_child_process(130, NULL);
+	}
 }
 
 void	escape_heredoc(char *limiter)
@@ -38,14 +38,14 @@ int	heredoc_cpy(int fd, char *limiter)
 	char	*line;
 	int		pip[2];
 	t_data	*data;
-		char buffer[1024];
-		int bytes_read;
+	char	buffer[1024];
+	int		bytes_read;
 
 	data = get_data();
 	if (pipe(pip) == -1)
 		return (ERROR);
 	data->current_pid = fork();
-    setup_signals();
+	signal(SIGINT, &signals_heredoc);
 	if (data->current_pid == -1)
 	{
 		close(pip[0]);
@@ -74,7 +74,7 @@ int	heredoc_cpy(int fd, char *limiter)
 			free(line);
 		}
 		close(pip[1]);
-		exit(EXIT_SUCCESS);
+		return (destroy_child_process(EXIT_SUCCESS, NULL));
 	}
 	else // Parent
 	{
@@ -90,19 +90,27 @@ int	heredoc_cpy(int fd, char *limiter)
 
 int	heredoc(t_cmd *cmd, char *limiter)
 {
-	int	status;
+	int		status;
+	t_data	*data;
 
+	data = get_data();
 	if (cmd->infile >= 0)
 		close(cmd->infile);
 	// cmd->infile = open("/tmp/.minishell.heredoc.",
-			// O_CREAT | O_WRONLY | O_TRUNC,
+	// O_CREAT | O_WRONLY | O_TRUNC,
 	// 		0644);
 	// if (cmd->infile == -1)
 	// 	return (ERROR);
 	// cmd->infile = open("/tmp/.minishell.heredoc.",
-			// O_CREAT | O_RDWR | O_TRUNC);
+	// O_CREAT | O_RDWR | O_TRUNC);
 	heredoc_cpy(cmd->infile, limiter);
 	waitpid(0, &status, 0);
+	if (WIFEXITED(status))
+	{
+		data->exit_status = WEXITSTATUS(status);
+		if (data->exit_status == 130)
+			return (130);
+	}
 	// if ctrl D et error
 	// {
 	// 	// close(cmd->infile);

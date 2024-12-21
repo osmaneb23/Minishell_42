@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 04:27:47 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/21 18:15:32 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ void				parent_process(int *pip, t_cmd *next_cmd);
 void				child_process(t_cmd *cmd, int *pip, char **env);
 int					exec_cmd(t_data *data, t_cmd *cmd, int *pip);
 int					exec(t_data *data, t_cmd *cmd, int *pip);
+int					destroy_child_process(int exit_status, char **to_be_free);
 
 // exec_utils.c
 int					wait_all(t_data *data);
