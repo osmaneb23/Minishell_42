@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 20:15:28 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:17:25 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,13 @@
 # define ERR_FORK "Error: fork failed\n"
 # define ERR_WAIT "Error: wait failed\n"
 
+/*
+Structure to store the parser:
+- in_single_quotes: boolean to check if the current character is in single quotes
+- in_double_quotes: boolean to check if the current character is in double quotes
+- i: index of the current character
+- j: index of the new value
+*/
 typedef struct s_parser
 {
 	bool			in_single_quotes;
