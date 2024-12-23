@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:11:36 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 17:47:27 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:15:08 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,19 @@ void	signal_child_process(void)
 	sa_quit.sa_flags = SA_RESTART;
 	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 		cleanup(ERROR, "Error: sigaction failed\n", ERROR, 2);
+}
+
+void	signals_heredoc(int sig)
+{
+	t_data	*data;
+
+	data = get_data();
+	(void)sig;
+	if (data->current_pid == 0)
+	{
+		ft_putstr_fd("\n", 2);
+		data->exit_status = 130;
+		destroy_child_process(130, NULL);
+	}
+	close_all_redi(data);
 }

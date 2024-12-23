@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:20:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/19 22:28:53 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:29:57 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_access_redirections(t_data *data)
 	}
 	return (SUCCESS);
 }
-		
+
 //*OKOK
 //? Compte les paramètres de commande
 int	count_cmd_param(t_token *token)

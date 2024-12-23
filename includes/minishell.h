@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 18:15:32 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:15:28 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ Structure to store the data of minishell:
 typedef struct s_data
 {
 	int				pip[2];
+	int				fdp;
 
 	t_token			*token;
 	t_env			*envp;
@@ -301,10 +302,10 @@ void				initialize_data(t_data **data);
 
 // signals.c
 void				setup_signals(void);
-void				setup_heredoc_signals(void);
 void				sigint_handler(int sig);
 void				sigquit_handler(int sig);
 void				signal_child_process(void);
+void				signals_heredoc(int sig);
 
 // toolbox.c
 bool				contains_char(char *str, char c);

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 04:43:37 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:30:36 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	init_env(t_data *data, char **env)
 
 bool	ft_isvalid_first_var(char c)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '$' || c == '?')
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '$'
+		|| c == '?')
 		return (true);
 	return (false);
 }
@@ -52,7 +53,7 @@ void	replace_var_val(t_data *data)
 	{
 		if (token->value[0] == '$' && !ft_isvalid_first_var(token->value[1]))
 			token->value = ft_substr(token->value, 2, ft_strlen(token->value)
-				- 1);
+					- 1);
 		else
 		{
 			len = estimate_new_length(token->value, data);

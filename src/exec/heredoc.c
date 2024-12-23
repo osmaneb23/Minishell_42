@@ -6,122 +6,135 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:57 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 18:14:37 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:29:44 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	signals_heredoc(int sig)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/17 22:19:57 by obouayed          #+#    #+#             */
+/*   Updated: 2024/12/23 20:19:19 by obouayed         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+int	destroy_heredoc_process(int exit_status, char **to_be_free)
 {
 	t_data	*data;
 
 	data = get_data();
-	(void)sig;
-	if (data->current_pid == 0)
+	if (to_be_free)
+		ft_free_multi_array(to_be_free);
+	if (data)
 	{
-		ft_putstr_fd("\n", 2);
-		data->exit_status = 130;
-		destroy_child_process(130, NULL);
+		if (data->envp)
+			destroy_envp_list(&data->envp);
+		free_data(&data);
+		if (data->line)
+			free(data->line);
 	}
+	rl_clear_history();
+	exit(exit_status);
 }
 
-void	escape_heredoc(char *limiter)
+void	heredoc_child_process(char *limiter)
 {
-	printf("minishell: warning: here-document delimited by end-of-file (wanted '%s')\n",
-		limiter);
-}
-
-//! cas prevu si ctrl-D ...mais ctrl-C ?
-int	heredoc_cpy(int fd, char *limiter)
-{
-	char	*line;
-	int		pip[2];
 	t_data	*data;
-	char	buffer[1024];
+	char	*line;
+
+	data = get_data();
+	close(data->pip[0]);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			printf("minishell: warning: here-document");
+			printf("delimited by end-of-file) (wanted `%s')\n", limiter);
+			break ;
+		}
+		if (ft_strcmp(line, limiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		ft_putstr_fd(line, data->pip[1]);
+		ft_putstr_fd("\n", data->pip[1]);
+		free(line);
+	}
+	close(data->pip[1]);
+}
+
+int	heredoc_parent_process(int fd, t_data *data)
+{
+	char	buffer[4096];
 	int		bytes_read;
 
+	close(data->pip[1]);
+	bytes_read = read(data->pip[0], buffer, sizeof(buffer));
+	while (bytes_read > 0)
+	{
+		write(fd, buffer, bytes_read);
+		bytes_read = read(data->pip[0], buffer, sizeof(buffer));
+	}
+	close(data->pip[0]);
+	return (SUCCESS);
+}
+
+int	heredoc_cpy(int fd, char *limiter)
+{
+	t_data	*data;
+
 	data = get_data();
-	if (pipe(pip) == -1)
+	if (pipe(data->pip) == -1)
 		return (ERROR);
 	data->current_pid = fork();
 	signal(SIGINT, &signals_heredoc);
 	if (data->current_pid == -1)
+		return (close(data->pip[0]), close(data->pip[1]), ERROR);
+	if (data->current_pid == 0)
 	{
-		close(pip[0]);
-		close(pip[1]);
-		return (ERROR);
-	}
-	if (data->current_pid == 0) // Child
-	{
-		close(pip[0]); // Close read end
-		while (1)
-		{
-			line = readline("> ");
-			if (!line) // Handle EOF (Ctrl+D)
-			{
-				escape_heredoc(limiter);
-				close(pip[1]);
-				exit(EXIT_SUCCESS);
-			}
-			if (ft_strcmp(line, limiter) == 0)
-			{
-				free(line);
-				break ;
-			}
-			ft_putstr_fd(line, pip[1]); // Write to pipe instead of STDOUT
-			ft_putstr_fd("\n", pip[1]);
-			free(line);
-		}
-		close(pip[1]);
-		return (destroy_child_process(EXIT_SUCCESS, NULL));
-	}
-	else // Parent
-	{
-		close(pip[1]); // Close write end
-		while ((bytes_read = read(pip[0], buffer, sizeof(buffer))) > 0)
-		{
-			write(fd, buffer, bytes_read); // Write to parent's fd
-		}
-		close(pip[0]);
+		heredoc_child_process(limiter);
+		destroy_child_process(SUCCESS, NULL);
 		return (SUCCESS);
 	}
+	else
+		return (heredoc_parent_process(fd, data));
 }
 
 int	heredoc(t_cmd *cmd, char *limiter)
 {
-	int		status;
 	t_data	*data;
+	int		status;
 
 	data = get_data();
 	if (cmd->infile >= 0)
 		close(cmd->infile);
-	// cmd->infile = open("/tmp/.minishell.heredoc.",
-	// O_CREAT | O_WRONLY | O_TRUNC,
-	// 		0644);
-	// if (cmd->infile == -1)
-	// 	return (ERROR);
-	// cmd->infile = open("/tmp/.minishell.heredoc.",
-	// O_CREAT | O_RDWR | O_TRUNC);
-	heredoc_cpy(cmd->infile, limiter);
+	cmd->infile = open("/tmp/.minishell.heredoc", O_CREAT | O_RDWR | O_TRUNC,
+			0644);
+	if (cmd->infile == -1)
+		return (ERROR);
+	if (heredoc_cpy(cmd->infile, limiter) == ERROR)
+		return (close(cmd->infile), unlink("/tmp/.minishell.heredoc"), ERROR);
+	close(cmd->infile);
+	cmd->infile = open("/tmp/.minishell.heredoc", O_RDONLY);
+	if (cmd->infile == -1)
+		return (ERROR);
 	waitpid(0, &status, 0);
 	if (WIFEXITED(status))
 	{
 		data->exit_status = WEXITSTATUS(status);
 		if (data->exit_status == 130)
-			return (130);
+			return (close(cmd->infile), setup_signals(), cleanup(130, NULL,
+					NO_EXIT, 0), ERROR);
 	}
-	// if ctrl D et error
-	// {
-	// 	// close(cmd->infile);
-	// 	unlink("/tmp/.minishell.heredoc.");
-	// 	cleanup(0, NULL, NO_EXIT, 1);
-	// 	return (FAILURE);
-	// }
-	// signal(SIGINT, SIG_IGN);
-	return (SUCCESS);
+	return (setup_signals(), SUCCESS);
 }
-
-// exit status heredoc ctrl-D ==> 0
-// exit status heredoc ctrl-C ==> 130
-//! si exit du coup != ctrl-D (ligne 60)

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 23:54:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 04:28:18 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:30:24 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	handle_dollar(char *tmp, char *new_value, int *i, int *j)
 void	process_dollar(char *tmp, char *new_value, t_parser *state)
 {
 	if ((tmp[state->i] == '\'' && !(state->in_double_quotes))
-			|| (tmp[state->i] == '"' && !(state->in_single_quotes)))
+		|| (tmp[state->i] == '"' && !(state->in_single_quotes)))
 	{
 		change_bool_quotes(tmp, state->i, &state->in_single_quotes,
 			&state->in_double_quotes);
 		new_value[state->j++] = tmp[state->i++];
 	}
 	else if (tmp[state->i] == '$' && !(state->in_single_quotes) && tmp[state->i
-		+ 1])
+			+ 1])
 		handle_dollar(tmp, new_value, &state->i, &state->j);
 	else
 		new_value[state->j++] = tmp[state->i++];

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_gestion.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/20 19:10:35 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:30:02 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 int	init_file(t_cmd *cmd, char *filename, int type)
 {
 	printf("TEST==%s\n\n", filename);
-
 	if (!cmd || !filename)
 		return (ERROR);
 	if ((type == INPUT || type == HEREDOC) && cmd->infile > -2)
@@ -43,7 +42,6 @@ int	init_file(t_cmd *cmd, char *filename, int type)
 int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
 {
 	printf("TEST==%s\n\n", (*real_token)->value);
-
 	while ((*real_token)->type >= 1 && (*real_token)->type <= 4)
 	{
 		if ((*real_token)->type == HEREDOC)
