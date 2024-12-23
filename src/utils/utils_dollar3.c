@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 23:54:51 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 22:19:51 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 22:38:17 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,16 @@ void	main_handle_var(char *tmp, char *new_value)
 	state.in_double_quotes = false;
 	while (tmp[state.i])
 	{
-		if (tmp[state.i] == '$' && !state.in_single_quotes && tmp[state.i + 1])
+		if (tmp[state.i] == '\\' && tmp[state.i + 1])
 		{
-			if (ft_isdigit(tmp[state.i + 1]))
-				state.i += 2;
+			new_value[state.j++] = tmp[state.i++];
+			new_value[state.j++] = tmp[state.i++];
+			continue ;
 		}
-		if ((tmp[state.i] == '\\' && tmp[state.i + 1] == '$')
-			|| (tmp[state.i] == '\\' && tmp[state.i + 1] == '$'))
+		if (tmp[state.i] == '$' && !state.in_single_quotes
+			&& ft_isdigit(tmp[state.i + 1]))
 		{
-			new_value[state.j++] = tmp[state.i++];
-			new_value[state.j++] = tmp[state.i++];
+			state.i += 2;
 			continue ;
 		}
 		process_dollar(tmp, new_value, &state);

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 22:20:34 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 22:36:03 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,6 +342,8 @@ size_t				handle_dollar_sign(const char *value, int *i, t_data *data);
 size_t				get_exit_status_length(int status);
 size_t				skip_variable_name(const char *str);
 size_t				get_env_var_length(const char *start, int len);
+void				handle_escaped_chars(const char *value, int *i,
+						size_t *len);
 
 // utils_token.c
 t_token				*last_token(t_token *token);

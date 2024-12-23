@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 19:44:42 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 22:20:18 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 22:35:34 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,26 @@ void	handle_quote_and_dollar(const char *value, int *i, size_t *len,
 	t_data	*data;
 
 	data = get_data();
+	if (value[*i] == '\\' && value[*i + 1])
+	{
+		handle_escaped_chars(value, i, len);
+		return ;
+	}
 	if (value[*i] == '\'')
 	{
 		*in_single_quotes = !(*in_single_quotes);
 		(*i)++;
 		(*len)++;
 	}
-	if (!(*in_single_quotes) && value[*i] == '$' && ft_isdigit(value[*i + 1]))
-		*i += 2;
 	else if (!(*in_single_quotes) && value[*i] == '$' && value[*i + 1])
-		*len += handle_dollar_sign(value, i, data);
-	else
 	{
-		(*len)++;
-		(*i)++;
+		if (ft_isdigit(value[*i + 1]))
+			*i += 2;
+		else
+			*len += handle_dollar_sign(value, i, data);
 	}
+	else
+		handle_escaped_chars(value, i, len);
 }
 
 size_t	estimate_new_length(const char *value)

@@ -39,6 +39,7 @@ SRCS = main.c \
        utils/utils_dollar.c \
        utils/utils_dollar2.c \
        utils/utils_dollar3.c \
+       utils/utils_dollar4.c \
        utils/utils_token.c \
        builtins/ft_cd.c \
        builtins/ft_env.c \
