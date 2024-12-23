@@ -6,13 +6,36 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 19:44:42 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/13 19:04:38 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 22:20:18 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-size_t	estimate_new_length(const char *value, t_data *data)
+void	handle_quote_and_dollar(const char *value, int *i, size_t *len,
+		bool *in_single_quotes)
+{
+	t_data	*data;
+
+	data = get_data();
+	if (value[*i] == '\'')
+	{
+		*in_single_quotes = !(*in_single_quotes);
+		(*i)++;
+		(*len)++;
+	}
+	if (!(*in_single_quotes) && value[*i] == '$' && ft_isdigit(value[*i + 1]))
+		*i += 2;
+	else if (!(*in_single_quotes) && value[*i] == '$' && value[*i + 1])
+		*len += handle_dollar_sign(value, i, data);
+	else
+	{
+		(*len)++;
+		(*i)++;
+	}
+}
+
+size_t	estimate_new_length(const char *value)
 {
 	size_t	len;
 	int		i;
@@ -22,45 +45,8 @@ size_t	estimate_new_length(const char *value, t_data *data)
 	i = 0;
 	in_single_quotes = false;
 	while (value[i])
-	{
-		if (value[i] == '\'')
-		{
-			in_single_quotes = !in_single_quotes;
-			i++;
-			len++;
-		}
-		else if (!in_single_quotes && value[i] == '$' && value[i + 1])
-			len += handle_dollar_sign(value, &i, data);
-		else
-		{
-			len++;
-			i++;
-		}
-	}
+		handle_quote_and_dollar(value, &i, &len, &in_single_quotes);
 	return (len + 1);
-}
-
-size_t	handle_dollar_sign(const char *value, int *i, t_data *data)
-{
-	size_t	len;
-	int		var_len;
-
-	len = 0;
-	(*i)++;
-	if (value[*i] == '?')
-	{
-		len = get_exit_status_length(data->exit_status);
-		(*i)++;
-	}
-	else if (ft_isalnum(value[*i]) || value[*i] == '_')
-	{
-		var_len = skip_variable_name(&value[*i]);
-		len = get_env_var_length(&value[*i], var_len);
-		(*i) += var_len;
-	}
-	else
-		len++;
-	return (len);
 }
 
 size_t	get_exit_status_length(int status)

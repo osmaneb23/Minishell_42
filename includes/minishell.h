@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 21:17:25 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 22:20:34 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@
 # define ERR_PIPE "Error: pipe failed\n"
 # define ERR_FORK "Error: fork failed\n"
 # define ERR_WAIT "Error: wait failed\n"
+
+# define WHITE "\033[0;37m"
+# define DEFAULT "\033[0m"
 
 /*
 Structure to store the parser:
@@ -334,7 +337,7 @@ int					handle_var_names(int *i, char *tmp, char *new_value, int j);
 int					str_append(char *dest, const char *src, int pos);
 size_t				ft_numlen(int n);
 
-size_t				estimate_new_length(const char *value, t_data *data);
+size_t				estimate_new_length(const char *value);
 size_t				handle_dollar_sign(const char *value, int *i, t_data *data);
 size_t				get_exit_status_length(int status);
 size_t				skip_variable_name(const char *str);

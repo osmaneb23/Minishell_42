@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:42:34 by obouayed          #+#    #+#             */
-/*   Updated: 2024/11/04 19:38:22 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:51:29 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ bool	create_token(char *value)
 				2));
 	token = malloc(sizeof(t_token));
 	if (!token)
-		return (cleanup(ERROR, "Error: malloc failed\n", ERROR, 2));
+		return (free(value), cleanup(ERROR, "Error: malloc failed\n", ERROR,
+				2));
 	token->value = value;
 	token->type = 0;
 	token->next = NULL;
