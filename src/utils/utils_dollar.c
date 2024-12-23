@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 19:25:22 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 04:12:07 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:05:04 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	handle_var_names(int *i, char *tmp, char *new_value, int j)
 		free(new_value);
 		cleanup(ERROR, ERR_MALLOC, ERROR, 2);
 	}
+	if (ft_strcmp(var_name, "UID") == 0)
 	env_value = search_env_var(var_name);
 	if (env_value)
 		j = str_append(new_value, env_value, j);

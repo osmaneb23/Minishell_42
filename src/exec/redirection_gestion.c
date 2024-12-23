@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/23 20:30:02 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:15:28 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	init_file(t_cmd *cmd, char *filename, int type)
 	return (SUCCESS);
 }
 
-//! si pbl avec v2 voir v1 plus bas
 int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
 {
 	printf("TEST==%s\n\n", (*real_token)->value);
@@ -129,33 +128,3 @@ void	close_null_sq(void)
 		tmp = tmp->next;
 	}
 }
-
-// int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
-// {
-// 	bool	is_pipe;
-
-// 	is_pipe = false;
-// 	while ((*real_token)->type >= 1 && (*real_token)->type <= 4)
-// 	{
-// 		if ((*real_token)->type == HEREDOC)
-// 			if (heredoc(cmd, (*real_token)->next->value) != SUCCESS)
-// 				return (ERROR);
-// 		if ((*real_token)->type == INPUT || (*real_token)->type == TRUNC
-// 			|| (*real_token)->type >= APPEND)
-// 			if (init_file(cmd, (*real_token)->next->value,
-// 					(*real_token)->type) != SUCCESS)
-// 				return (ERROR);
-// 		if ((*real_token)->prev && (*real_token)->prev->type == PIPE)
-// 			is_pipe = true;
-// 		if ((*real_token)->next->next)
-// 		{
-// 			(*real_token) = (*real_token)->next->next;
-// 			if ((!cmd->prev || is_pipe == true) && (*real_token)->type == ARG
-// 				&& is_valid_cmd((*real_token)->value) == true)
-// 				(*real_token)->type = CMD;
-// 		}
-// 		else
-// 			return (SUCCESS);
-// 	}
-// 	return (SUCCESS);
-// }

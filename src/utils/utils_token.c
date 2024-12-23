@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:54:43 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/21 04:25:53 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:13:46 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_token	*last_token(t_token *token)
 	return (token);
 }
 
+// Remove quotes from the tokens
 void	remove_quotes(t_data *data)
 {
 	t_token	*token;
@@ -37,6 +38,7 @@ void	remove_quotes(t_data *data)
 	}
 }
 
+// Return the new value without quotes
 char	*return_new_value(char *value, bool squote_open, bool dquote_open)
 {
 	int		i;
@@ -89,6 +91,7 @@ void	printf_tokens(t_data *data)
 	}
 }
 
+// Remove backslashes from the tokens
 void	remove_backslash(t_data *data)
 {
 	t_token	*token;
