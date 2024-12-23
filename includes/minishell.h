@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 22:36:03 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/23 23:19:39 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ int					ft_env(void);
 
 // ft_unset.c
 int					search_and_del(char *var);
+int					unset_event_not_found(char *str);
 int					ft_unset(char **cmd_param);
 
 // ft_cd.c
