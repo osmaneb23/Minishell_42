@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:19:21 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/20 19:37:45 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 17:34:38 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,15 @@ void	exec_builtin(char **cmd)
 		data->exit_status = ft_unset(cmd);
 	else if (ft_strcmp(cmd[0], "env") == 0)
 		data->exit_status = ft_env();
-	else if (ft_strcmp(cmd[0], "exit") == 0)
-		data->exit_status = ft_exit(cmd);
 	else if (ft_strcmp(cmd[0], "echo") == 0)
 		data->exit_status = ft_echo(cmd);
+	else if (ft_strcmp(cmd[0], "exit") == 0)
+	{
+		if (count_nb_sequences(data->token) == 1)
+			data->exit_status = ft_exit(cmd, 1);
+		else
+			data->exit_status = ft_exit(cmd, 0);
+	}
 }
 
 void	launch_builtin(t_cmd *cmd)

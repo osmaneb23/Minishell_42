@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:13:34 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/17 22:08:47 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 16:57:46 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int	ft_cd(char **cmd_param)
 
 	exit_status = 0;
 	nbr_param = ft_multi_array_len(cmd_param);
-	printf("nbr_param = %d\n", nbr_param);
 	if (nbr_param > 2)
 		return (print_error("minishell: cd: too many arguments\n"), 1);
 	if (!getcwd(oldpwd, PATH_MAX))

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/13 15:57:21 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 17:58:00 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,34 @@ long	ft_atol_exit(char *str)
 	return (result * sign);
 }
 
-int	ft_exit(char **cmd_param)
+int	fake_exit(char **cmd_param)
+{
+	int		i;
+	t_data	*data;
+	long	exit_value;
+
+	i = 0;
+	data = get_data();
+	if (!cmd_param[1])
+		return (0);
+	if (is_overflowing(cmd_param[1]))
+		return (print_error("minishell: exit: "), print_error(cmd_param[1]),
+			print_error(" numeric argument required\n"), 2);
+	if (cmd_param[1][i] == '-' || cmd_param[1][i] == '+')
+		i++;
+	while (cmd_param[1][i])
+		if (!ft_isdigit(cmd_param[1][i++]))
+			return (print_error("minishell: exit: "), print_error(cmd_param[1]),
+				print_error(" numeric argument required\n"), 2);
+	if (cmd_param[2])
+		return (print_error("minishell: exit: too many arguments\n"), 1);
+	exit_value = ft_atol_exit(cmd_param[1]);
+	if (exit_value < 0 || exit_value > 255)
+		exit_value %= 256;
+	return (exit_value);
+}
+
+int	classic_exit(char **cmd_param)
 {
 	int		i;
 	t_data	*data;
@@ -92,4 +119,15 @@ int	ft_exit(char **cmd_param)
 	if (exit_value < 0 || exit_value > 255)
 		exit_value %= 256;
 	return (cleanup(exit_value, "exit\n", exit_value, 1));
+}
+
+int	ft_exit(char **cmd_param, bool is_single_cmd)
+{
+	t_data	*data;
+
+	data = get_data();
+	if (is_single_cmd == false)
+		return (fake_exit(cmd_param));
+	return (classic_exit(cmd_param));
+	return (42);
 }

@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 23:19:39 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 17:45:58 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ bool				export_just_display(t_data *data);
 int					ft_export(char **cmd_param);
 
 // ft_exit.c
-int					ft_exit(char **cmd_param);
+int					ft_exit(char **cmd_param, bool is_single_cmd);
 
 // ft_echo.c
 int					ft_echo(char **cmd_param);
