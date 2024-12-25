@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 18:26:45 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:45:09 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,6 @@ Structure to store the data of minishell:
 typedef struct s_data
 {
 	int				pip[2];
-	int				fdp;
 
 	t_token			*token;
 	t_env			*envp;
