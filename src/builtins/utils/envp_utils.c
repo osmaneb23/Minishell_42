@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:11:27 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/25 16:39:56 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 18:26:28 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	append_node_envp(t_env **envp, char *line)
 
 //?OKOK
 //+ Permet de creer un env si minishell est exec avec env -i
-int	init_env_if_le_correcteur_clc(t_data *data)
+int	init_env_i(t_data *data)
 {
 	char	path[PATH_MAX];
 	char	*tmp;

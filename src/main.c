@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 16:43:38 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 18:26:24 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_env(t_data *data, char **env)
 	data->envp = NULL;
 	if (!(*env))
 	{
-		init_env_if_le_correcteur_clc(data);
+		init_env_i(data);
 		return ;
 	}
 	while (env[i])
@@ -43,13 +43,16 @@ void	replace_var_val(t_data *data)
 	token = data->token;
 	while (token)
 	{
-		len = estimate_new_length(token->value);
-		new_value = malloc(sizeof(char) * len);
-		if (!new_value)
-			cleanup(ERROR, ERR_MALLOC, ERROR, 2);
-		main_handle_var(token->value, new_value);
-		free(token->value);
-		token->value = new_value;
+		if (!token->prev || token->prev->type != HEREDOC)
+		{
+			len = estimate_new_length(token->value);
+			new_value = malloc(sizeof(char) * len);
+			if (!new_value)
+				cleanup(ERROR, ERR_MALLOC, ERROR, 2);
+			main_handle_var(token->value, new_value);
+			free(token->value);
+			token->value = new_value;
+		}
 		token = token->next;
 	}
 }

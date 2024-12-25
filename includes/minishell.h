@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 17:45:58 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 18:26:45 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void				destroy_envp_list(t_env **envp);
 t_env				*find_last_node(t_env *node);
 void				del_node_envp(t_env **envp);
 int					append_node_envp(t_env **envp, char *line);
-int					init_env_if_le_correcteur_clc(t_data *data);
+int					init_env_i(t_data *data);
 
 // ft_export_utils.c
 int					search_egal_symbol(char *cmd_param);
