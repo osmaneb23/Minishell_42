@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 20:51:17 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 21:47:19 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,9 @@ int					init_env_i(t_data *data);
 int					search_egal_symbol(char *cmd_param);
 char				*return_var(char *var_and_val, int limit);
 char				*return_val(char *var_and_val, int start);
+bool				export_not_valid(char *var_and_val, char *var);
+bool				export_init_vars(char **var_and_val, char **var, char **val,
+						int i);
 
 // ft_export_utils2.c
 bool				verif_var_char(char *var);

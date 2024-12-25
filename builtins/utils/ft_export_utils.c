@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:07:10 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/25 21:46:42 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/25 21:41:39 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,17 @@ char	*return_val(char *var_and_val, int start)
 	return (val);
 }
 
-bool	export_not_valid(char *var_and_val, char *var)
+bool export_not_valid(char *var_and_val, char *var)
 {
 	if (!ft_strcmp(var, "") || verif_var_char(var))
 	{
-		return (print_error("minishell: export: `"), print_error(var_and_val),
+		return (print_error("minishell: export: `"),
+			print_error(var_and_val),
 			print_error("': not a valid identifier\n"), 1);
 	}
 	return (SUCCESS);
 }
+
 
 bool	export_init_vars(char **var_and_val, char **var, char **val, int i)
 {
