@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:10:13 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 23:18:20 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 16:45:53 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,15 @@ int	search_and_del(char *var)
 	return (ERROR);
 }
 
-int unset_event_not_found(char *str)
+int	unset_event_not_found(char *str)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (str[i])
 	{
+		if (str[i] == '=')
+			return (false);
 		if (str[i] == '!')
 			break ;
 		i++;
@@ -71,7 +73,7 @@ int unset_event_not_found(char *str)
 	return (true);
 }
 
-// "minishell: unset: %s not found\n" 
+// "minishell: unset: %s not found\n"
 // pas present dans bash posix mais nul sans
 int	ft_unset(char **cmd_param)
 {
@@ -80,7 +82,10 @@ int	ft_unset(char **cmd_param)
 		if (unset_event_not_found(cmd_param[1]) == true)
 			return (SUCCESS);
 		if (cmd_param[1][0] == '-')
-			return (print_error("unset: usage: unset [-f] [-v] [-n] [name ...]\n"), 2);
+		{
+			print_error("minishell: usage: unset [-f] [-v] [-n] [name ...]\n");
+			return (2);
+		}
 		if (strcmp(cmd_param[1], "_") == 0)
 			return (SUCCESS);
 		if (search_and_del(cmd_param[1]) == SUCCESS)
