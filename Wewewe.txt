@@ -1,0 +1,4 @@
+Tabs (whitespace)
+Echo redirections avec -n
+Exit exit status
+path et check cmd

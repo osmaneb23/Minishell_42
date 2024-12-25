@@ -67,7 +67,7 @@ SRC_SUBDIRS = parsing utils builtins exec
 OBJ_SUBDIRS = $(addprefix $(OBJ_DIR)/,$(SRC_SUBDIRS))
 
 RM = rm -rf
-VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=supp.supp
+VAL_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --track-fds=yes --suppressions=supp.supp
 
 all: $(NAME)
 

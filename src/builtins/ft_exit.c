@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 17:58:00 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:04:55 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	fake_exit(char **cmd_param)
 	i = 0;
 	data = get_data();
 	if (!cmd_param[1])
-		return (0);
+		return (data->exit_status);
 	if (is_overflowing(cmd_param[1]))
 		return (print_error("minishell: exit: "), print_error(cmd_param[1]),
 			print_error(" numeric argument required\n"), 2);
