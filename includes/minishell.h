@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 20:45:09 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:51:17 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,7 @@ void				signals_heredoc(int sig);
 
 // toolbox.c
 bool				contains_char(char *str, char c);
+bool				ft_isspace(int c);
 
 // utils_checks.c
 int					check_misplacements_pipe(t_token *token);

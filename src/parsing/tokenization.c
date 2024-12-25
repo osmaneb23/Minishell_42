@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:42:34 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 21:51:29 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:50:52 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	tokenization(char *line)
 		return (SUCCESS);
 	while (line[i])
 	{
-		while (line[i] == ' ')
+		while (line[i] && ft_isspace(line[i]))
 			i++;
 		if (line[i] == 34 && !squote_open)
 			dquote_open = !dquote_open;
@@ -59,12 +59,12 @@ char	*tokenizer(char *line, unsigned int *i, bool *squote_open,
 		}
 		else
 		{
-			while (line[*i] != ' ' && line[*i] != '<' && line[*i] != '>'
-				&& line[*i] != '|' && line[*i])
+			while (line[*i] && ft_isspace(line[*i]) && line[*i] != '<'
+				&& line[*i] != '>' && line[*i] != '|' && line[*i])
 				(*i)++;
 		}
 		value = ft_substr(line, j, *i - j);
-		while (line[*i] == ' ')
+		while (line[*i] && ft_isspace(line[*i]))
 			(*i)++;
 		return (value);
 	}
