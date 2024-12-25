@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/23 21:15:28 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 18:10:11 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 //? parmi <, > et >>
 int	init_file(t_cmd *cmd, char *filename, int type)
 {
-	printf("TEST==%s\n\n", filename);
+	t_data	*data;
+
+	data = get_data();
 	if (!cmd || !filename)
 		return (ERROR);
 	if ((type == INPUT || type == HEREDOC) && cmd->infile > -2)
@@ -32,7 +34,8 @@ int	init_file(t_cmd *cmd, char *filename, int type)
 		cmd->outfile = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (cmd->infile == -1 || cmd->outfile == -1)
 	{
-		perror("Error: File operation failed");
+		print_error("Error: File operation failed\n");
+		data->exit_status = 1;
 		return (ERROR);
 	}
 	return (SUCCESS);
@@ -40,7 +43,6 @@ int	init_file(t_cmd *cmd, char *filename, int type)
 
 int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
 {
-	printf("TEST==%s\n\n", (*real_token)->value);
 	while ((*real_token)->type >= 1 && (*real_token)->type <= 4)
 	{
 		if ((*real_token)->type == HEREDOC)

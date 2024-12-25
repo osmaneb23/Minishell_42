@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:43:47 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/20 18:59:32 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/25 18:08:55 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,11 @@ int	init_cmd_nodes(t_data *data)
 int	init_cmd(t_data *data)
 {
 	if (check_access_redirections(data) == ERROR)
-		return (ERROR);
+		return (cleanup(NO_CHANGE, NULL, NO_EXIT, 0), ERROR);
 	if (init_cmd_nodes(data) == ERROR)
-		return (ERROR);
+		return (cleanup(NO_CHANGE, NULL, NO_EXIT, 0), ERROR);
 	if (fill_cmd_nodes(data->cmd, data->token) == ERROR)
-		return (ERROR);
+		return (cleanup(NO_CHANGE, NULL, NO_EXIT, 0), ERROR);
 	return (SUCCESS);
 }
 
