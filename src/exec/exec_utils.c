@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:24 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/25 16:40:02 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 20:40:30 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*return_command_in_path(char *command)
 
 	if (!command)
 		return (NULL);
-	path = getenv("PATH");
+	path = search_env_var("PATH");
 	if (!path)
 		return (NULL);
 	path_copy = ft_strdup(path);
