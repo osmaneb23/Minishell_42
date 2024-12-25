@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:42:34 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 20:50:52 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/25 22:24:46 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*tokenizer(char *line, unsigned int *i, bool *squote_open,
 		}
 		else
 		{
-			while (line[*i] && ft_isspace(line[*i]) && line[*i] != '<'
+			while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '<'
 				&& line[*i] != '>' && line[*i] != '|' && line[*i])
 				(*i)++;
 		}
