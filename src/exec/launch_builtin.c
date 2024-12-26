@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   launch_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:19:21 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/25 17:34:38 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/26 20:59:13 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	link_builtin_to_pipex(t_cmd *cmd, int *pip)
-{
-	int	save_stdout;
-	int	tmp_file;
-
-	close(pip[0]);
-	if (cmd->next->infile == -2)
-	{
-		tmp_file = open("/tmp/.minishell.builtinlink.",
-				O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		save_stdout = dup(STDOUT_FILENO);
-		dup2(tmp_file, STDOUT_FILENO);
-		exec_builtin(cmd->cmd_param);
-		dup2(save_stdout, STDOUT_FILENO);
-		close(save_stdout);
-		close(tmp_file);
-		tmp_file = open("/tmp/.minishell.builtinlink.", O_RDONLY);
-		cmd->next->infile = tmp_file;
-		unlink("/tmp/.minishell.builtinlink.");
-	}
-	close(pip[1]);
-}
 
 void	exec_builtin(char **cmd)
 {
@@ -89,3 +66,26 @@ bool	is_valid_cmd(char *cmd)
 		return (true);
 	return (false);
 }
+
+// void	link_builtin_to_pipex(t_cmd *cmd, int *pip)
+// {
+// 	int	save_stdout;
+// 	int	tmp_file;
+
+// 	close(pip[0]);
+// 	if (cmd->next->infile == -2)
+// 	{
+// 		tmp_file = open("/tmp/.minishell.builtinlink.",
+// 				O_CREAT | O_WRONLY | O_TRUNC, 0644);
+// 		save_stdout = dup(STDOUT_FILENO);
+// 		dup2(tmp_file, STDOUT_FILENO);
+// 		exec_builtin(cmd->cmd_param);
+// 		dup2(save_stdout, STDOUT_FILENO);
+// 		close(save_stdout);
+// 		close(tmp_file);
+// 		tmp_file = open("/tmp/.minishell.builtinlink.", O_RDONLY);
+// 		cmd->next->infile = tmp_file;
+// 		unlink("/tmp/.minishell.builtinlink.");
+// 	}
+// 	close(pip[1]);
+// }

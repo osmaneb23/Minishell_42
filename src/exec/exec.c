@@ -3,20 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
+/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:49 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 18:52:37 by obouayed         ###   ########.fr       */
+/*   Updated: 2024/12/26 21:01:38 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	parent_process(int *pip, t_cmd *next_cmd)
+void parent_process(int *pip, t_cmd *cmd)
 {
 	close(pip[1]);
-	if (next_cmd)
-		next_cmd->infile = pip[0];
+	if (cmd->infile >= 0)
+		close(cmd->infile);
+	if (cmd->infile == -2)
+		cmd->infile = pip[0];
+	if (cmd->next && cmd->next->infile == -2)
+		cmd->next->infile = pip[0];
 	else
 		close(pip[0]);
 }
@@ -47,13 +51,9 @@ void	child_process(t_cmd *cmd, int *pip, char **env)
 	char	*path;
 
 	data = get_data();
-	if (cmd->infile >= 0)
-		close(pip[0]);
-	if (cmd->outfile < 0 && cmd->next != NULL)
-		cmd->outfile = pip[1];
 	redirect_input_output(cmd, pip);
 	if (is_builtin(cmd->cmd_param[0]))
-		exec_builtin(cmd->cmd_param);
+		launch_builtin(cmd);
 	else
 	{
 		if (access(cmd->cmd_param[0], X_OK) == 0)
@@ -74,12 +74,10 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 {
 	char	**env;
 
-	if (!cmd->prev && cmd->cmd_param && is_builtin(cmd->cmd_param[0]))
-		return (link_builtin_to_pipex(cmd, pip), SUCCESS);
 	env = copy_envp_to_tab(data, data->envp);
 	if (!env)
 		return (close_all_redi(data), cleanup(ERROR, ERR_MALLOC, ERROR, 2));
-	data->current_pid = fork();
+	data->current_pid = fork(); //! secu fork
 	signal_child_process();
 	if (data->current_pid == 0)
 	{
@@ -92,7 +90,7 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 	{
 		if (env)
 			ft_free_multi_array(env);
-		parent_process(pip, cmd->next);
+		parent_process(pip, cmd);
 	}
 	return (SUCCESS);
 }
@@ -127,4 +125,16 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 // WIFEXITED ==> verifie le status
 // WEXITSTATUS ==> retourne l'exit_status
 
-// cat | cat | ls
+//! "cat | cat | ls" avec ENTER+ENTER+ENTER
+//! tester exec avec prev_pip (update : ma bite)
+
+//? claude le boss
+// Ah super content d'avoir pu aider !
+// En effet, cette vérification if (pip[1] > 2) est cruciale car elle permet de ne fermer
+// les pipes que quand ils ne sont pas déjà redirigés vers les descripteurs standards 
+// (0, 1, 2). C'est exactement ce qui causait votre fuite de descripteur.
+// En gros, quand un pipe est redirigé vers stdout (1) par exemple, on ne veut pas le 
+// fermer sinon on coupe la sortie standard du processus. Mais tous les autres 
+// descripteurs de pipe (ceux > 2) doivent être fermés avant l'execve pour éviter les 
+// fuites.
+// N'hésitez pas si vous avez d'autres questions !

@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:05:59 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/25 21:46:37 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/25 21:41:34 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	export_new_var_and_val(t_env *envp, char *var_and_val, int i)
 	char	*to_print;
 	char	*var;
 	char	*val;
-	int		res;
+	int res;
 
 	if (export_init_vars(&var_and_val, &var, &val, i) != SUCCESS)
 		return (EXIT_MALLOC);
@@ -130,8 +130,8 @@ int	ft_export(char **cmd_param)
 	data = get_data();
 	if (ft_strcmp(cmd_param[0], "export") == 0
 		&& ft_multi_array_len(cmd_param) == 1)
-		if (!export_just_display(data))
-			return (EXIT_MALLOC);
+	if (!export_just_display(data))
+		return (EXIT_MALLOC);
 	while (cmd_param[j])
 	{
 		i = search_egal_symbol(cmd_param[j]);
