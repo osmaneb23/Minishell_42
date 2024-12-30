@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/26 20:18:31 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/30 20:25:51 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,55 +68,23 @@ int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
 	return (SUCCESS);
 }
 
-void redirect_input_output(t_cmd *cmd, int *pip)
+void	redirect_input_output(t_cmd *cmd, int *pip)
 {
-    // Si on utilise l'entrée du pipe précédent (infile == -2)
-    if (cmd->infile == -2)
-    {
-        dup2(pip[0], STDIN_FILENO);
-    }
-    // Sinon si on a un fichier d'entrée spécifique
-    else if (cmd->infile >= 0)
-    {
-        dup2(cmd->infile, STDIN_FILENO);
-        close(cmd->infile);
-    }
-    
-    // Si on a un fichier de sortie spécifique
-    if (cmd->outfile >= 0)
-    {
-        dup2(cmd->outfile, STDOUT_FILENO);
-        close(cmd->outfile);
-    }
-    // Sinon si ce n'est pas la dernière commande, rediriger vers le pipe
-    else if (cmd->next != NULL)
-    {
-        dup2(pip[1], STDOUT_FILENO);
-    }
-    
-    // Fermer les descripteurs de pipe après les redirections
-    close(pip[0]);
-    close(pip[1]);
+	close(pip[0]);
+	if (cmd->infile >= 0)
+	{
+		dup2(cmd->infile, STDIN_FILENO);
+		close(cmd->infile);
+	}
+	if (cmd->outfile >= 0)
+	{
+		dup2(cmd->outfile, STDOUT_FILENO);
+		close(cmd->outfile);
+	}
+	else if (cmd->next != NULL)
+		dup2(pip[1], STDOUT_FILENO);
+	close(pip[1]);
 }
-
-
-// void	redirect_input_output(t_cmd *cmd, int *pip)
-// {
-// 	close(pip[0]);
-// 	if (cmd->infile >= 0)
-// 	{
-// 		dup2(cmd->infile, STDIN_FILENO);
-// 		close(cmd->infile);
-// 	}
-// 	if (cmd->outfile >= 0)
-// 	{
-// 		dup2(cmd->outfile, STDOUT_FILENO);
-// 		close(cmd->outfile);
-// 	}
-// 	else if (cmd->next != NULL)
-// 		dup2(pip[1], STDOUT_FILENO);
-// 	close(pip[1]);
-// }
 
 int	close_all_redi(t_data *data)
 {

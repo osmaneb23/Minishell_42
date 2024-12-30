@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:49 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/26 21:01:38 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/30 20:21:54 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ void parent_process(int *pip, t_cmd *cmd)
 		cmd->infile = pip[0];
 	if (cmd->next && cmd->next->infile == -2)
 		cmd->next->infile = pip[0];
+	else if (cmd->next && cmd->next->infile >= 0)
+	{
+		printf("ERROR : broken pipe\n\n"); //!
+		close(pip[0]);
+	}
 	else
 		close(pip[0]);
 }
@@ -47,9 +52,12 @@ int	destroy_child_process(int exit_status, char **to_be_free)
 
 void	child_process(t_cmd *cmd, int *pip, char **env)
 {
+
+
+	
 	t_data	*data;
 	char	*path;
-
+	
 	data = get_data();
 	redirect_input_output(cmd, pip);
 	if (is_builtin(cmd->cmd_param[0]))
@@ -69,6 +77,7 @@ void	child_process(t_cmd *cmd, int *pip, char **env)
 	}
 	destroy_child_process(data->exit_status, env);
 }
+
 
 int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 {
@@ -95,8 +104,21 @@ int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 	return (SUCCESS);
 }
 
+void sigpipe_handler(int signo) 
+{
+    if (signo == SIGPIPE) 
+	{
+        fprintf(stderr, "AAHAHAHAHAHHAH JE T'AI ATTRAPE FUMIER : Broken pipe detected\n");
+		destroy_child_process(SUCCESS, NULL);
+    }
+}
+
 int	exec(t_data *data, t_cmd *cmd, int *pip)
 {
+
+	signal(SIGPIPE, sigpipe_handler);
+
+	
 	if (!cmd->skip_cmd && cmd->cmd_param && cmd->cmd_param[0]
 		&& is_builtin(cmd->cmd_param[0]) && cmd_list_len(data->cmd) == 1)
 	{
@@ -108,7 +130,7 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 		return (SUCCESS);
 	}
 	while (cmd)
-	{
+	{	
 		if (pipe(pip) == -1)
 			return (cleanup(ERROR, ERR_PIPE, ERROR, 2));
 		exec_cmd(data, cmd, pip);
@@ -126,15 +148,6 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 // WEXITSTATUS ==> retourne l'exit_status
 
 //! "cat | cat | ls" avec ENTER+ENTER+ENTER
-//! tester exec avec prev_pip (update : ma bite)
+//! "pwd > file | ls" 
 
-//? claude le boss
-// Ah super content d'avoir pu aider !
-// En effet, cette vérification if (pip[1] > 2) est cruciale car elle permet de ne fermer
-// les pipes que quand ils ne sont pas déjà redirigés vers les descripteurs standards 
-// (0, 1, 2). C'est exactement ce qui causait votre fuite de descripteur.
-// En gros, quand un pipe est redirigé vers stdout (1) par exemple, on ne veut pas le 
-// fermer sinon on coupe la sortie standard du processus. Mais tous les autres 
-// descripteurs de pipe (ceux > 2) doivent être fermés avant l'execve pour éviter les 
-// fuites.
-// N'hésitez pas si vous avez d'autres questions !
+//! re checker exit status quand SIGPIPE

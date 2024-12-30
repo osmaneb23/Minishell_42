@@ -6,7 +6,7 @@
 /*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/25 21:47:19 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/30 19:34:49 by febouana         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 	pid_t			f_pid;
 
+	int 			prev_pipe;
 	bool			skip_cmd;
 }					t_cmd;
 
@@ -131,8 +132,9 @@ Structure to store the data of minishell:
 */
 typedef struct s_data
 {
-	int				pip[2];
+	char 			**tmp_env;
 
+	int				pip[2];
 	t_token			*token;
 	t_env			*envp;
 	t_cmd			*cmd;
