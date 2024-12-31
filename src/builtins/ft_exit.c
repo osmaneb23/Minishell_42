@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/26 21:16:18 by febouana         ###   ########.fr       */
+/*   Updated: 2024/12/31 17:16:12 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,7 @@ int	classic_exit(char **cmd_param)
 
 int	ft_exit(char **cmd_param, bool is_single_cmd)
 {
-	t_data	*data;
-
-	data = get_data();
 	if (is_single_cmd == false)
 		return (fake_exit(cmd_param));
 	return (classic_exit(cmd_param));
-	return (42);
 }
