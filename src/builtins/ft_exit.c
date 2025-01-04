@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/31 17:16:12 by obouayed         ###   ########.fr       */
+/*   Updated: 2025/01/04 15:56:07 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,7 @@ int	classic_exit(char **cmd_param)
 			return (print_error("minishell: exit: "), print_error(cmd_param[1]),
 				cleanup(2, " numeric argument required\n", 2, 2));
 	if (cmd_param[2])
-		return (cleanup(1, "minishell: exit: too many arguments\n", NO_EXIT,
-				2));
+		return (print_error("minishell: exit: too many arguments\n"), 1);
 	exit_value = ft_atol_exit(cmd_param[1]);
 	if (exit_value < 0 || exit_value > 255)
 		exit_value %= 256;
