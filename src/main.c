@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2025/01/04 18:01:30 by obouayed         ###   ########.fr       */
+/*   Updated: 2025/01/04 19:11:20 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	replace_var_val(t_data *data)
 		if (!token->prev || token->prev->type != HEREDOC)
 		{
 			len = estimate_new_length(token->value);
-			new_value = malloc(sizeof(char) * len);
+			new_value = malloc(sizeof(char) * (len + 2));
 			if (!new_value)
 				cleanup(ERROR, ERR_MALLOC, ERROR, 2);
 			main_handle_var(token->value, new_value);

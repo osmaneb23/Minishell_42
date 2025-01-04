@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 19:44:42 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 22:35:34 by obouayed         ###   ########.fr       */
+/*   Updated: 2025/01/04 19:07:11 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,15 @@ size_t	estimate_new_length(const char *value)
 	size_t	len;
 	int		i;
 	bool	in_single_quotes;
+	t_data	*data;
 
 	len = 0;
 	i = 0;
 	in_single_quotes = false;
+	data = get_data();
+	if ((value[0] == '\'' && value[ft_strlen(value) - 1] == '\'')
+		|| (value[0] == '\"' && value[ft_strlen(value) - 1] == '\"'))
+		len += 2;
 	while (value[i])
 		handle_quote_and_dollar(value, &i, &len, &in_single_quotes);
 	return (len + 1);
