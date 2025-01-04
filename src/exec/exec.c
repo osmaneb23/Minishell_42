@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 22:19:49 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/30 20:21:54 by febouana         ###   ########.fr       */
+/*   Updated: 2025/01/04 18:00:54 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void parent_process(int *pip, t_cmd *cmd)
+void	parent_process(int *pip, t_cmd *cmd)
 {
 	close(pip[1]);
 	if (cmd->infile >= 0)
@@ -22,10 +22,7 @@ void parent_process(int *pip, t_cmd *cmd)
 	if (cmd->next && cmd->next->infile == -2)
 		cmd->next->infile = pip[0];
 	else if (cmd->next && cmd->next->infile >= 0)
-	{
-		printf("ERROR : broken pipe\n\n"); //!
 		close(pip[0]);
-	}
 	else
 		close(pip[0]);
 }
@@ -52,16 +49,13 @@ int	destroy_child_process(int exit_status, char **to_be_free)
 
 void	child_process(t_cmd *cmd, int *pip, char **env)
 {
-
-
-	
 	t_data	*data;
 	char	*path;
-	
+
 	data = get_data();
 	redirect_input_output(cmd, pip);
 	if (is_builtin(cmd->cmd_param[0]))
-		launch_builtin(cmd);
+		handle_builtin(cmd);
 	else
 	{
 		if (access(cmd->cmd_param[0], X_OK) == 0)
@@ -78,51 +72,38 @@ void	child_process(t_cmd *cmd, int *pip, char **env)
 	destroy_child_process(data->exit_status, env);
 }
 
-
 int	exec_cmd(t_data *data, t_cmd *cmd, int *pip)
 {
-	char	**env;
-
-	env = copy_envp_to_tab(data, data->envp);
-	if (!env)
+	data->tmp_env = copy_envp_to_tab(data, data->envp);
+	if (!data->tmp_env)
 		return (close_all_redi(data), cleanup(ERROR, ERR_MALLOC, ERROR, 2));
-	data->current_pid = fork(); //! secu fork
+	data->current_pid = fork();
+	if (data->current_pid == -1)
+		return (close_all_redi(data), ft_free_multi_array(data->tmp_env),
+			cleanup(ERROR, ERR_FORK, ERROR, 2));
 	signal_child_process();
 	if (data->current_pid == 0)
 	{
 		if (cmd->cmd_param && cmd->cmd_param[0])
-			child_process(cmd, pip, env);
+			child_process(cmd, pip, data->tmp_env);
 		else
-			destroy_child_process(SUCCESS, env);
+			destroy_child_process(SUCCESS, data->tmp_env);
 	}
 	else
 	{
-		if (env)
-			ft_free_multi_array(env);
+		if (data->tmp_env)
+			ft_free_multi_array(data->tmp_env);
 		parent_process(pip, cmd);
 	}
 	return (SUCCESS);
 }
 
-void sigpipe_handler(int signo) 
-{
-    if (signo == SIGPIPE) 
-	{
-        fprintf(stderr, "AAHAHAHAHAHHAH JE T'AI ATTRAPE FUMIER : Broken pipe detected\n");
-		destroy_child_process(SUCCESS, NULL);
-    }
-}
-
 int	exec(t_data *data, t_cmd *cmd, int *pip)
 {
-
-	signal(SIGPIPE, sigpipe_handler);
-
-	
 	if (!cmd->skip_cmd && cmd->cmd_param && cmd->cmd_param[0]
 		&& is_builtin(cmd->cmd_param[0]) && cmd_list_len(data->cmd) == 1)
 	{
-		launch_builtin(cmd);
+		handle_builtin(cmd);
 		if (data->exit_status == EXIT_MALLOC)
 			return (cleanup(EXIT_MALLOC, ERR_MALLOC, EXIT_MALLOC, 2));
 		if (data->exit_status != SUCCESS)
@@ -130,7 +111,7 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 		return (SUCCESS);
 	}
 	while (cmd)
-	{	
+	{
 		if (pipe(pip) == -1)
 			return (cleanup(ERROR, ERR_PIPE, ERROR, 2));
 		exec_cmd(data, cmd, pip);
@@ -148,6 +129,6 @@ int	exec(t_data *data, t_cmd *cmd, int *pip)
 // WEXITSTATUS ==> retourne l'exit_status
 
 //! "cat | cat | ls" avec ENTER+ENTER+ENTER
-//! "pwd > file | ls" 
+//! "pwd > file | ls"
 
 //! re checker exit status quand SIGPIPE

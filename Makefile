@@ -34,6 +34,7 @@ SRCS = main.c \
        utils/cleaning.c \
        utils/data.c \
        utils/signals.c \
+       utils/signals2.c \
        utils/toolbox.c \
        utils/utils_checks.c \
        utils/utils_dollar.c \
@@ -57,7 +58,7 @@ SRCS = main.c \
        exec/envp_utils.c \
        exec/exec.c \
        exec/exec_utils.c \
-       exec/launch_builtin.c \
+       exec/handle_builtin.c \
        exec/heredoc.c \
        exec/redirection_gestion.c
 

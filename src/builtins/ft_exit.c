@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 23:27:50 by obouayed          #+#    #+#             */
-/*   Updated: 2025/01/04 15:56:07 by obouayed         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:15:10 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ long	ft_atol_exit(char *str)
 	}
 	return (result * sign);
 }
-
-
 
 int	fake_exit(char **cmd_param)
 {

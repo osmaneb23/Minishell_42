@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_gestion.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:34:17 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/30 20:25:51 by febouana         ###   ########.fr       */
+/*   Updated: 2025/01/04 18:00:10 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int	fill_cmd_nodes_redirections(t_cmd *cmd, t_token **real_token)
 void	redirect_input_output(t_cmd *cmd, int *pip)
 {
 	close(pip[0]);
+	if (cmd->prev && cmd->prev->outfile >= 0)
+		close(cmd->prev->outfile);
 	if (cmd->infile >= 0)
 	{
 		dup2(cmd->infile, STDIN_FILENO);
@@ -93,9 +95,9 @@ int	close_all_redi(t_data *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
-		if (data->pip[1] > 2) //!
+		if (data->pip[1] > 2)
 			close(data->pip[1]);
-		if (data->pip[0] > 2) //!
+		if (data->pip[0] > 2)
 			close(data->pip[0]);
 		if (cmd->outfile >= 0)
 			close(cmd->outfile);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:19:21 by febouana          #+#    #+#             */
-/*   Updated: 2024/12/26 20:59:13 by febouana         ###   ########.fr       */
+/*   Updated: 2025/01/04 17:55:59 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	exec_builtin(char **cmd)
 	}
 }
 
-void	launch_builtin(t_cmd *cmd)
+void	handle_builtin(t_cmd *cmd)
 {
 	int	save_stdout;
 

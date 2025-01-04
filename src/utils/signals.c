@@ -6,7 +6,7 @@
 /*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 21:11:36 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/23 20:15:08 by obouayed         ###   ########.fr       */
+/*   Updated: 2025/01/04 17:31:47 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	setup_signals(void)
 	if (sigaction(SIGINT, &sa_int, NULL) == -1)
 		cleanup(ERROR, "Error: sigaction failed\n", ERROR, 2);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGPIPE, sigpipe_handler);
 }
 
 void	sigint_handler(int sig)

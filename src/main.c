@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:57:23 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/26 19:52:17 by febouana         ###   ########.fr       */
+/*   Updated: 2025/01/04 18:01:30 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ bool	main_routine(t_data *data, char **envp)
 		remove_quotes(data);
 		remove_backslash(data);
 		printf_tokens(data);
-		printf("\n"); //!
 		if (!check_misplacements(data))
 		{
 			if (!check_valid_commands(data))

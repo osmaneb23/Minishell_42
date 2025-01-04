@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: febouana <febouana@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obouayed <obouayed@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 18:03:56 by obouayed          #+#    #+#             */
-/*   Updated: 2024/12/30 19:34:49 by febouana         ###   ########.fr       */
+/*   Updated: 2025/01/04 17:55:59 by obouayed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 	pid_t			f_pid;
 
-	int 			prev_pipe;
+	int				prev_pipe;
 	bool			skip_cmd;
 }					t_cmd;
 
@@ -132,7 +132,7 @@ Structure to store the data of minishell:
 */
 typedef struct s_data
 {
-	char 			**tmp_env;
+	char			**tmp_env;
 
 	int				pip[2];
 	t_token			*token;
@@ -242,10 +242,10 @@ void				escape_heredoc(char *limiter);
 int					heredoc_cpy(int fd, char *limiter);
 int					heredoc(t_cmd *cmd, char *limiter);
 
-// launch_builtin.c
+// handle_builtin.c
 void				link_builtin_to_pipex(t_cmd *cmd, int *pip);
 void				exec_builtin(char **cmd);
-void				launch_builtin(t_cmd *cmd);
+void				handle_builtin(t_cmd *cmd);
 bool				is_valid_cmd(char *cmd);
 
 // commands.c
@@ -321,6 +321,9 @@ void				sigint_handler(int sig);
 void				sigquit_handler(int sig);
 void				signal_child_process(void);
 void				signals_heredoc(int sig);
+
+// signals2.c
+void				sigpipe_handler(int signo);
 
 // toolbox.c
 bool				contains_char(char *str, char c);
